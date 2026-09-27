@@ -42,7 +42,7 @@ a **📚 Glossary** modal defines every technical term.
 | 05 | **PF Correction** | Capacitor sizing `Q = P(tanφ₁−tanφ₂)`, before/after kVA · kVar · current |
 | 06 | **Arc Flash** | Incident energy + arc-flash boundary, IEEE 1584-2018 empirical model: arcing current (full + reduced case), enclosure size correction, NFPA 70E PPE category. Equipment presets; 208 V–15 kV |
 | 07 | **Network Analysis** | Bus results, branch flows, short-circuit, compliance and dispatch tables |
-| 08 | **SLD Builder** | Place / wire / operate single-line diagram, energisation tracing, export SVG |
+| 08 | **SLD Builder** | ETAP-style editor: real IEC/ANSI symbols, orthogonal auto-routed wires, grid + snap, multi-select (shift-click + marquee), undo/redo, zoom/pan/fit, per-element properties (tag, name, ratings, %Z), auto-tagging, energisation tracing, export SVG + PNG |
 | 09 | **Engineering Report** | Collects every module's latest result into one printable report |
 
 ## Interactive help & worked examples
@@ -68,9 +68,25 @@ The ↩ Reset button in the header clears saved state back to defaults.
 
 ## SLD persistence
 
-The single-line diagram canvas (components, wires, breaker/load state) autosaves
-to `localStorage` (key `voltworks-sld-v1`) on every change — place, wire, operate,
-delete, clear, and drag — and restores on load.
+The single-line diagram canvas (components, wires, breaker/load state, tags and
+properties) autosaves to `localStorage` (key `voltworks-sld-v1`) on every change —
+place, wire, operate, drag, property edit, delete, clear — and restores on load.
+
+## SLD editor (ETAP-style)
+
+- **Symbols:** generator, transformer, breaker, busbar, motor, load — drawn as real
+  IEC/ANSI glyphs (not text), theme-aware, with live energisation colouring.
+- **Routing:** wires are orthogonal (manhattan) paths anchored to each symbol's
+  connection point, previewed as a dashed ghost while you draw.
+- **Editing:** drag to move (grid snap, 20 px); Shift-click or drag a marquee to
+  multi-select and move/delete a group; **Ctrl+Z / Ctrl+Y** undo/redo (60-deep);
+  **Del** deletes; **# Auto-tag** renumbers every element (G1, B2, T1, BUS1 …).
+- **View:** wheel = zoom to cursor (0.3×–3×), Space or middle-drag = pan,
+  ⤢ Fit frames everything, ▦ Grid and 🧲 Snap toggle.
+- **Properties panel:** with one element selected, edit its tag, name, rating
+  (kVA / kV), transformer %Z and breaker state, and see its energisation status.
+- **Export:** ⬇ SVG (vector, for CAD) or ⬇ PNG (2× raster, for reports) — both
+  render exactly what is on the canvas, in the active theme.
 
 ## Power-flow persistence
 
@@ -107,6 +123,13 @@ Pages rebuilds in ~1–2 min — verify live with:
 
 ## Changelog
 
+- **SLD builder rebuilt to ETAP grade (phase 2)** — real IEC/ANSI symbol glyphs;
+  orthogonal auto-routed wires with a live ghost preview; grid + snap-to-grid;
+  multi-select via shift-click and marquee, group move/delete; 60-step undo/redo
+  (Ctrl+Z / Ctrl+Y); wheel zoom to cursor, pan (Space / middle-drag), fit-to-view;
+  a per-element properties panel (tag, name, rating, transformer %Z, breaker
+  state, energisation status); automatic tagging (G1/B2/T1/BUS1/M1/L1) with a
+  renumber button; and SVG + PNG export that render the canvas as drawn.
 - **Design system + UI/UX refresh (phase 1)** — one semantic accent (blue);
   amber/red/green reserved for caution/danger/pass; dual light+dark token sets;
   WCAG AA verified (17/17 pairs); focus-visible rings, reduced-motion support,
