@@ -375,7 +375,9 @@ function calcTransformer(){
   let rec=STD_KVA[STD_KVA.length-1];for(const s of STD_KVA){if(s>=req){rec=s;break;}}
   const sizeStr=rec>=1000?(rec/1000).toFixed(1)+' MVA':rec+' kVA';
   const util=actKva/kva*100;
-  const scMva=BASE.mva*100/pctZ,scSym=scMva/(SQRT3*BASE.kv),scAsym=scSym*1.5;
+  // LV-bus fault current from the transformer's OWN rating + impedance + secondary kV
+  // (previously used the 100 MVA system base, ignoring kVA and Vsec → ~3.6x too high)
+  const scSym=(kva*1000)/(SQRT3*vS*1000*(pctZ/100))/1000,scAsym=scSym*1.5;
   const ukTyp=STD.tx==='IEC60076'?'uk typ 4–6% (IEC 60076-5)':'uk typ 5.75% (IEEE C57.12.00)';
   R.tr={kva,pctZ,vP,vS,actKva,rec:sizeStr,util,scSym,scAsym,std:STD.tx,ukTyp};
   const bad=util>80||scSym>50;
@@ -531,27 +533,28 @@ function drawSLD(){
     g.addEventListener('mousedown',ev=>{sldDrag={id:it.id};sldDragMoved=false;ev.stopPropagation();});
     svg.appendChild(g);});
   if(!sldBound){sldBound=true;
+    window.addEventListener('mouseup',()=>{sldDrag=null;sldSave();});
     window.addEventListener('mousemove',ev=>{if(!sldDrag)return;const p=sldPos(ev);const it=sldItems.find(x=>x.id===sldDrag.id);if(it){if(Math.abs(it.x-p.x)+Math.abs(it.y-p.y)>2)sldDragMoved=true;it.x=Math.round(p.x);it.y=Math.round(p.y);const d=sldDrag;sldDrag=null;drawSLD();sldDrag=d;}});
-    window.addEventListener('mouseup',()=>{sldDrag=null;});
   }
   const n=$('sldCount');if(n)n.textContent=sldItems.length+' comps · '+sldWires.length+' wires';
 }
 $('sldCanvas').addEventListener('click',e=>{
   if(sldDragMoved){sldDragMoved=false;return;}
   const id=sldItemAt(e),p=sldPos(e);
-  if(sldMode==='place'){sldItems.push({id:++sldId,t:sldSel,x:Math.round(p.x),y:Math.round(p.y),closed:true});drawSLD();}
+  if(sldMode==='place'){sldItems.push({id:++sldId,t:sldSel,x:Math.round(p.x),y:Math.round(p.y),closed:true});drawSLD();sldSave();}
   else if(sldMode==='wire'){
     if(id==null){sldWireFrom=null;drawSLD();return;}
     if(sldWireFrom==null){sldWireFrom=id;drawSLD();}
-    else if(sldWireFrom!==id){const a=sldWireFrom;sldWireFrom=null;if(!sldWires.some(w=>(w.a===a&&w.b===id)||(w.a===id&&w.b===a))){sldWires.push({id:++sldId,a,b:id});toast('🔗 Connected');}drawSLD();}
+    else if(sldWireFrom!==id){const a=sldWireFrom;sldWireFrom=null;if(!sldWires.some(w=>(w.a===a&&w.b===id)||(w.a===id&&w.b===a))){sldWires.push({id:++sldId,a,b:id});toast('🔗 Connected');}drawSLD();sldSave();}
   }else if(sldMode==='operate'){
     const it=sldItems.find(x=>x.id===id);if(!it)return;
     if(it.t==='brk'){it.closed=(it.closed===false);toast(it.closed?'⏚ Breaker CLOSED':'⏚ Breaker OPEN');drawSLD();}
     else if(it.t==='load'||it.t==='motor'){const steps=[50,75,100,125,150];let i=steps.indexOf(it.pct||0);i=(i+1)%steps.length;it.pct=steps[i];toast('💡 Loading → '+it.pct+'%');drawSLD();}
+    sldSave();
   }
 });
-$('sldCanvas').addEventListener('dblclick',e=>{const id=sldItemAt(e);if(id!=null){sldItems=sldItems.filter(x=>x.id!==id);sldWires=sldWires.filter(w=>w.a!==id&&w.b!==id);drawSLD();}});
-function clearSLD(){sldItems=[];sldWires=[];sldWireFrom=null;drawSLD();toast('🗑 Canvas cleared');}
+$('sldCanvas').addEventListener('dblclick',e=>{const id=sldItemAt(e);if(id!=null){sldItems=sldItems.filter(x=>x.id!==id);sldWires=sldWires.filter(w=>w.a!==id&&w.b!==id);drawSLD();sldSave();}});
+function clearSLD(){sldItems=[];sldWires=[];sldWireFrom=null;drawSLD();toast('🗑 Canvas cleared');sldSave();}
 function exportSLD(){
   const svg=$('sldCanvas').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
   const blob=new Blob(['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420"><rect width="800" height="420" fill="#090e18"/>'+svg.innerHTML+'</svg>'],{type:'image/svg+xml'});
@@ -570,7 +573,7 @@ function buildReport(){
     +mod('Feeder VD',R.line?`${R.line.vDpct.toFixed(2)}% drop, ${R.line.vLoad.toFixed(3)} kV at load, ${R.line.iLoad.toFixed(1)} A`:'')
     +mod('Transformer',R.tr?`${R.tr.rec} recommended, ${R.tr.util.toFixed(1)}% loaded, Isc ${R.tr.scSym.toFixed(2)} kA`:'')
     +mod('Cable',R.cable?`${R.cable.mm} mm² Cu, ${R.cable.vdPct.toFixed(2)}% VD, ${R.cable.I.toFixed(1)} A`:'')
-    +mod('Short-circuit',R.sc?`${R.sc.Ik.toFixed(2)} kA sym / ${R.sc.M.toFixed(2)} kA momentary`: '')
+    +mod('Short-circuit',R.sc?`${R.sc.Ik.toFixed(2)} kA sym${R.sc.M!=null?` / ${R.sc.M.toFixed(2)} kA momentary`:(R.sc.Ip!=null?` / ${R.sc.Ip.toFixed(2)} kA peak`:'')}`: '')
     +'</ul>');
   L.push(`<h4>3 · Method + assumptions</h4><p>VD: 3φ I(R·cosφ+X·sinφ). Fault: Z=V²/S with %Z + feeder Z, momentary ×1.15. Cable: Cu/XLPE CCC with install × ambient derates, VD=√3·I·R·L/V. Per-unit base ${BASE.mva} MVA / ${BASE.kv} kV.</p>`);
   L.push(`<h4>4 · SLD</h4><p>${R.sld?R.sld.components+' component(s) placed on canvas.': 'No SLD composed yet — export SVG from the builder when ready.'}</p>`);
@@ -624,6 +627,11 @@ VW_FIELDS.forEach(el=>{VW_DEFAULTS[el.id]=vwRead(el);});
 function vwSave(){try{const s={};VW_FIELDS.forEach(el=>{s[el.id]=vwRead(el);});localStorage.setItem(VW_STORE_KEY,JSON.stringify(s));}catch(e){}}
 let vwT=null;
 function vwSaveSoon(){clearTimeout(vwT);vwT=setTimeout(vwSave,300);}
+/* ---- SLD persistence (localStorage, versioned) ---- */
+const SLD_STORE_KEY='voltworks-sld-v1';
+function sldSave(){try{localStorage.setItem(SLD_STORE_KEY,JSON.stringify({items:sldItems,wires:sldWires,nextId:sldId}));}catch(e){}}
+let sldRestoreDone=false;
+function sldRestore(){if(sldRestoreDone)return;sldRestoreDone=true;let s=null;try{s=JSON.parse(localStorage.getItem(SLD_STORE_KEY)||'null');}catch(e){}if(!s||typeof s!=='object'||!Array.isArray(s.items)||!Array.isArray(s.wires))return;sldItems=s.items;sldWires=s.wires;sldId=s.nextId||0;drawSLD();}
 function vwRestore(){let s=null;try{s=JSON.parse(localStorage.getItem(VW_STORE_KEY)||'null');}catch(e){}if(!s||typeof s!=='object')return;VW_FIELDS.forEach(el=>{if(Object.prototype.hasOwnProperty.call(s,el.id))vwWrite(el,s[el.id]);});}
 function vwReset(){try{localStorage.removeItem(VW_STORE_KEY);}catch(e){}VW_FIELDS.forEach(el=>vwWrite(el,VW_DEFAULTS[el.id]));saveBase();renderAnalysis();stdChanged();liveStudy();toast('↩ Inputs reset to defaults');}
 ['input','change'].forEach(ev=>document.addEventListener(ev,e=>{const t=e.target;if(t&&t.id&&/^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName))vwSaveSoon();}));
@@ -634,6 +642,7 @@ document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>
   document.getElementById('sec-'+b.dataset.sec).scrollIntoView({behavior:'smooth'});}));
 $('footDate').textContent=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
 vwRestore();
+sldRestore();
 renderAnalysis();stdChanged();liveStudy();
 </script>
 </body>
