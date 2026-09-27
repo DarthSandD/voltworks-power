@@ -157,6 +157,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
     <button class="nav-btn" data-sec="motor">Motor Start</button>
     <button class="nav-btn" data-sec="cablesc">Cable SC</button>
     <button class="nav-btn" data-sec="pf">PF Correction</button>
+    <button class="nav-btn" data-sec="arcflash">Arc Flash</button>
     <button class="nav-btn" data-sec="analysis">Analysis</button>
     <button class="nav-btn" data-sec="sld">SLD Builder</button>
     <button class="nav-btn" data-sec="report">Report</button>
@@ -171,7 +172,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
   <h1>Design. Check. <span>Energize.</span></h1>
   <p>Feeder voltage drop, transformer sizing, cable sizing, fault levels, network analysis, single-line diagrams and professional reports — all running instantly in your browser. No server, no uploads.</p>
   <div class="hero-stats">
-    <div class="hstat"><b>9</b><span>power modules</span></div>
+    <div class="hstat"><b>10</b><span>power modules</span></div>
     <div class="hstat"><b>6</b><span>report tables</span></div>
     <div class="hstat"><b>100%</b><span>client-side</span></div>
   </div>
@@ -374,9 +375,57 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
   </div>
 </section>
 
+<!-- ============ ARC FLASH ============ -->
+<section class="tool-section" id="sec-arcflash">
+  <div class="sec-head"><span class="num">06</span><h2>Arc Flash Hazard <span class="pill p-info">IEEE 1584-2018</span></h2></div>
+  <p class="sec-sub">Incident energy and arc-flash boundary per the IEEE 1584-2018 empirical model (1,800+ tests): arcing current (with reduced-current case), enclosure size correction, and PPE category per NFPA 70E. <b>Safety-critical</b> — verify against your protection study before use.</p>
+  <div class="grid">
+    <div class="card" id="card-arc">
+      <h3><span class="ico i-red">⚡</span>Arc Flash Calculation</h3>
+      <p class="desc">Equipment + fault data. Voltage 208 V–15 kV; G per equipment class.</p>
+      <div class="frow">
+        <div class="fg"><label>Equipment type</label><select id="afEquip" onchange="afPreset()">
+          <option value="LV Switchgear">LV Switchgear (VCB)</option>
+          <option value="LV MCC">LV MCC (VCB)</option>
+          <option value="LV Panelboard">LV Panelboard (VCB)</option>
+          <option value="5kV Switchgear">5 kV Switchgear (VCB)</option>
+          <option value="15kV Switchgear">15 kV Switchgear (VCB)</option>
+          <option value="LV MCC HCB">Cable J-Box (HCB)</option>
+          <option value="custom">Custom…</option></select></div>
+        <div class="fg"><label>Electrode config</label><select id="afEC" onchange="calcArc()">
+          <option value="VCB">VCB — vertical in box</option>
+          <option value="VCBB">VCBB — vertical + barrier</option>
+          <option value="HCB">HCB — horizontal in box</option>
+          <option value="VOA">VOA — vertical open air</option>
+          <option value="HOA">HOA — horizontal open air</option></select></div>
+        <div class="fg"><label>Voltage V</label><input type="number" id="afV" value="480" oninput="calcArc()"></div>
+        <div class="fg"><label>Bolted fault kA</label><input type="number" id="afIbf" value="45" step="0.1" oninput="calcArc()"></div>
+        <div class="fg"><label>Arc duration ms</label><input type="number" id="afT" value="100" step="1" oninput="calcArc()"></div>
+        <div class="fg"><label>Working distance mm</label><input type="number" id="afD" value="609.6" step="1" oninput="calcArc()"></div>
+        <div class="fg"><label>Bus gap G mm</label><input type="number" id="afG" value="32" step="1" oninput="calcArc()"></div>
+        <div class="fg"><label>Box H × W × D mm</label><input type="text" id="afBox" value="610x610x254" oninput="calcArc()"></div>
+      </div>
+      <button class="btn" onclick="calcArc()">Calculate incident energy</button>
+      <div class="results" id="res-arc"><div class="rgrid" id="grid-arc"></div><div class="verdict" id="verdict-arc"></div></div>
+    </div>
+    <div class="card">
+      <h3><span class="ico i-amber">🦺</span>PPE Category <span class="pill p-info">NFPA 70E</span></h3>
+      <p class="desc">PPE category from the highest (reduced-current) incident energy.</p>
+      <div class="tbl-wrap" style="margin:0"><table id="tbl-ppe"><thead><tr><th>Case</th><th>I_arc kA</th><th>E cal/cm²</th><th>AFB mm</th><th>PPE</th></tr></thead><tbody></tbody></table></div>
+      <div class="tbl-wrap" style="margin:10px 0 0"><table><thead><tr><th>PPE Cat</th><th>Incident energy</th></tr></thead><tbody>
+        <tr><td>0 / none</td><td>≤ 1.2 cal/cm²</td></tr>
+        <tr><td>1</td><td>≤ 4</td></tr>
+        <tr><td>2</td><td>≤ 8</td></tr>
+        <tr><td>3</td><td>≤ 25</td></tr>
+        <tr><td>4</td><td>≤ 40</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ANALYSIS ============ -->
 <section class="tool-section" id="sec-analysis">
-  <div class="sec-head"><span class="num">06</span><h2>Network Analysis Report</h2></div>
+  <div class="sec-head"><span class="num">07</span><h2>Network Analysis Report</h2></div>
   <p class="sec-sub">psextract-style system report. Edit bus voltages live — compliance re-evaluates instantly. Sample 5-bus demo case preloaded.</p>
   <div class="btn-row no-print" style="max-width:420px;margin-bottom:14px">
     <button class="btn ghost" onclick="recalcAnalysis()">↻ Re-evaluate</button>
@@ -396,7 +445,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 
 <!-- ============ SLD ============ -->
 <section class="tool-section" id="sec-sld">
-  <div class="sec-head"><span class="num">07</span><h2>Single-Line Diagram Builder</h2></div>
+  <div class="sec-head"><span class="num">08</span><h2>Single-Line Diagram Builder</h2></div>
   <p class="sec-sub">Place mode: pick a component, then click the canvas. Wire mode: click two symbols to connect them. Operate mode: click a breaker to open/close, click a load or motor to cycle its loading. Drag to move, double-click to delete. Loading colours follow the Live Load Study slider.</p>
   <div class="sld-layout">
     <div class="palette no-print">
@@ -423,7 +472,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 
 <!-- ============ REPORT ============ -->
 <section class="tool-section" id="sec-report">
-  <div class="sec-head"><span class="num">08</span><h2>Engineering Report</h2></div>
+  <div class="sec-head"><span class="num">09</span><h2>Engineering Report</h2></div>
   <p class="sec-sub">Collects your latest results from every module above into one professional report. Print or save as PDF.</p>
   <div class="btn-row" style="max-width:520px">
     <button class="btn" onclick="buildReport()">📄 Generate report</button>
@@ -687,6 +736,7 @@ function buildReport(){
     +mod('Motor start',R.motor?`${R.motor.method}: I_start ${R.motor.Istart.toFixed(0)} A (I_FLA ${R.motor.Ifla.toFixed(1)} A), PCC dip ${R.motor.dip.toFixed(2)}% (limit ${R.motor.limit}%)`:'')
     +mod('Cable SC withstand',R.cableSc?`${R.cableSc.sSel} mm² ${R.cableSc.ok?'OK':'FAIL'} vs ${R.cableSc.sMin.toFixed(1)} mm² min at ${(R.cableSc.I/1000)} kA/${R.cableSc.t} s`:'')
     +mod('PF correction',R.pf?`${R.pf.qc.toFixed(1)} kVar to reach PF ${R.pf.pf2.toFixed(2)} (from ${R.pf.pf1.toFixed(2)})`:'')
+    +mod('Arc flash',R.arc?`${R.arc.V.toFixed(0)} V, I_bf ${R.arc.Ibf} kA / ${R.arc.T} ms: E ${R.arc.reduced.cal.toFixed(2)} cal/cm² (reduced), ${R.arc.full.cal.toFixed(2)} cal/cm² (full), AFB ${R.arc.reduced.AFB.toFixed(0)} mm, PPE Cat ${R.arc.ppe} [IEEE 1584-2018]`:'')
     +'</ul>');
   L.push(`<h4>3 · Method + assumptions</h4><p>VD: 3φ I(R·cosφ+X·sinφ). Fault: Z=V²/S with %Z + feeder Z, momentary ×1.15. Cable: Cu/XLPE CCC with install × ambient derates, VD=√3·I·R·L/V. Per-unit base ${BASE.mva} MVA / ${BASE.kv} kV.</p>`);
   L.push(`<h4>4 · SLD</h4><p>${R.sld?R.sld.components+' component(s) placed on canvas.': 'No SLD composed yet — export SVG from the builder when ready.'}</p>`);
@@ -965,6 +1015,179 @@ function calcPF(){
   flash('card-pf');toast('⚙ Capacitor bank sized');
 }
 
+/* ================= ARC FLASH — IEEE 1584-2018 ================= */
+// Tables ported from IEEE Std 1584-2018 (verified against the liaungyip/arcflash reference impl).
+const AF_T1={ // arcing current intermediate coeffs [EC][Voc_kV] -> k1..k10
+ VCB:{"0.6":[-0.04287,1.035,-0.083,0,0,-4.783e-9,1.962e-6,-0.000229,0.003141,1.092],
+      "2.7":[0.0065,1.001,-0.024,-1.557e-12,4.556e-10,-4.186e-8,8.346e-7,5.482e-5,-0.003191,0.9729],
+      "14.3":[0.005795,1.015,-0.011,-1.557e-12,4.556e-10,-4.186e-8,8.346e-7,5.482e-5,-0.003191,0.9729]},
+ VCBB:{"0.6":[-0.017432,0.98,-0.05,0,0,-5.767e-9,2.524e-6,-0.00034,0.01187,1.013],
+      "2.7":[0.002823,0.995,-0.0125,0,-9.204e-11,2.901e-8,-3.262e-6,0.0001569,-0.004003,0.9825],
+      "14.3":[0.014827,1.01,-0.01,0,-9.204e-11,2.901e-8,-3.262e-6,0.0001569,-0.004003,0.9825]},
+ HCB:{"0.6":[0.054922,0.988,-0.11,0,0,-5.382e-9,2.316e-6,-0.000302,0.0091,0.9725],
+      "2.7":[0.001011,1.003,-0.0249,0,0,4.859e-10,-1.814e-7,-9.128e-6,-0.0007,0.9881],
+      "14.3":[0.008693,0.999,-0.02,0,-5.043e-11,2.233e-8,-3.046e-6,0.000116,-0.001145,0.9839]},
+ VOA:{"0.6":[0.043785,1.04,-0.18,0,0,-4.783e-9,1.962e-6,-0.000229,0.003141,1.092],
+      "2.7":[-0.02395,1.006,-0.0188,-1.557e-12,4.556e-10,-4.186e-8,8.346e-7,5.482e-5,-0.003191,0.9729],
+      "14.3":[0.005371,1.0102,-0.029,-1.557e-12,4.556e-10,-4.186e-8,8.346e-7,5.482e-5,-0.003191,0.9729]},
+ HOA:{"0.6":[0.111147,1.008,-0.24,0,0,-3.895e-9,1.641e-6,-0.000197,0.002615,1.1],
+      "2.7":[0.000435,1.006,-0.038,0,0,7.859e-10,-1.914e-7,-9.128e-6,-0.0007,0.9981],
+      "14.3":[0.000904,0.999,-0.02,0,0,7.859e-10,-1.914e-7,-9.128e-6,-0.0007,0.9981]}};
+const AF_T2={ // arcing current variation correction factor [EC] -> k1..k7
+ VCB:[0,-1.4269e-6,0.000083137,-0.0019382,0.022366,-0.12645,0.30226],
+ VCBB:[1.138e-6,-6.0287e-5,0.0012758,-0.013778,0.080217,-0.24066,0.33524],
+ HCB:[0,-3.097e-6,0.00016405,-0.0033609,0.033308,-0.16182,0.34627],
+ VOA:[9.5606e-7,-5.1543e-5,0.0011161,-0.01242,0.075125,-0.23584,0.33696],
+ HOA:[0,-3.1555e-6,0.0001682,-0.0034607,0.034124,-0.1599,0.34629]};
+const AF_T3={ // incident energy coeffs at 600 V [EC] -> k1..k13
+ VCB:[0.753364,0.566,1.752636,0,0,-4.783e-9,0.000001962,-0.000229,0.003141,1.092,0,-1.598,0.957],
+ VCBB:[3.068459,0.26,-0.098107,0,0,-5.767e-9,0.000002524,-0.00034,0.01187,1.013,-0.06,-1.809,1.19],
+ HCB:[4.073745,0.344,-0.370259,0,0,-5.382e-9,0.000002316,-0.000302,0.0091,0.9725,0,-2.03,1.036],
+ VOA:[0.679294,0.746,1.222636,0,0,-4.783e-9,0.000001962,-0.000229,0.003141,1.092,0,-1.598,0.997],
+ HOA:[3.470417,0.465,-0.261863,0,0,-3.895e-9,0.000001641,-0.000197,0.002615,1.1,0,-1.99,1.04]};
+const AF_T4={ // 2700 V
+ VCB:[2.40021,0.165,0.354202,-1.557e-12,4.556e-10,-4.186e-8,8.346e-7,5.482e-5,-0.003191,0.9729,0,-1.569,0.9778],
+ VCBB:[3.870592,0.185,-0.736618,0,-9.204e-11,2.901e-8,-3.262e-6,0.0001569,-0.004003,0.9825,0,-1.742,1.09],
+ HCB:[3.486391,0.177,-0.193101,0,0,4.859e-10,-1.814e-7,-9.128e-6,-0.0007,0.9881,0.027,-1.723,1.055],
+ VOA:[3.880724,0.105,-1.906033,-1.557e-12,4.556e-10,-4.186e-8,8.346e-7,5.482e-5,-0.003191,0.9729,0,-1.515,1.115],
+ HOA:[3.616266,0.149,-0.761561,0,0,7.859e-10,-1.914e-7,-9.128e-6,-0.0007,0.9981,0,-1.639,1.078]};
+const AF_T5={ // 14300 V
+ VCB:[3.825917,0.11,-0.999749,-1.557e-12,4.556e-10,-4.186e-8,8.346e-7,5.482e-5,-0.003191,0.9729,0,-1.568,0.99],
+ VCBB:[3.644309,0.215,-0.585522,0,-9.204e-11,2.901e-8,-3.262e-6,0.0001569,-0.004003,0.9825,0,-1.677,1.06],
+ HCB:[3.044516,0.125,0.245106,0,-5.043e-11,2.233e-8,-3.046e-6,0.000116,-0.001145,0.9839,0,-1.655,1.084],
+ VOA:[3.405454,0.12,-0.93245,-1.557e-12,4.556e-10,-4.186e-8,8.346e-7,5.482e-5,-0.003191,0.9729,0,-1.534,0.979],
+ HOA:[2.04049,0.177,1.005092,0,0,7.859e-10,-1.914e-7,-9.128e-6,-0.0007,0.9981,-0.05,-1.633,1.151]};
+const AF_T7={ // box correction [boxType][EC] -> b1,b2,b3
+ Typical:{VCB:[-0.000302,0.03441,0.4325],VCBB:[-0.0002976,0.032,0.479],HCB:[-0.0001923,0.01935,0.6899]},
+ Shallow:{VCB:[0.002222,-0.02556,0.6222],VCBB:[-0.002778,0.1194,-0.2778],HCB:[-0.0005556,0.03722,0.4778]}};
+const AF_EQUIP={ // equipment class -> [G_mm, H_mm, W_mm, D_mm(working), workingDist]
+ 'LV Switchgear':[32,508,508,508,609.6],'LV MCC':[25,355.6,304.8,250,457.2],
+ 'LV Panelboard':[25,355.6,304.8,250,457.2],'5kV Switchgear':[104,914.4,914.4,914.4,914.4],
+ '15kV Switchgear':[152,1143,762,762,914.4],'LV MCC HCB':[13,355.6,304.8,250,457.2]};
+function afVarCF(EC,Voc){const k=AF_T2[EC],v=Voc;return k[0]*v**6+k[1]*v**5+k[2]*v**4+k[3]*v**3+k[4]*v**2+k[5]*v+k[6];}
+function afCF(EC,Voc,h,w,d){
+  if(EC==='HOA'||EC==='VOA')return {CF:1,type:'Open air',EES:null};
+  const type=((Voc<0.6)&&(h<508)&&(w<508)&&(d<=203.2))?'Shallow':'Typical';
+  const AB={VCB:[4,20],VCBB:[10,24],HCB:[10,22]}[EC];const A=AB[0],B=AB[1];
+  const eq=(dim)=>{const y1=dim-660.4,y2=(Voc+A)/B;return (660.4+y1*y2)/25.4;};
+  const mmi=0.03937;
+  let w1;
+  if(w<508) w1=(type==='Typical')?20:mmi*w;
+  else if(w<=660.4) w1=mmi*w;
+  else if(w<=1244.6) w1=eq(w);
+  else w1=eq(1244.6);
+  let h1;
+  if(h<508) h1=(type==='Typical')?20:mmi*h;
+  else if(h<=660.4) h1=mmi*h;
+  else if(h<=1244.6) h1=(EC==='VCB')?mmi*h:eq(h);
+  else h1=(EC==='VCB')?49:eq(1244.6);
+  const EES=(h1+w1)/2;
+  const b=AF_T7[type][EC];const x1=b[0]*EES*EES+b[1]*EES+b[2];
+  const CF=(type==='Typical')?x1:1/x1;
+  return {CF,type,EES};
+}
+function afIarcInt(EC,Voc_kV,Ibf,G){
+  const k=AF_T1[EC][String(Voc_kV)];
+  const x1=k[0]+k[1]*Math.log10(Ibf)+k[2]*Math.log10(G);
+  const x2=k[3]*Ibf**6+k[4]*Ibf**5+k[5]*Ibf**4+k[6]*Ibf**3+k[7]*Ibf**2+k[8]*Ibf+k[9];
+  return Math.pow(10,x1)*x2;
+}
+function afIarcFinalLV(Voc_kV,Iarc600,Ibf){
+  const x1=(0.6/Voc_kV)**2,x2=1/(Iarc600**2),x3=(0.36-Voc_kV**2)/(0.36*Ibf**2);
+  return 1/Math.sqrt(x1*(x2-x3));
+}
+function afInterp(Voc_kV,x600,x2700,x14300){
+  const x1=((x2700-x600)/2.1)*(Voc_kV-2.7)+x2700;
+  const x2=((x14300-x2700)/11.6)*(Voc_kV-14.3)+x14300;
+  const x3=(x1*(2.7-Voc_kV))/2.1+(x2*(Voc_kV-0.6))/2.1;
+  return (Voc_kV>0.6&&Voc_kV<=2.7)?x3:x2;
+}
+function afE(EC,Voc_kV,Iarc,Ibf,Tms,CF,G,D,Iarc600){
+  const k=(Voc_kV<=0.6)?AF_T3[EC]:(Voc_kV===2.7?AF_T4[EC]:(Voc_kV===14.3?AF_T5[EC]:null));
+  const x1=12.552/50*Tms;
+  const x2=k[0]+k[1]*Math.log10(G);
+  const x3num=k[2]*(Iarc600!=null?Iarc600:Iarc);
+  const x3den=k[3]*Ibf**7+k[4]*Ibf**6+k[5]*Ibf**5+k[6]*Ibf**4+k[7]*Ibf**3+k[8]*Ibf**2+k[9]*Ibf;
+  const x3=x3num/x3den;
+  const x4=k[10]*Math.log10(Ibf)+k[12]*Math.log10(Iarc)+Math.log10(1/CF);
+  const x5=k[11]*Math.log10(D);
+  return x1*Math.pow(10,x2+x3+x4+x5);
+}
+function afAFB(EC,Voc_kV,E,D){
+  const k=(Voc_kV<=0.6)?AF_T3[EC]:(Voc_kV===2.7?AF_T4[EC]:AF_T5[EC]);
+  const k12=k[11];
+  const F=E/Math.pow(D,k12);
+  return Math.pow(5.0208/F,1/k12);
+}
+function afRun(EC,Voc_kV,Ibf,Tms,G,D,H,W,Dep){
+  const cf=afCF(EC,Voc_kV,H,W,Dep);
+  const VarCF=afVarCF(EC,Voc_kV);
+  const out={CF:cf.CF,encType:cf.type,VarCF};
+  if(Voc_kV<=0.6){
+    const i600=afIarcInt(EC,0.6,Ibf,G);
+    const ifull=afIarcFinalLV(Voc_kV,i600,Ibf);
+    const imin=ifull*(1-0.5*VarCF);
+    const Efull=afE(EC,Voc_kV,ifull,Ibf,Tms,cf.CF,G,D,i600);
+    const Emin=afE(EC,Voc_kV,imin,Ibf,Tms,cf.CF,G,D,i600);
+    out.full={Iarc:ifull,E:Efull,AFB:afAFB(EC,Voc_kV,Efull,D),cal:Efull/4.184};
+    out.reduced={Iarc:imin,E:Emin,AFB:afAFB(EC,Voc_kV,Emin,D),cal:Emin/4.184};
+  }else{
+    const i600f=afIarcInt(EC,0.6,Ibf,G),i2700f=afIarcInt(EC,2.7,Ibf,G),i14300f=afIarcInt(EC,14.3,Ibf,G);
+    const i600= i600f,i2700=i2700f,i14300=i14300f;
+    const i600m=i600f*(1-0.5*VarCF),i2700m=i2700f*(1-0.5*VarCF),i14300m=i14300f*(1-0.5*VarCF);
+    const IarcF=afInterp(Voc_kV,i600,i2700,i14300);
+    const IarcM=afInterp(Voc_kV,i600m,i2700m,i14300m);
+    const E600=afE(EC,0.6,i600,Ibf,Tms,cf.CF,G,D);
+    const E2700=afE(EC,2.7,i2700,Ibf,Tms,cf.CF,G,D);
+    const E14300=afE(EC,14.3,i14300,Ibf,Tms,cf.CF,G,D);
+    const Efull=afInterp(Voc_kV,E600,E2700,E14300);
+    const E600m=afE(EC,0.6,i600m,Ibf,Tms,cf.CF,G,D);
+    const E2700m=afE(EC,2.7,i2700m,Ibf,Tms,cf.CF,G,D);
+    const E14300m=afE(EC,14.3,i14300m,Ibf,Tms,cf.CF,G,D);
+    const Emin=afInterp(Voc_kV,E600m,E2700m,E14300m);
+    const AFBf=afInterp(Voc_kV,afAFB(EC,0.6,E600,D),afAFB(EC,2.7,E2700,D),afAFB(EC,14.3,E14300,D));
+    const AFBm=afInterp(Voc_kV,afAFB(EC,0.6,E600m,D),afAFB(EC,2.7,E2700m,D),afAFB(EC,14.3,E14300m,D));
+    out.full={Iarc:IarcF,E:Efull,AFB:AFBf,cal:Efull/4.184};
+    out.reduced={Iarc:IarcM,E:Emin,AFB:AFBm,cal:Emin/4.184};
+  }
+  return out;
+}
+function afPPE(cal){if(cal<=1.2)return '0';if(cal<=4)return '1';if(cal<=8)return '2';if(cal<=25)return '3';if(cal<=40)return '4';return 'DANGER >40';}
+function afPreset(){
+  const v=$('afEquip').value;if(v==='custom')return;
+  const e=AF_EQUIP[v];if(!e)return;
+  $('afG').value=e[0];$('afBox').value=e[1]+'x'+e[2]+'x'+e[3];$('afD').value=e[4];
+  if(v.includes('HCB'))$('afEC').value='HCB';
+  calcArc();
+}
+function calcArc(){
+  const EC=$('afEC').value,Voc=parseFloat($('afV').value)/1000,Ibf=parseFloat($('afIbf').value),Tms=parseFloat($('afT').value),D=parseFloat($('afD').value),G=parseFloat($('afG').value);
+  const bm=($('afBox').value||'').split('x').map(Number);
+  const H=bm[0]||508,W=bm[1]||508,Dep=bm[2]||250;
+  const st=$('verdict-arc');
+  if(!(Voc>=0.208&&Voc<=15)){st.className='verdict v-fail';st.innerHTML='❌ Voltage outside IEEE 1584-2018 range (208 V – 15 kV).';return;}
+  if(Voc<=0.6&&(G<6.35||G>76.2)){st.className='verdict v-warn';st.innerHTML='⚠ Gap G outside LV range 6.35–76.2 mm.';}
+  if(Voc>0.6&&(G<19.05||G>254)){st.className='verdict v-warn';st.innerHTML='⚠ Gap G outside MV range 19.05–254 mm.';}
+  if(D<305){st.className='verdict v-warn';st.innerHTML='⚠ Working distance < 305 mm (below model range).';}
+  let r;
+  try{ r=afRun(EC,Voc,Ibf,Tms,G,D,H,W,Dep); }catch(e){ st.className='verdict v-fail';st.innerHTML='❌ Calculation error: '+e; return; }
+  const worst = r.reduced.cal>=r.full.cal?r.reduced:r.full;
+  R.arc={V:Voc*1000,Ibf,T:Tms,EC,G,D,CF:r.CF,full:r.full,reduced:r.reduced,ppe:afPPE(worst.cal)};
+  show('res-arc','grid-arc','verdict-arc',[
+    {v:r.full.Iarc.toFixed(2)+' kA',l:'I_arc (full)'},
+    {v:r.reduced.Iarc.toFixed(2)+' kA',l:'I_arc (reduced)'},
+    {v:r.full.cal.toFixed(2),l:'E cal/cm² full',cls:r.full.cal>1.2?'warn':'pass'},
+    {v:r.reduced.cal.toFixed(2),l:'E cal/cm² reduced',cls:r.reduced.cal>1.2?'warn':'pass'},
+    {v:worst.AFB.toFixed(0)+' mm',l:'Arc boundary'},
+    {v:'CF '+r.CF.toFixed(3),l:'Enclosure'}],
+    {cls: worst.cal>8?'v-fail':(worst.cal>1.2?'v-warn':'v-ok'),
+     html:`${worst.cal>1.2?'⚠':'✅'} Worst case <b>${worst.cal.toFixed(2)} cal/cm²</b> (${worst.E.toFixed(1)} J/cm²) · PPE Cat <b>${afPPE(worst.cal)}</b> · AFB <b>${worst.AFB.toFixed(0)} mm</b> <span class="pill p-info">IEEE 1584-2018</span>`});
+  const tb=$('tbl-ppe').querySelector('tbody');
+  tb.innerHTML=[['Full',r.full],['Reduced',r.reduced]].map(([n,o])=>
+    `<tr><td style="text-align:left">${n}</td><td>${o.Iarc.toFixed(2)}</td><td>${o.cal.toFixed(2)}</td><td>${o.AFB.toFixed(0)}</td><td>${afPPE(o.cal)}</td></tr>`).join('');
+  flash('card-arc');toast('⚡ Arc flash calculated');
+}
+
 /* ---- Theme toggle ---- */
 function toggleTheme(){const h=document.documentElement;const light=h.dataset.theme!=='light';if(light)h.dataset.theme='light';else h.dataset.theme='';$('themeBtn').textContent=light?'☀️':'🌙';try{localStorage.setItem('vw-theme',light?'light':'dark');}catch(e){}drawLive();drawSLD();}
 try{if(localStorage.getItem('vw-theme')==='light'){document.documentElement.dataset.theme='light';}}catch(e){}
@@ -996,7 +1219,7 @@ $('footDate').textContent=new Date().toLocaleDateString('en-GB',{day:'2-digit',m
 vwRestore();
 sldRestore();
 flowRestore();
-renderAnalysis();stdChanged();liveStudy();renderFlow();calcMotor();calcCableSC();calcPF();
+renderAnalysis();stdChanged();liveStudy();renderFlow();calcMotor();calcCableSC();calcPF();calcArc();
 </script>
 </body>
 </html>

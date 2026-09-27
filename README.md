@@ -6,8 +6,8 @@ Single-file electrical calculator suite for power-systems engineers: system base
 (per-unit), feeder voltage drop, transformer sizing + fault level, LV cable sizing,
 short-circuit at bus, design-standard selector (IEC / ANSI / IEEE), Newton–Raphson
 power flow, motor-starting voltage dip, cable short-circuit withstand, power-factor
-correction, live load-study slider, SLD canvas builder, and a generated engineering
-report. No build step, no backend, no deps.
+correction, arc-flash hazard (IEEE 1584-2018), live load-study slider, SLD canvas
+builder, and a generated engineering report. No build step, no backend, no deps.
 
 ## Modules
 
@@ -18,9 +18,10 @@ report. No build step, no backend, no deps.
 | 03 | **Motor Starting** | Locked-rotor inrush + PCC voltage dip (impedance divider, IEC 60034-12). Compares DOL / star-delta / soft-starter / VFD |
 | 04 | **Cable SC Withstand** | Adiabatic `k²S² ≥ I²t` (IEC 60364-4-43): minimum area + max clearing time |
 | 05 | **PF Correction** | Capacitor sizing `Q = P(tanφ₁−tanφ₂)`, before/after kVA · kVar · current |
-| 06 | **Network Analysis** | Bus results, branch flows, short-circuit, compliance and dispatch tables |
-| 07 | **SLD Builder** | Place / wire / operate single-line diagram, energisation tracing, export SVG |
-| 08 | **Engineering Report** | Collects every module's latest result into one printable report |
+| 06 | **Arc Flash** | Incident energy + arc-flash boundary, IEEE 1584-2018 empirical model: arcing current (full + reduced case), enclosure size correction, NFPA 70E PPE category. Equipment presets; 208 V–15 kV |
+| 07 | **Network Analysis** | Bus results, branch flows, short-circuit, compliance and dispatch tables |
+| 08 | **SLD Builder** | Place / wire / operate single-line diagram, energisation tracing, export SVG |
+| 09 | **Engineering Report** | Collects every module's latest result into one printable report |
 
 ## Input persistence
 
@@ -44,6 +45,10 @@ The load-flow network (buses + branches) autosaves to `localStorage`
 
 - **Load flow** validated against `pandapower` (Newton–Raphson): bus Vm, angles and
   total losses match to 4 decimal places on the demo network.
+- **Arc flash** validated against the `liaungyip/arcflash` IEEE 1584-2018 reference
+  implementation on both Annex D worked examples (MV 4.16 kV and LV 480 V): arcing
+  current, incident energy and arc-flash boundary match to 4 decimal places for
+  both the full and reduced-current cases.
 - Transformer fault current, cable SC withstand and PF sizing checked against
   hand-computed values.
 
@@ -66,6 +71,10 @@ Pages rebuilds in ~1–2 min — verify live with:
 
 ## Changelog
 
+- **Arc Flash (IEEE 1584-2018)** — new module: arcing current (full + reduced),
+  enclosure size correction, incident energy, arc-flash boundary and NFPA 70E PPE
+  category, with equipment presets. Validated against the `liaungyip/arcflash`
+  reference implementation on the IEEE Annex D MV and LV examples (4 dp match).
 - **Modules added** — Power Flow (Newton–Raphson), Motor Starting, Cable SC Withstand,
   PF Correction. Load flow verified against `pandapower`.
 - **Correctness pass** — transformer fault current now derives from the
