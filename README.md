@@ -1,6 +1,6 @@
-# VoltWorks Power — darrentools
+# VoltWorks Power
 
-Live site: https://darthsandd.github.io/darrentools/ (GitHub Pages, serves `index.html`).
+Live site: https://darthsandd.github.io/voltworks-power/ (GitHub Pages, serves `index.html`).
 
 Single-file electrical calculator suite: feeder voltage drop, transformer
 sizing + short-circuit, cable sizing, cooling load, pipe + pump, beam/column,
@@ -15,6 +15,6 @@ The ↩ Reset button in the header clears saved state back to defaults.
 
 ## Deploy
 
-Local `master` pushes to remote `main` (`git push origin master:main`).
+Local `main` pushes to remote `main` (`git push origin main`).
 Pages rebuilds in ~1–2 min — verify live with:
-`curl -s https://darthsandd.github.io/darrentools/ | grep -c vwRestore` (expect 2).
+`curl -s https://darthsandd.github.io/voltworks-power/ | grep -c vwRestore` (expect 2).
