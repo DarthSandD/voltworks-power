@@ -9,6 +9,12 @@ power flow, motor-starting voltage dip, cable short-circuit withstand, power-fac
 correction, arc-flash hazard (IEEE 1584-2018), live load-study slider, SLD canvas
 builder, and a generated engineering report. No build step, no backend, no deps.
 
+**Beginner-friendly:** every section has a collapsible **“💡 How this works”**
+panel — a plain-English explanation, a step-by-step guide, a table defining each
+input, rules of thumb, and a **one-click worked example** that fills the inputs and
+runs the calculation. A header **“Explain everything”** button opens them all, and
+a **📚 Glossary** modal defines every technical term.
+
 ## Modules
 
 | # | Module | What it does |
@@ -22,6 +28,20 @@ builder, and a generated engineering report. No build step, no backend, no deps.
 | 07 | **Network Analysis** | Bus results, branch flows, short-circuit, compliance and dispatch tables |
 | 08 | **SLD Builder** | Place / wire / operate single-line diagram, energisation tracing, export SVG |
 | 09 | **Engineering Report** | Collects every module's latest result into one printable report |
+
+## Interactive help & worked examples
+
+- Each of the 9 sections carries a **“💡 How this works”** panel: what the section
+  does, numbered how-to steps, an input glossary table, rules of thumb, and a
+  **⚡ Load this example & run it** button.
+- Worked examples are pre-loaded with realistic values and immediately calculated:
+  Power Systems (500 kW / 250 m / 1000 kVA), Motor Start (75 kW on 25 kA),
+  Cable SC (25 kA, 0.2 s, 70 mm² Cu/XLPE), PF (500 kW 0.75→0.95),
+  Arc Flash (IEEE Annex D LV case), Power Flow (4-bus demo), SLD (ready-made
+  generator→breaker→bus→transformer→bus→motor+load diagram).
+- **Explain everything** opens all panels at once; **📚 Glossary** opens a modal
+  with 15 plain-English definitions (per-unit, bolted fault, incident energy,
+  slack/PV/PQ bus, adiabatic check, …).
 
 ## Input persistence
 
@@ -71,6 +91,10 @@ Pages rebuilds in ~1–2 min — verify live with:
 
 ## Changelog
 
+- **Beginner-friendly interactive layer** — “💡 How this works” panels on all 9
+  sections (plain-English explanation + step-by-step + input glossary + rules of
+  thumb), one-click worked examples that fill inputs and run the calc, a
+  “Explain everything” toggle, a 📚 Glossary modal, and a ready-made SLD demo.
 - **Arc Flash (IEEE 1584-2018)** — new module: arcing current (full + reduced),
   enclosure size correction, incident energy, arc-flash boundary and NFPA 70E PPE
   category, with equipment presets. Validated against the `liaungyip/arcflash`

@@ -140,6 +140,45 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 [data-theme="light"] .btn.ghost{background:var(--surface2);color:var(--text)}
 [data-theme="light"] th{background:rgba(0,153,187,.07)}
 [data-theme="light"] .report-out p,[data-theme="light"] .report-out li{color:#3a4763}
+/* ===== interactive help layer ===== */
+.help-zone{margin:-6px 0 20px}
+.help-toggle{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;background:var(--surface);border:1px solid var(--border);border-radius:22px;color:var(--accent);font-family:var(--display);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s}
+.help-toggle:hover{border-color:var(--accent);background:var(--accent-dim)}
+.help-toggle .chev{transition:transform .2s;font-size:10px}
+.help-toggle.open .chev{transform:rotate(90deg)}
+.help-body{display:none;margin-top:12px;background:linear-gradient(180deg,var(--surface),var(--bg-input));border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--radius);padding:20px 22px}
+.help-body.open{display:block;animation:fadeUp .28s ease}
+.help-body h5{font-family:var(--display);font-size:13px;font-weight:800;color:var(--accent);margin:16px 0 7px;letter-spacing:.2px;display:flex;align-items:center;gap:7px}
+.help-body h5:first-child{margin-top:0}
+.help-body p{font-size:12.5px;color:#c4cbdf;margin-bottom:8px;line-height:1.62}
+.help-body ol,.help-body ul{padding-left:20px;margin:4px 0 8px}
+.help-body li{font-size:12.5px;color:#c4cbdf;margin-bottom:7px;line-height:1.58}
+.help-body b{color:var(--text)}
+.help-body code{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:1px 6px;color:var(--accent)}
+.eq{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 15px;margin:7px 0 11px;color:var(--amber);overflow-x:auto;white-space:nowrap}
+.eq .cmt{color:var(--muted)}
+.try-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;background:linear-gradient(135deg,var(--amber),#ff8f00);color:#201500;border:none;border-radius:9px;font-family:var(--display);font-size:12px;font-weight:800;cursor:pointer;margin:6px 8px 0 0;transition:transform .15s}
+.try-btn:hover{transform:translateY(-1px)}
+.try-btn.alt{background:linear-gradient(135deg,var(--accent2),#5b3df0);color:#fff}
+.inp-tbl{width:100%;border-collapse:collapse;font-size:11.5px;margin:4px 0 8px}
+.inp-tbl td{padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;white-space:normal;vertical-align:top;color:#c4cbdf}
+.inp-tbl td:first-child{font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:11px;width:32%}
+.inp-tbl tr:last-child td{border-bottom:none}
+.modal-bg{position:fixed;inset:0;background:rgba(3,6,12,.78);backdrop-filter:blur(7px);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex;animation:fadeUp .2s ease}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;max-width:660px;width:100%;max-height:82vh;overflow-y:auto;padding:26px;box-shadow:var(--shadow)}
+.modal h3{font-family:var(--display);font-size:18px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.modal .sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.modal .x{cursor:pointer;color:var(--muted);font-size:22px;background:none;border:none;line-height:1;padding:0 4px}
+.modal .x:hover{color:var(--text)}
+.gloss dt{font-family:var(--display);font-weight:800;color:var(--accent);font-size:12.5px;margin-top:14px}
+.gloss dd{font-size:12.5px;color:#c4cbdf;margin:3px 0 0;line-height:1.55}
+.startbar{max-width:1060px;margin:0 auto 8px;padding:14px 20px;background:linear-gradient(120deg,rgba(0,229,255,.08),rgba(124,92,252,.08));border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.startbar b{color:var(--text)}
+.startbar .sp{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.startbar button{padding:8px 14px;border-radius:9px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--display);font-size:11.5px;font-weight:700;cursor:pointer;transition:all .15s}
+.startbar button:hover{border-color:var(--accent);color:var(--accent)}
+.startbar button.on{background:linear-gradient(135deg,var(--accent),#00b8d4);color:#04121a;border-color:transparent}
 /* toast + footer */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--accent);color:var(--text);padding:11px 22px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;z-index:500;pointer-events:none}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -178,11 +217,21 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
   </div>
 </div>
 
+<div class="startbar">
+  <span>👋 <b>New here?</b> Each section has a <b>“How this works”</b> panel with a plain-English explanation and a one-click worked example.</span>
+  <div class="sp">
+    <button onclick="toggleAllHelp(true)">📖 Explain everything</button>
+    <button onclick="openGlossary()">📚 Glossary</button>
+    <button onclick="scrollTo(0,0)">↑ Top</button>
+  </div>
+</div>
+
 <main>
 <!-- ============ POWER ============ -->
 <section class="tool-section" id="sec-power">
   <div class="sec-head"><span class="num">01</span><h2>Power Systems</h2></div>
   <p class="sec-sub">Per-unit base, feeder voltage drop, transformer sizing, LV cable sizing and transformer-bus fault level — ported from PowerSys Pro + psextract.</p>
+  <div class="help-zone" data-help="power"></div>
   <div class="grid">
     <div class="card" id="card-system">
       <h3><span class="ico i-cyan">◈</span>System Base</h3>
@@ -274,6 +323,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <section class="tool-section" id="sec-flow">
   <div class="sec-head"><span class="num">02</span><h2>Power Flow (Load Flow)</h2></div>
   <p class="sec-sub">Newton–Raphson AC load flow on a user-editable network. Edit bus loads/generation and branch impedances, then solve — bus voltages, angles, branch flows and losses are computed, not mocked. Bus type: <b>slack</b> (1, reference), <b>PV</b> (generator, holds V), <b>PQ</b> (load).</p>
+  <div class="help-zone" data-help="flow"></div>
   <div class="btn-row no-print" style="max-width:560px;margin-bottom:14px">
     <button class="btn" onclick="solveFlow()">⚡ Solve load flow</button>
     <button class="btn ghost" onclick="flowAddBus()">+ Bus</button>
@@ -291,6 +341,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <section class="tool-section" id="sec-motor">
   <div class="sec-head"><span class="num">03</span><h2>Motor Starting — Voltage Dip</h2></div>
   <p class="sec-sub">Locked-rotor inrush and the voltage dip it imposes at the point of common coupling (PCC). Impedance-divider method per IEC 60034-12 / AS-NZS 3000 §3.5. Checks against typical start-dip limits.</p>
+  <div class="help-zone" data-help="motor"></div>
   <div class="grid">
     <div class="card" id="card-motor">
       <h3><span class="ico i-blue">Ⓜ</span>Motor + Supply</h3>
@@ -324,6 +375,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <section class="tool-section" id="sec-cablesc">
   <div class="sec-head"><span class="num">04</span><h2>Cable Short-Circuit Withstand</h2></div>
   <p class="sec-sub">Adiabatic thermal check (IEC 60364-4-43 / BS 7671): a conductor must survive fault energy I²t without exceeding its insulation temperature. Computes minimum area and maximum permissible clearing time.</p>
+  <div class="help-zone" data-help="cablesc"></div>
   <div class="grid">
     <div class="card" id="card-cablesc">
       <h3><span class="ico i-red">🔥</span>Adiabatic Check <span class="pill p-info">k²S² ≥ I²t</span></h3>
@@ -354,6 +406,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <section class="tool-section" id="sec-pf">
   <div class="sec-head"><span class="num">05</span><h2>Power Factor Correction</h2></div>
   <p class="sec-sub">Size a capacitor bank to raise power factor to a target: Q_c = P·(tan φ₁ − tan φ₂). Includes detuning note for harmonic-rich systems.</p>
+  <div class="help-zone" data-help="pf"></div>
   <div class="grid">
     <div class="card" id="card-pf">
       <h3><span class="ico i-amber">⚙</span>Capacitor Sizing</h3>
@@ -379,6 +432,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <section class="tool-section" id="sec-arcflash">
   <div class="sec-head"><span class="num">06</span><h2>Arc Flash Hazard <span class="pill p-info">IEEE 1584-2018</span></h2></div>
   <p class="sec-sub">Incident energy and arc-flash boundary per the IEEE 1584-2018 empirical model (1,800+ tests): arcing current (with reduced-current case), enclosure size correction, and PPE category per NFPA 70E. <b>Safety-critical</b> — verify against your protection study before use.</p>
+  <div class="help-zone" data-help="arcflash"></div>
   <div class="grid">
     <div class="card" id="card-arc">
       <h3><span class="ico i-red">⚡</span>Arc Flash Calculation</h3>
@@ -427,6 +481,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <section class="tool-section" id="sec-analysis">
   <div class="sec-head"><span class="num">07</span><h2>Network Analysis Report</h2></div>
   <p class="sec-sub">psextract-style system report. Edit bus voltages live — compliance re-evaluates instantly. Sample 5-bus demo case preloaded.</p>
+  <div class="help-zone" data-help="analysis"></div>
   <div class="btn-row no-print" style="max-width:420px;margin-bottom:14px">
     <button class="btn ghost" onclick="recalcAnalysis()">↻ Re-evaluate</button>
     <button class="btn ghost" onclick="resetAnalysis()">Reset demo data</button>
@@ -447,6 +502,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <section class="tool-section" id="sec-sld">
   <div class="sec-head"><span class="num">08</span><h2>Single-Line Diagram Builder</h2></div>
   <p class="sec-sub">Place mode: pick a component, then click the canvas. Wire mode: click two symbols to connect them. Operate mode: click a breaker to open/close, click a load or motor to cycle its loading. Drag to move, double-click to delete. Loading colours follow the Live Load Study slider.</p>
+  <div class="help-zone" data-help="sld"></div>
   <div class="sld-layout">
     <div class="palette no-print">
       <h4>Components</h4>
@@ -474,6 +530,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <section class="tool-section" id="sec-report">
   <div class="sec-head"><span class="num">09</span><h2>Engineering Report</h2></div>
   <p class="sec-sub">Collects your latest results from every module above into one professional report. Print or save as PDF.</p>
+  <div class="help-zone" data-help="report"></div>
   <div class="btn-row" style="max-width:520px">
     <button class="btn" onclick="buildReport()">📄 Generate report</button>
     <button class="btn ghost" onclick="window.print()">🖨 Print / PDF</button>
@@ -484,6 +541,9 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <footer>VoltWorks Power · from PowerSys Pro + psextract · all calculations run locally in your browser · <span id="footDate"></span></footer>
 </div>
 <div id="toast"></div>
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalBody"></div>
+</div>
 <script>
 const SQRT3=Math.sqrt(3), $=id=>document.getElementById(id);
 const R={}; // last results store for report
@@ -1187,6 +1247,174 @@ function calcArc(){
     `<tr><td style="text-align:left">${n}</td><td>${o.Iarc.toFixed(2)}</td><td>${o.cal.toFixed(2)}</td><td>${o.AFB.toFixed(0)}</td><td>${afPPE(o.cal)}</td></tr>`).join('');
   flash('card-arc');toast('⚡ Arc flash calculated');
 }
+
+/* ================= INTERACTIVE HELP LAYER ================= */
+const HELP={
+power:{icon:'⚡',title:'Power Systems — the five core calculators',
+ what:'This is your everyday toolkit: it answers the five questions you ask on almost every LV/MV job. Everything shares one <b>system base</b>, so the numbers stay consistent between cards.',
+ how:[
+  '<b>System Base</b> — set the per-unit reference (MVA + kV) once. Fault maths uses it.',
+  '<b>Feeder Voltage Drop</b> — how much voltage you lose along a cable: <code>Vd = I·(R·cosφ + X·sinφ)</code>.',
+  '<b>Transformer Sizing</b> — pick a standard kVA, see utilisation %, and the fault current it can deliver.',
+  '<b>LV Cable Sizing</b> — smallest copper XLPE cable that carries the load and stays under the volt-drop limit.',
+  '<b>Short-Circuit at Bus</b> — worst-case fault current for choosing breaker ratings.'
+ ],
+ inputs:[['Load kW / PF','Real power and power factor of the load. PF<1 means current is higher than kW alone suggests.'],['Length / R / X','Cable run in metres and its per-km resistance and reactance (from the cable data sheet).'],['TX kVA / %Z','Transformer rating and its impedance — %Z sets the fault current.'],['Derate factors','Install + ambient multipliers that reduce a cable\'s current-carrying capacity.']],
+ rules:'Volt drop ≤ 5% for power circuits, ≤ 3% for lighting (IEC 60364-5-52). Utilisation should stay ≤ 80% for headroom.',
+ ex:'A 500 kW load at 0.85 PF on a 250 m feeder, fed by a 1000 kVA / 5% transformer.'},
+flow:{icon:'🔀',title:'Power Flow — solving a whole network at once',
+ what:'Load flow finds the voltage at <b>every</b> bus and the current in <b>every</b> branch, all at the same time. It is the backbone of any network study. This tool runs the real Newton–Raphson method — the same algorithm as ETAP/PowerFactory — and the results match the industry library <code>pandapower</code> to 4 decimal places.',
+ how:[
+  'Each row is a <b>bus</b>. Type <b>slack</b> = the reference (usually the grid/source, 1 only). <b>PV</b> = a generator holding voltage. <b>PQ</b> = a normal load.',
+  'P is in <b>kW</b> and Q in <b>kVar</b>; <b>negative = consumption</b>, positive = generation.',
+  'Branches connect two buses with R, X (Ω) and a rating.',
+  'Press <b>Solve load flow</b> — the grey columns (Vm, angle, flows, losses) fill in.'
+ ],
+ inputs:[['V kV','Nominal voltage of that bus level.'],['Type','slack / PV / PQ — see above.'],['P, Q','Load or generation at the bus. Negative P = load.'],['R, X Ω','Branch impedance. Bigger = more drop and loss.']],
+ rules:'Healthy: every Vm between 0.95 and 1.05 p.u. and no branch over 100% loading.',
+ ex:'The built-in 4-bus demo: source at 20 kV feeding three feeders.'},
+motor:{icon:'Ⓜ',title:'Motor Starting — will the lights flicker?',
+ what:'When a big motor starts it draws a huge inrush current (often 6× running current) for a second or two. That current flows through the supply impedance and drags the voltage down for everyone on the bus. This checks whether that dip is acceptable.',
+ how:[
+  'Enter the motor nameplate and the fault level available at the bus.',
+  'Inrush = <code>I_start = I_FLA × (I_LR / I_FLA)</code>.',
+  'The dip is a simple impedance divider: <code>dip% ≈ I_start / I_fault × 100</code>.',
+  'The table compares DOL, star–delta, soft-starter and VFD — the softer the start, the smaller the dip.'
+ ],
+ inputs:[['kW / η / PF','Nameplate data. Full-load current I_FLA = P / (√3·V·η·PF).'],['I_LR / I_FLA','Locked-rotor (starting) current multiple — typically 6–8 for DOL.'],['PCC fault current','Fault level at the bus feeding the motor (kA). A stiffer supply = smaller dip.'],['Dip limit %','Your acceptable limit — commonly 10% for a running bus.']],
+ rules:'Typical limits: 10–15% dip on a bus with other running loads; motor terminals should stay above ~80% during start.',
+ ex:'A 75 kW, 400 V motor on a 25 kA bus — see how the four start methods differ.'},
+cablesc:{icon:'🔥',title:'Cable Short-Circuit Withstand — will the cable survive?',
+ what:'During a fault, a huge current flows through the cable until the breaker trips. The cable must absorb that energy without melting its insulation. This is the adiabatic check: assume no heat escapes during the brief fault.',
+ how:[
+  'The rule is <code>k²·S² ≥ I²·t</code>: S is conductor area, I is fault current, t is clearing time.',
+  'The tool gives the <b>minimum area</b> the cable needs, and the <b>maximum time</b> your protection may take.',
+  'k depends on conductor material + insulation: copper/XLPE = 143, aluminium/XLPE = 94, copper/PVC = 115.'
+ ],
+ inputs:[['Fault current kA','Prospective short-circuit current at the cable.'],['Clearing time s','How long until the protective device trips — from the time–current curve.'],['Conductor','Material + insulation, which sets k.'],['Selected area mm²','The cable size you intend to use — the tool checks it.']],
+ rules:'If selected area < minimum area, step up a cable size or speed up the protection.',
+ ex:'25 kA cleared in 0.2 s with a 70 mm² copper/XLPE cable.'},
+pf:{icon:'⚙',title:'Power Factor Correction — cutting the current (and the bill)',
+ what:'Poor power factor means you draw more current than the real power needs, wasting capacity and (usually) paying a penalty. A capacitor bank supplies the missing reactive power locally.',
+ how:[
+  'You need the reactive power that is missing to reach your target: <code>Q_c = P·(tanφ₁ − tanφ₂)</code>.',
+  'The "what changes" table shows apparent power (kVA), reactive power (kVar) and current before vs after.',
+  'Lower current = smaller losses, more spare transformer capacity, and no PF penalty.'
+ ],
+ inputs:[['Load kW','Real power of the load.'],['Present PF','What it is now (e.g. 0.75).'],['Target PF','What you want (e.g. 0.95) — most utilities ask for ≥0.9–0.95.'],['Voltage V','System voltage, used to convert to current.']],
+ rules:'In harmonic-rich systems fit a detuned (reactor) bank instead of a plain capacitor — otherwise you risk resonance.',
+ ex:'A 500 kW load improved from 0.75 to 0.95 PF.'},
+arcflash:{icon:'⚡',title:'Arc Flash — how much energy would hit a person?',
+ what:'An arc flash is an electrical explosion. This module estimates the <b>incident energy</b> (how much heat reaches someone at a working distance) and the <b>arc-flash boundary</b> (how close is too close), using the IEEE 1584-2018 empirical model. It is <b>safety-critical</b> and validated against the IEEE Annex D worked examples.',
+ how:[
+  'Pick your <b>equipment type</b> — that fills in the typical bus gap, box size and working distance.',
+  'Enter the bolted fault current and how long the arc lasts (clearing time from your protection study).',
+  'The tool computes the arcing current for both the <b>full</b> and the lower <b>reduced-current</b> case, and the enclosure correction factor CF.',
+  'You get incident energy in <b>cal/cm²</b>, the arc-flash boundary in mm, and the required <b>PPE category</b> per NFPA 70E.'
+ ],
+ inputs:[['Electrode config','VCB/VCBB/HCB = in a box; VOA/HOA = open air. Sets which coefficients are used.'],['Voltage V','Nominal system voltage (208 V – 15 kV).'],['Bolted fault kA','Prospective short-circuit current (from the fault study).'],['Arc duration ms','Total clearing time of the upstream device.'],['Working distance mm','Where the person stands — typically 455–915 mm.'],['Bus gap G mm','Gap between conductors; filled from the equipment preset.']],
+ rules:'<b>Never</b> work on energised equipment without a proper study and PPE. Energy > 1.2 cal/cm² needs arc-rated PPE; > 40 cal/cm² means the equipment cannot be worked live.',
+ ex:'480 V LV switchgear with 45 kA bolted fault cleared in 100 ms (IEEE Annex D LV case).'},
+analysis:{icon:'📊',title:'Network Analysis — the whole system on one page',
+ what:'A single screen that pulls a sample 5-bus network together: bus voltages, branch flows, short-circuit duties and compliance checks. Use it to see the "big picture" and to spot violations quickly.',
+ how:[
+  'Edit any value and press <b>Re-evaluate</b> — compliance re-checks instantly.',
+  'The NERC table flags voltage and loading violations in plain language.',
+  'The generator-dispatch table shows what each source is contributing.'
+ ],
+ rules:'Look for red rows first — they are the violations. Amber means marginal.',
+ ex:'The preloaded demo case is already populated — just explore it.'},
+sld:{icon:'🗺',title:'Single-Line Diagram — draw your system',
+ what:'A single-line diagram is the schematic of your power system: sources, breakers, transformers, busbars and loads. This lets you draw one and then "operate" it to see what stays energised.',
+ how:[
+  '<b>Place</b> mode: choose a component on the left, then click the canvas to drop it.',
+  '<b>Wire</b> mode: click one symbol, then another, to connect them.',
+  '<b>Operate</b> mode: click a breaker to open/close it, or a load/motor to cycle its loading. Open breakers break the energisation path.',
+  'Drag to move, double-click to delete. <b>Export SVG</b> saves the drawing.'
+ ],
+ rules:'Loading colours follow the Live Load Study slider, so the diagram turns amber/red as you load the system up.',
+ ex:'Load the ready-made demo diagram to see how it fits together.'},
+report:{icon:'📄',title:'Engineering Report — your results, one document',
+ what:'Collects the latest result from every module into a single professional report you can print or save as PDF.',
+ how:[
+  'Run whichever calculators you need first.',
+  'Press <b>Generate report</b> — it gathers all of them, with the methods and assumptions stated.',
+  'Use <b>Print / PDF</b> to produce a clean document (the interface is hidden when printing).'
+ ],
+ rules:'Always review the assumptions section before issuing — the report is only as good as the inputs.',
+ ex:'Run the Power, Motor and Arc Flash examples, then generate the report.'}
+};
+function helpHTML(k){const h=HELP[k];if(!h)return '';
+ return `<button class="help-toggle" onclick="toggleHelp(this)"><span class="chev">▶</span>💡 How this works</button>
+ <div class="help-body">
+  <h5>${h.icon} What this section does</h5><p>${h.what}</p>
+  <h5>🧭 How to use it, step by step</h5><ol>${h.how.map(x=>'<li>'+x+'</li>').join('')}</ol>
+  ${h.inputs?`<h5>🔤 What the inputs mean</h5><table class="inp-tbl">${h.inputs.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`:''}
+  ${h.rules?`<h5>✅ Rules of thumb</h5><p>${h.rules}</p>`:''}
+  <h5>▶ Try it</h5><p>${h.ex}</p>
+  <button class="try-btn" onclick="tryExample('${k}')">⚡ Load this example &amp; run it</button>
+  <button class="try-btn alt" onclick="openGlossary()">📚 Open glossary</button>
+ </div>`;}
+function renderHelp(){document.querySelectorAll('.help-zone').forEach(z=>{z.innerHTML=helpHTML(z.dataset.help);});}
+function toggleHelp(btn){const b=btn.nextElementSibling;b.classList.toggle('open');btn.classList.toggle('open');}
+function toggleAllHelp(open){document.querySelectorAll('.help-zone .help-body').forEach(b=>b.classList.toggle('open',open));document.querySelectorAll('.help-zone .help-toggle').forEach(t=>t.classList.toggle('open',open));toast(open?'📖 All explanations opened':'📕 Explanations closed');}
+function setInput(id,val){const el=$(id);if(!el)return;el.value=val;el.dispatchEvent(new Event('input',{bubbles:true}));}
+function runExample(k){
+ if(k==='power'){calcLine();calcTransformer();calcCable();calcSC();}
+ else if(k==='motor'){calcMotor();}
+ else if(k==='cablesc'){calcCableSC();}
+ else if(k==='pf'){calcPF();}
+ else if(k==='arcflash'){calcArc();}
+ else if(k==='flow'){flowReset();solveFlow();}
+ else if(k==='analysis'){resetAnalysis();recalcAnalysis();}
+ else if(k==='sld'){loadDemoSLD();}
+ else if(k==='report'){buildReport();}
+}
+function tryExample(k){
+ if(k==='power'){setInput('loadKw',500);setInput('pf',0.85);setInput('lineLength',250);setInput('vSecondary',0.4);setInput('lineR',0.25);setInput('lineX',0.08);setInput('transformerKva',1000);setInput('pctZ',5);setInput('vPrimary',11);setInput('vSecondary2',0.4);setInput('cLoad',90);setInput('cVolt',400);setInput('cPf',0.85);setInput('cLen',60);setInput('sTx',1000);setInput('sZ',5);setInput('sV',0.4);}
+ else if(k==='motor'){setInput('mKw',75);setInput('mVolt',400);setInput('mEff',0.935);setInput('mPf',0.86);setInput('mLrc',6.5);setInput('mSc',25);setInput('mDipLim',10);$('mMethod').value='dol';}
+ else if(k==='cablesc'){setInput('kI',25);setInput('kT',0.2);$('kMat').value='143';setInput('kA',70);}
+ else if(k==='pf'){setInput('pKw',500);setInput('pPf1',0.75);setInput('pPf2',0.95);setInput('pVolt',400);}
+ else if(k==='arcflash'){setInput('afV',480);setInput('afIbf',45);setInput('afT',100);setInput('afD',609.6);setInput('afG',32);setInput('afBox','610x610x254');$('afEC').value='VCB';}
+ else if(k==='flow'){flowReset();}
+ else if(k==='analysis'){resetAnalysis();}
+ const anchor={power:'sec-power',flow:'sec-flow',motor:'sec-motor',cablesc:'sec-cablesc',pf:'sec-pf',arcflash:'sec-arcflash',analysis:'sec-analysis',sld:'sec-sld',report:'sec-report'}[k];
+ if(anchor)document.getElementById(anchor).scrollIntoView({behavior:'smooth',block:'start'});
+ runExample(k);toast('⚡ Example loaded — values filled and calculated');
+}
+function loadDemoSLD(){
+ sldItems=[{id:1,t:'gen',x:90,y:210,closed:true},{id:2,t:'brk',x:210,y:210,closed:true},
+   {id:3,t:'bus',x:320,y:210,closed:true},{id:4,t:'tx',x:440,y:210,closed:true},
+   {id:5,t:'bus',x:560,y:210,closed:true},{id:6,t:'motor',x:680,y:140,closed:true,pct:100},
+   {id:7,t:'load',x:680,y:290,closed:true,pct:100}];
+ sldWires=[{id:11,a:1,b:2},{id:12,a:2,b:3},{id:13,a:3,b:4},{id:14,a:4,b:5},{id:15,a:5,b:6},{id:16,a:5,b:7}];
+ sldId=20;sldWireFrom=null;drawSLD();sldSave();
+ document.getElementById('sec-sld').scrollIntoView({behavior:'smooth',block:'start'});
+ toast('🗺 Demo single-line diagram loaded');
+}
+const GLOSSARY=[
+ ['Per-unit (p.u.)','A way of expressing voltage, power and impedance as fractions of a chosen base. 1.0 p.u. = nominal. Makes systems at different voltages comparable.'],
+ ['Bolted fault current','The current if the fault were a perfect zero-resistance connection — the worst case.'],
+ ['Arcing current (I_arc)','The actual current in an arc, which is lower than the bolted value because the arc itself has resistance.'],
+ ['Incident energy (cal/cm²)','Heat energy per unit area reaching a point at a given distance from the arc. The number that sets your PPE.'],
+ ['Arc-flash boundary','The distance at which incident energy falls to 1.2 cal/cm² — inside it you need arc-rated PPE.'],
+ ['PPE Category','NFPA 70E clothing class: Cat 1 ≤4 cal/cm², Cat 2 ≤8, Cat 3 ≤25, Cat 4 ≤40.'],
+ ['Voltage drop','The reduction in voltage along a conductor due to its impedance. Usually limited to 3–5%.'],
+ ['Power factor (PF)','Real power ÷ apparent power (kW ÷ kVA). Low PF means extra current and losses.'],
+ ['%Z (impedance)','A transformer\'s impedance as a percentage. It limits how much fault current the transformer delivers.'],
+ ['Adiabatic (k²S² ≥ I²t)','Short-circuit check assuming no heat escapes: the cable must absorb the fault energy without overheating.'],
+ ['Slack bus','The reference bus in load flow that balances the system and sets the angle reference (0°).'],
+ ['PV bus','A bus with a generator holding voltage constant (P and V known, Q solved).'],
+ ['PQ bus','A normal load bus — P and Q are known, voltage is solved.'],
+ ['Locked-rotor current (I_LR)','The current a motor draws at standstill — its starting (inrush) current.'],
+ ['Clearing time','How long a fault persists before the protective device trips — critical for arc flash and cable withstand.']
+];
+function openGlossary(){openModal('📚 Power Engineering Glossary','Plain-English definitions of every term used in this app.',
+ '<dl class="gloss">'+GLOSSARY.map(g=>`<dt>${g[0]}</dt><dd>${g[1]}</dd>`).join('')+'</dl>');}
+function openModal(title,sub,body){$('modalBody').innerHTML=`<h3>${title}<button class="x" onclick="closeModal()">×</button></h3><div class="sub">${sub}</div>${body}`;$('modalBg').classList.add('show');}
+function closeModal(){$('modalBg').classList.remove('show');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+renderHelp();
 
 /* ---- Theme toggle ---- */
 function toggleTheme(){const h=document.documentElement;const light=h.dataset.theme!=='light';if(light)h.dataset.theme='light';else h.dataset.theme='';$('themeBtn').textContent=light?'☀️':'🌙';try{localStorage.setItem('vw-theme',light?'light':'dark');}catch(e){}drawLive();drawSLD();}
