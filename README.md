@@ -2,10 +2,25 @@
 
 Live site: https://darthsandd.github.io/voltworks-power/ (GitHub Pages, serves `index.html`).
 
-Single-file electrical calculator suite: system base (per-unit), feeder voltage
-drop, transformer sizing + fault level, LV cable sizing, short-circuit at bus,
-design-standard selector (IEC / ANSI / IEEE), live load-study slider, SLD canvas
-builder, and a generated engineering report. No build step, no backend, no deps.
+Single-file electrical calculator suite for power-systems engineers: system base
+(per-unit), feeder voltage drop, transformer sizing + fault level, LV cable sizing,
+short-circuit at bus, design-standard selector (IEC / ANSI / IEEE), Newton–Raphson
+power flow, motor-starting voltage dip, cable short-circuit withstand, power-factor
+correction, live load-study slider, SLD canvas builder, and a generated engineering
+report. No build step, no backend, no deps.
+
+## Modules
+
+| # | Module | What it does |
+|---|--------|--------------|
+| 01 | **Power Systems** | Per-unit base, feeder VD, transformer sizing + fault level, LV cable sizing, short-circuit at bus |
+| 02 | **Power Flow** | Newton–Raphson AC load flow — bus Vm/angles, branch flows, losses, loading. Slack/PV/PQ buses; add/remove buses + branches |
+| 03 | **Motor Starting** | Locked-rotor inrush + PCC voltage dip (impedance divider, IEC 60034-12). Compares DOL / star-delta / soft-starter / VFD |
+| 04 | **Cable SC Withstand** | Adiabatic `k²S² ≥ I²t` (IEC 60364-4-43): minimum area + max clearing time |
+| 05 | **PF Correction** | Capacitor sizing `Q = P(tanφ₁−tanφ₂)`, before/after kVA · kVar · current |
+| 06 | **Network Analysis** | Bus results, branch flows, short-circuit, compliance and dispatch tables |
+| 07 | **SLD Builder** | Place / wire / operate single-line diagram, energisation tracing, export SVG |
+| 08 | **Engineering Report** | Collects every module's latest result into one printable report |
 
 ## Input persistence
 
@@ -19,6 +34,19 @@ The ↩ Reset button in the header clears saved state back to defaults.
 The single-line diagram canvas (components, wires, breaker/load state) autosaves
 to `localStorage` (key `voltworks-sld-v1`) on every change — place, wire, operate,
 delete, clear, and drag — and restores on load.
+
+## Power-flow persistence
+
+The load-flow network (buses + branches) autosaves to `localStorage`
+(key `voltworks-flow-v1`) and restores on load.
+
+## Verification
+
+- **Load flow** validated against `pandapower` (Newton–Raphson): bus Vm, angles and
+  total losses match to 4 decimal places on the demo network.
+- Transformer fault current, cable SC withstand and PF sizing checked against
+  hand-computed values.
+
 
 ## Fault-current convention
 
@@ -38,6 +66,8 @@ Pages rebuilds in ~1–2 min — verify live with:
 
 ## Changelog
 
+- **Modules added** — Power Flow (Newton–Raphson), Motor Starting, Cable SC Withstand,
+  PF Correction. Load flow verified against `pandapower`.
 - **Correctness pass** — transformer fault current now derives from the
   transformer's own kVA/%Z/secondary kV (was using the 100 MVA system base,
   ~3.6× too high and independent of rating); report generation no longer throws

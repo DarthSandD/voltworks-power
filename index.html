@@ -153,6 +153,10 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
   <div class="logo"><div class="logo-icon">⚡</div><div>VoltWorks Power<small>POWER ENGINEERING SUITE</small></div></div>
   <nav>
     <button class="nav-btn active" data-sec="power">Power</button>
+    <button class="nav-btn" data-sec="flow">Power Flow</button>
+    <button class="nav-btn" data-sec="motor">Motor Start</button>
+    <button class="nav-btn" data-sec="cablesc">Cable SC</button>
+    <button class="nav-btn" data-sec="pf">PF Correction</button>
     <button class="nav-btn" data-sec="analysis">Analysis</button>
     <button class="nav-btn" data-sec="sld">SLD Builder</button>
     <button class="nav-btn" data-sec="report">Report</button>
@@ -167,7 +171,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
   <h1>Design. Check. <span>Energize.</span></h1>
   <p>Feeder voltage drop, transformer sizing, cable sizing, fault levels, network analysis, single-line diagrams and professional reports — all running instantly in your browser. No server, no uploads.</p>
   <div class="hero-stats">
-    <div class="hstat"><b>5</b><span>power modules</span></div>
+    <div class="hstat"><b>9</b><span>power modules</span></div>
     <div class="hstat"><b>6</b><span>report tables</span></div>
     <div class="hstat"><b>100%</b><span>client-side</span></div>
   </div>
@@ -265,9 +269,114 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
   </div>
 </section>
 
+<!-- ============ POWER FLOW ============ -->
+<section class="tool-section" id="sec-flow">
+  <div class="sec-head"><span class="num">02</span><h2>Power Flow (Load Flow)</h2></div>
+  <p class="sec-sub">Newton–Raphson AC load flow on a user-editable network. Edit bus loads/generation and branch impedances, then solve — bus voltages, angles, branch flows and losses are computed, not mocked. Bus type: <b>slack</b> (1, reference), <b>PV</b> (generator, holds V), <b>PQ</b> (load).</p>
+  <div class="btn-row no-print" style="max-width:560px;margin-bottom:14px">
+    <button class="btn" onclick="solveFlow()">⚡ Solve load flow</button>
+    <button class="btn ghost" onclick="flowAddBus()">+ Bus</button>
+    <button class="btn ghost" onclick="flowAddBranch()">+ Branch</button>
+    <button class="btn ghost" onclick="flowReset()">Reset demo</button>
+  </div>
+  <div class="tbl-wrap"><h4>Buses <span style="color:var(--muted);font-weight:400">— edit V (kV), Type, P (kW), Q (kVar); Vm/angle are solved</span></h4>
+    <table id="flow-bus"><thead><tr><th>#</th><th>Name</th><th>V kV</th><th>Type</th><th>P kW</th><th>Q kVar</th><th>Vm p.u.</th><th>Va °</th><th></th></tr></thead><tbody></tbody></table></div>
+  <div class="tbl-wrap"><h4>Branches <span style="color:var(--muted);font-weight:400">— R, X in Ω, rating kVA</span></h4>
+    <table id="flow-branch"><thead><tr><th>From</th><th>To</th><th>R Ω</th><th>X Ω</th><th>Rate kVA</th><th>P→ kW</th><th>Q→ kVar</th><th>Load %</th><th>Loss kW</th><th></th></tr></thead><tbody></tbody></table></div>
+  <div id="flow-status" class="verdict v-ok" style="margin-top:6px">Ready — press Solve load flow.</div>
+</section>
+
+<!-- ============ MOTOR START ============ -->
+<section class="tool-section" id="sec-motor">
+  <div class="sec-head"><span class="num">03</span><h2>Motor Starting — Voltage Dip</h2></div>
+  <p class="sec-sub">Locked-rotor inrush and the voltage dip it imposes at the point of common coupling (PCC). Impedance-divider method per IEC 60034-12 / AS-NZS 3000 §3.5. Checks against typical start-dip limits.</p>
+  <div class="grid">
+    <div class="card" id="card-motor">
+      <h3><span class="ico i-blue">Ⓜ</span>Motor + Supply</h3>
+      <p class="desc">Motor nameplate + upstream fault level at the PCC.</p>
+      <div class="frow">
+        <div class="fg"><label>Rated power kW</label><input type="number" id="mKw" value="75"></div>
+        <div class="fg"><label>Voltage V</label><input type="number" id="mVolt" value="400"></div>
+        <div class="fg"><label>Efficiency η</label><input type="number" id="mEff" value="0.935" step="0.005" min="0.5" max="1"></div>
+        <div class="fg"><label>PF</label><input type="number" id="mPf" value="0.86" step="0.01" min="0.1" max="1"></div>
+        <div class="fg"><label>Start method</label><select id="mMethod" onchange="calcMotor()">
+          <option value="dol">Direct-on-line (DOL)</option>
+          <option value="sd">Star–Delta</option>
+          <option value="soft">Soft starter</option>
+          <option value="vfd">VFD / VSD</option></select></div>
+        <div class="fg"><label>I_LR / I_FLA</label><input type="number" id="mLrc" value="6.5" step="0.1" min="1" max="12"></div>
+        <div class="fg"><label>PCC fault current kA</label><input type="number" id="mSc" value="25" step="0.1"></div>
+        <div class="fg"><label>Dip limit %</label><input type="number" id="mDipLim" value="10" step="1"></div>
+      </div>
+      <button class="btn" onclick="calcMotor()">Calculate start dip</button>
+      <div class="results" id="res-motor"><div class="rgrid" id="grid-motor"></div><div class="verdict" id="verdict-motor"></div></div>
+    </div>
+    <div class="card">
+      <h3><span class="ico i-green">📉</span>Start Method Comparison</h3>
+      <p class="desc">Same motor started four ways — effective inrush and resulting PCC dip.</p>
+      <div class="tbl-wrap" style="margin:0"><table id="tbl-mstart"><thead><tr><th>Method</th><th>I_start A</th><th>Dip %</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CABLE SC ============ -->
+<section class="tool-section" id="sec-cablesc">
+  <div class="sec-head"><span class="num">04</span><h2>Cable Short-Circuit Withstand</h2></div>
+  <p class="sec-sub">Adiabatic thermal check (IEC 60364-4-43 / BS 7671): a conductor must survive fault energy I²t without exceeding its insulation temperature. Computes minimum area and maximum permissible clearing time.</p>
+  <div class="grid">
+    <div class="card" id="card-cablesc">
+      <h3><span class="ico i-red">🔥</span>Adiabatic Check <span class="pill p-info">k²S² ≥ I²t</span></h3>
+      <p class="desc">k from material + insulation (BS 7671 Table 43.1).</p>
+      <div class="frow">
+        <div class="fg"><label>Fault current kA</label><input type="number" id="kI" value="25" step="0.1"></div>
+        <div class="fg"><label>Clearing time s</label><input type="number" id="kT" value="0.2" step="0.01"></div>
+        <div class="fg"><label>Conductor</label><select id="kMat" onchange="calcCableSC()"><option value="143">Cu / XLPE (143)</option><option value="94">Al / XLPE (94)</option><option value="115">Cu / PVC (115)</option><option value="76">Al / PVC (76)</option><option value="176">Cu / bare (176)</option></select></div>
+        <div class="fg"><label>Selected area mm²</label><input type="number" id="kA" value="70" step="1"></div>
+      </div>
+      <button class="btn" onclick="calcCableSC()">Check withstand</button>
+      <div class="results" id="res-cablesc"><div class="rgrid" id="grid-cablesc"></div><div class="verdict" id="verdict-cablesc"></div></div>
+    </div>
+    <div class="card">
+      <h3><span class="ico i-cyan">📋</span>k Factors</h3>
+      <p class="desc">Typical conductor k (BS 7671 Table 43.1), for ≤5 s faults.</p>
+      <div class="tbl-wrap" style="margin:0"><table><thead><tr><th>Insulation</th><th>Cu</th><th>Al</th></tr></thead><tbody>
+        <tr><td>XLPE / EPR (90°C)</td><td>143</td><td>94</td></tr>
+        <tr><td>PVC (70°C)</td><td>115</td><td>76</td></tr>
+        <tr><td>PVC (90°C)</td><td>100</td><td>66</td></tr>
+        <tr><td>Bare conductor</td><td>176</td><td>116</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PF CORRECTION ============ -->
+<section class="tool-section" id="sec-pf">
+  <div class="sec-head"><span class="num">05</span><h2>Power Factor Correction</h2></div>
+  <p class="sec-sub">Size a capacitor bank to raise power factor to a target: Q_c = P·(tan φ₁ − tan φ₂). Includes detuning note for harmonic-rich systems.</p>
+  <div class="grid">
+    <div class="card" id="card-pf">
+      <h3><span class="ico i-amber">⚙</span>Capacitor Sizing</h3>
+      <p class="desc">Existing load + present/target power factor.</p>
+      <div class="frow">
+        <div class="fg"><label>Load kW</label><input type="number" id="pKw" value="500"></div>
+        <div class="fg"><label>Present PF</label><input type="number" id="pPf1" value="0.75" step="0.01" min="0.1" max="1"></div>
+        <div class="fg"><label>Target PF</label><input type="number" id="pPf2" value="0.95" step="0.01" min="0.1" max="1"></div>
+        <div class="fg"><label>Voltage V</label><input type="number" id="pVolt" value="400"></div>
+      </div>
+      <button class="btn" onclick="calcPF()">Size capacitor bank</button>
+      <div class="results" id="res-pf"><div class="rgrid" id="grid-pf"></div><div class="verdict" id="verdict-pf"></div></div>
+    </div>
+    <div class="card">
+      <h3><span class="ico i-violet">📊</span>What changes</h3>
+      <p class="desc">Before vs after correction.</p>
+      <div class="tbl-wrap" style="margin:0"><table id="tbl-pf"><thead><tr><th>Quantity</th><th>Before</th><th>After</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ ANALYSIS ============ -->
 <section class="tool-section" id="sec-analysis">
-  <div class="sec-head"><span class="num">02</span><h2>Network Analysis Report</h2></div>
+  <div class="sec-head"><span class="num">06</span><h2>Network Analysis Report</h2></div>
   <p class="sec-sub">psextract-style system report. Edit bus voltages live — compliance re-evaluates instantly. Sample 5-bus demo case preloaded.</p>
   <div class="btn-row no-print" style="max-width:420px;margin-bottom:14px">
     <button class="btn ghost" onclick="recalcAnalysis()">↻ Re-evaluate</button>
@@ -287,7 +396,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 
 <!-- ============ SLD ============ -->
 <section class="tool-section" id="sec-sld">
-  <div class="sec-head"><span class="num">03</span><h2>Single-Line Diagram Builder</h2></div>
+  <div class="sec-head"><span class="num">07</span><h2>Single-Line Diagram Builder</h2></div>
   <p class="sec-sub">Place mode: pick a component, then click the canvas. Wire mode: click two symbols to connect them. Operate mode: click a breaker to open/close, click a load or motor to cycle its loading. Drag to move, double-click to delete. Loading colours follow the Live Load Study slider.</p>
   <div class="sld-layout">
     <div class="palette no-print">
@@ -314,7 +423,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 
 <!-- ============ REPORT ============ -->
 <section class="tool-section" id="sec-report">
-  <div class="sec-head"><span class="num">04</span><h2>Engineering Report</h2></div>
+  <div class="sec-head"><span class="num">08</span><h2>Engineering Report</h2></div>
   <p class="sec-sub">Collects your latest results from every module above into one professional report. Print or save as PDF.</p>
   <div class="btn-row" style="max-width:520px">
     <button class="btn" onclick="buildReport()">📄 Generate report</button>
@@ -574,6 +683,10 @@ function buildReport(){
     +mod('Transformer',R.tr?`${R.tr.rec} recommended, ${R.tr.util.toFixed(1)}% loaded, Isc ${R.tr.scSym.toFixed(2)} kA`:'')
     +mod('Cable',R.cable?`${R.cable.mm} mm² Cu, ${R.cable.vdPct.toFixed(2)}% VD, ${R.cable.I.toFixed(1)} A`:'')
     +mod('Short-circuit',R.sc?`${R.sc.Ik.toFixed(2)} kA sym${R.sc.M!=null?` / ${R.sc.M.toFixed(2)} kA momentary`:(R.sc.Ip!=null?` / ${R.sc.Ip.toFixed(2)} kA peak`:'')}`: '')
+    +mod('Load flow',R.flow?`${R.flow.buses} buses converged in ${R.flow.iter} iter, min Vm ${R.flow.minVm.toFixed(3)} p.u., losses ${R.flow.lossKw.toFixed(1)} kW, max branch ${R.flow.maxLoad.toFixed(1)}%`:'')
+    +mod('Motor start',R.motor?`${R.motor.method}: I_start ${R.motor.Istart.toFixed(0)} A (I_FLA ${R.motor.Ifla.toFixed(1)} A), PCC dip ${R.motor.dip.toFixed(2)}% (limit ${R.motor.limit}%)`:'')
+    +mod('Cable SC withstand',R.cableSc?`${R.cableSc.sSel} mm² ${R.cableSc.ok?'OK':'FAIL'} vs ${R.cableSc.sMin.toFixed(1)} mm² min at ${(R.cableSc.I/1000)} kA/${R.cableSc.t} s`:'')
+    +mod('PF correction',R.pf?`${R.pf.qc.toFixed(1)} kVar to reach PF ${R.pf.pf2.toFixed(2)} (from ${R.pf.pf1.toFixed(2)})`:'')
     +'</ul>');
   L.push(`<h4>3 · Method + assumptions</h4><p>VD: 3φ I(R·cosφ+X·sinφ). Fault: Z=V²/S with %Z + feeder Z, momentary ×1.15. Cable: Cu/XLPE CCC with install × ambient derates, VD=√3·I·R·L/V. Per-unit base ${BASE.mva} MVA / ${BASE.kv} kV.</p>`);
   L.push(`<h4>4 · SLD</h4><p>${R.sld?R.sld.components+' component(s) placed on canvas.': 'No SLD composed yet — export SVG from the builder when ready.'}</p>`);
@@ -613,6 +726,245 @@ function drawLive(){
   g.fillStyle='#00e5ff';g.fillText('— VD%',pl+6,pt+12);g.fillStyle='#a78bfa';g.fillText('— TX load%',pl+64,pt+12);g.fillStyle='#22c55e';g.fillText('— cable VD%',pl+152,pt+12);
 }
 
+/* ================= POWER FLOW (Newton–Raphson load flow) ================= */
+const FLOW_BASE={mva:10,kv:20};
+let FLOW_BUS=[
+ {name:'Source 20kV',kv:20,type:'slack',P:0,Q:0,vset:1.0,vm:1,va:0},
+ {name:'Feeder A',kv:20,type:'pq',P:-2000,Q:-800},
+ {name:'Feeder B',kv:20,type:'pq',P:-1500,Q:-600},
+ {name:'Feeder C',kv:20,type:'pq',P:-1000,Q:-400}];
+let FLOW_BR=[
+ {f:0,t:1,R:0.6,X:0.9,rate:5000},
+ {f:1,t:2,R:0.4,X:0.6,rate:4000},
+ {f:2,t:3,R:0.5,X:0.75,rate:3000}];
+function flowZb(){return FLOW_BASE.kv*FLOW_BASE.kv/FLOW_BASE.mva;}
+function flowSave(){try{localStorage.setItem('voltworks-flow-v1',JSON.stringify({bus:FLOW_BUS,br:FLOW_BR}));}catch(e){}}
+function flowRestore(){try{const s=JSON.parse(localStorage.getItem('voltworks-flow-v1')||'null');if(s&&Array.isArray(s.bus)&&s.bus.length&&Array.isArray(s.br)){FLOW_BUS=s.bus;FLOW_BR=s.br;}}catch(e){}}
+function flowYbus(){
+  const n=FLOW_BUS.length,G=[],B=[];
+  for(let i=0;i<n;i++){G.push(new Array(n).fill(0));B.push(new Array(n).fill(0));}
+  const zb=flowZb();
+  FLOW_BR.forEach(br=>{
+    const i=+br.f,j=+br.t;if(i<0||j<0||i>=n||j>=n||i===j)return;
+    const r=(+br.R)/zb,x=(+br.X)/zb,d=r*r+x*x;if(d<1e-12)return;
+    const g=r/d,b=-x/d;
+    G[i][i]+=g;B[i][i]+=b;G[j][j]+=g;B[j][j]+=b;
+    G[i][j]-=g;B[i][j]-=b;G[j][i]-=g;B[j][i]-=b;
+  });
+  return {G,B};
+}
+function linSolve(A,b){
+  const n=b.length;
+  for(let c=0;c<n;c++){
+    let p=c;for(let r=c+1;r<n;r++)if(Math.abs(A[r][c])>Math.abs(A[p][c]))p=r;
+    if(Math.abs(A[p][c])<1e-13)return null;
+    if(p!==c){const tA=A[c];A[c]=A[p];A[p]=tA;const tb=b[c];b[c]=b[p];b[p]=tb;}
+    for(let r=c+1;r<n;r++){const m=A[r][c]/A[c][c];if(m===0)continue;for(let k=c;k<n;k++)A[r][k]-=m*A[c][k];b[r]-=m*b[c];}
+  }
+  const x=new Array(n).fill(0);
+  for(let r=n-1;r>=0;r--){let s=b[r];for(let k=r+1;k<n;k++)s-=A[r][k]*x[k];x[r]=s/A[r][r];}
+  return x;
+}
+function solveFlow(){
+  const st=$('flow-status');
+  const n=FLOW_BUS.length;
+  if(n<2){st.className='verdict v-fail';st.textContent='❌ Need at least 2 buses.';return;}
+  if(!FLOW_BUS.some(b=>b.type==='slack')){st.className='verdict v-fail';st.textContent='❌ No slack bus — set one bus to type "slack".';return;}
+  const {G,B}=flowYbus();
+  const slack=FLOW_BUS.map(b=>b.type==='slack');
+  const pq=[],nonslack=[];
+  FLOW_BUS.forEach((b,i)=>{if(!slack[i])nonslack.push(i);if(b.type==='pq')pq.push(i);});
+  const Vm=FLOW_BUS.map(b=>(b.type==='pq')?1.0:(+b.vset||1.0));
+  const Va=FLOW_BUS.map(()=>0);
+  const Sbase=FLOW_BASE.mva;
+  const Psp=FLOW_BUS.map(b=>slack[FLOW_BUS.indexOf(b)]?0:(+b.P||0)/1000/Sbase);
+  const Qsp=FLOW_BUS.map(b=>(b.type==='pq')?(+b.Q||0)/1000/Sbase:0);
+  const ti={},vi={};nonslack.forEach((i,k)=>ti[i]=k);pq.forEach((i,k)=>vi[i]=k);
+  const nt=nonslack.length,nv=pq.length,dim=nt+nv;
+  let P=[],Q=[],iter=0,conv=false,maxmis=0;
+  for(iter=1;iter<=30;iter++){
+    P=new Array(n).fill(0);Q=new Array(n).fill(0);
+    for(let i=0;i<n;i++){
+      let pi=0,qi=0;
+      for(let k=0;k<n;k++){const th=Va[i]-Va[k],c=Math.cos(th),s=Math.sin(th);
+        pi+=Vm[k]*(G[i][k]*c+B[i][k]*s);qi+=Vm[k]*(G[i][k]*s-B[i][k]*c);}
+      P[i]=Vm[i]*pi;Q[i]=Vm[i]*qi;
+    }
+    const mis=[],dq=[];
+    nonslack.forEach(i=>mis.push(Psp[i]-P[i]));
+    pq.forEach(i=>mis.push(Qsp[i]-Q[i]));
+    maxmis=Math.max(...mis.map(Math.abs));
+    if(maxmis<1e-7){conv=true;break;}
+    const J=[];for(let r=0;r<dim;r++)J.push(new Array(dim).fill(0));
+    nonslack.forEach((i,ri)=>{
+      nonslack.forEach((k,ci)=>{
+        J[ri][ci]=(i===k)?(-Q[i]-B[i][i]*Vm[i]*Vm[i]):(Vm[i]*Vm[k]*(G[i][k]*Math.sin(Va[i]-Va[k])-B[i][k]*Math.cos(Va[i]-Va[k])));});
+      pq.forEach((k,ci)=>{
+        J[ri][nt+ci]=(i===k)?(P[i]/Vm[i]+G[i][i]*Vm[i]):(Vm[i]*(G[i][k]*Math.cos(Va[i]-Va[k])+B[i][k]*Math.sin(Va[i]-Va[k])));});
+    });
+    pq.forEach((i,ri)=>{
+      const r=nt+ri;
+      nonslack.forEach((k,ci)=>{
+        J[r][ci]=(i===k)?(P[i]-G[i][i]*Vm[i]*Vm[i]):(-Vm[i]*Vm[k]*(G[i][k]*Math.cos(Va[i]-Va[k])+B[i][k]*Math.sin(Va[i]-Va[k])));});
+      pq.forEach((k,ci)=>{
+        J[r][nt+ci]=(i===k)?(Q[i]/Vm[i]-B[i][i]*Vm[i]):(Vm[i]*(G[i][k]*Math.sin(Va[i]-Va[k])-B[i][k]*Math.cos(Va[i]-Va[k])));});
+    });
+    const dx=linSolve(J,mis);
+    if(!dx){break;}
+    nonslack.forEach((i,k)=>Va[i]+=dx[k]);
+    pq.forEach((i,k)=>Vm[i]+=dx[nt+k]);
+    if(Vm.some(v=>!isFinite(v)||v<0.05||v>3)){conv=false;break;}
+  }
+  if(!conv){st.className='verdict v-fail';st.textContent='❌ Did not converge in 30 iterations (check impedances / loads / slack).';toast('❌ Load flow did not converge');return;}
+  // store solved
+  FLOW_BUS.forEach((b,i)=>{b.vm=Vm[i];b.va=Va[i]*180/Math.PI;});
+  // branch flows
+  const V=FLOW_BUS.map((b,i)=>({re:Vm[i]*Math.cos(Va[i]),im:Vm[i]*Math.sin(Va[i])}));
+  let lossKw=0,maxLoad=0,results=[];
+  FLOW_BR.forEach(br=>{
+    const i=+br.f,j=+br.t;
+    const r=(+br.R)/flowZb(),x=(+br.X)/flowZb(),d=r*r+x*x;
+    const num={re:V[i].re-V[j].re,im:V[i].im-V[j].im};
+    const I={re:(num.re*r+num.im*x)/d,im:(num.im*r-num.re*x)/d};
+    const Pft=(V[i].re*I.re+V[i].im*I.im)*Sbase*1000;
+    const Qft=(V[i].im*I.re-V[i].re*I.im)*Sbase*1000;
+    const loss=(I.re*I.re+I.im*I.im)*r*Sbase*1000;
+    const Sft=Math.hypot(Pft,Qft),load=br.rate?Sft/(+br.rate)*100:0;
+    lossKw+=loss;maxLoad=Math.max(maxLoad,load);
+    results.push({Pft,Qft,loss,load});
+  });
+  const minVm=Math.min(...Vm);
+  R.flow={converged:true,iter,buses:n,minVm,lossKw,maxLoad,base:FLOW_BASE.mva};
+  renderFlow();results.forEach((rr,k)=>{
+    const s=$('fbr-p-'+k),q=$('fbr-q-'+k),l=$('fbr-l-'+k),lo=$('fbr-loss-'+k);
+    if(s)s.textContent=rr.Pft.toFixed(1);if(q)q.textContent=rr.Qft.toFixed(1);
+    if(l){l.textContent=rr.load.toFixed(1);l.style.color=rr.load>100?'var(--danger)':rr.load>80?'var(--warn)':'var(--success)';}
+    if(lo)lo.textContent=rr.loss.toFixed(2);});
+  const bad=minVm<0.9||maxLoad>100;
+  st.className='verdict '+(bad?'v-fail':'v-ok');
+  st.innerHTML=`${bad?'❌':'✅'} Converged in ${iter} iteration(s) · min Vm <b>${minVm.toFixed(3)} p.u.</b> · total losses <b>${lossKw.toFixed(1)} kW</b> · max branch loading <b>${maxLoad.toFixed(1)}%</b>`;
+  toast('⚡ Load flow converged');
+}
+function renderFlow(){
+  const bt=$('flow-bus').querySelector('tbody');bt.innerHTML='';
+  FLOW_BUS.forEach((b,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${i+1}</td>
+      <td><input class="fcell" data-i="${i}" data-k="name" value="${(b.name||'').replace(/"/g,'&quot;')}" style="width:120px"></td>
+      <td><input class="fcell" type="number" data-i="${i}" data-k="kv" value="${b.kv}" style="width:64px"></td>
+      <td><select class="fcell" data-i="${i}" data-k="type"><option value="slack"${b.type==='slack'?' selected':''}>slack</option><option value="pv"${b.type==='pv'?' selected':''}>PV</option><option value="pq"${b.type==='pq'?' selected':''}>PQ</option></select></td>
+      <td><input class="fcell" type="number" data-i="${i}" data-k="P" value="${b.P}" style="width:76px"></td>
+      <td><input class="fcell" type="number" data-i="${i}" data-k="Q" value="${b.Q}" style="width:76px"></td>
+      <td id="fb-vm-${i}">${b.vm!=null?b.vm.toFixed(3):'—'}</td>
+      <td id="fb-va-${i}">${b.va!=null?b.va.toFixed(2):'—'}</td>
+      <td><button class="pal-btn" style="padding:1px 7px" onclick="flowDelBus(${i})">✕</button></td>`;
+    bt.appendChild(tr);
+  });
+  const rt=$('flow-branch').querySelector('tbody');rt.innerHTML='';
+  FLOW_BR.forEach((br,i)=>{
+    const o1=FLOW_BUS.map((b,j)=>`<option value="${j}"${j==br.f?' selected':''}>${j+1}</option>`).join('');
+    const o2=FLOW_BUS.map((b,j)=>`<option value="${j}"${j==br.t?' selected':''}>${j+1}</option>`).join('');
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><select class="fcell" data-i="${i}" data-k="f">${o1}</select></td>
+      <td><select class="fcell" data-i="${i}" data-k="t">${o2}</select></td>
+      <td><input class="fcell" type="number" data-i="${i}" data-k="R" value="${br.R}" step="0.01" style="width:72px"></td>
+      <td><input class="fcell" type="number" data-i="${i}" data-k="X" value="${br.X}" step="0.01" style="width:72px"></td>
+      <td><input class="fcell" type="number" data-i="${i}" data-k="rate" value="${br.rate}" style="width:84px"></td>
+      <td id="fbr-p-${i}">—</td><td id="fbr-q-${i}">—</td><td id="fbr-l-${i}">—</td><td id="fbr-loss-${i}">—</td>
+      <td><button class="pal-btn" style="padding:1px 7px" onclick="flowDelBranch(${i})">✕</button></td>`;
+    rt.appendChild(tr);
+  });
+  $('flow-bus').querySelectorAll('.fcell').forEach(el=>el.addEventListener('change',()=>{
+    const i=+el.dataset.i,k=el.dataset.k;let v=el.value;
+    if(k==='P'||k==='Q'||k==='kv')v=parseFloat(v)||0;
+    FLOW_BUS[i][k]=v;flowSave();}));
+  $('flow-branch').querySelectorAll('.fcell').forEach(el=>el.addEventListener('change',()=>{
+    const i=+el.dataset.i,k=el.dataset.k;let v=el.value;
+    v=(k==='f'||k==='t')?parseInt(v,10):(parseFloat(v)||0);
+    FLOW_BR[i][k]=v;flowSave();}));
+}
+function flowAddBus(){FLOW_BUS.push({name:'Bus '+(FLOW_BUS.length+1),kv:FLOW_BASE.kv,type:'pq',P:-500,Q:-200});renderFlow();flowSave();}
+function flowAddBranch(){FLOW_BR.push({f:0,t:Math.min(1,FLOW_BUS.length-1),R:0.5,X:0.75,rate:3000});renderFlow();flowSave();}
+function flowDelBus(i){FLOW_BUS.splice(i,1);FLOW_BR=FLOW_BR.filter(b=>+b.f!==i&&+b.t!==i).map(b=>({...b,f:+b.f>i?+b.f-1:+b.f,t:+b.t>i?+b.t-1:+b.t}));renderFlow();flowSave();}
+function flowDelBranch(i){FLOW_BR.splice(i,1);renderFlow();flowSave();}
+function flowReset(){FLOW_BUS=[{name:'Source 20kV',kv:20,type:'slack',P:0,Q:0,vset:1.0,vm:1,va:0},{name:'Feeder A',kv:20,type:'pq',P:-2000,Q:-800},{name:'Feeder B',kv:20,type:'pq',P:-1500,Q:-600},{name:'Feeder C',kv:20,type:'pq',P:-1000,Q:-400}];FLOW_BR=[{f:0,t:1,R:0.6,X:0.9,rate:5000},{f:1,t:2,R:0.4,X:0.6,rate:4000},{f:2,t:3,R:0.5,X:0.75,rate:3000}];renderFlow();flowSave();toast('↻ Demo network restored');}
+
+/* ================= MOTOR STARTING ================= */
+const MSTART={dol:{r:1.0,label:'Direct-on-line'},sd:{r:1/3,label:'Star–Delta'},soft:{r:0.40,label:'Soft starter'},vfd:{r:0.17,label:'VFD / VSD'}};
+function motorCalc(){
+  const kw=gv('mKw'),V=gv('mVolt'),eff=gv('mEff')||1,pf=gv('mPf')||1,lrc=gv('mLrc')||6.5,isc=gv('mSc')*1000,lim=gv('mDipLim');
+  const Ifla=kw*1000/(SQRT3*V*eff*pf);
+  const Ssc=SQRT3*V*isc; // VA
+  const out=[];
+  Object.keys(MSTART).forEach(k=>{
+    const Istart=lrc*MSTART[k].r*Ifla;
+    const Sstart=SQRT3*V*Istart;
+    const dip=Sstart/(Sstart+Ssc)*100;
+    out.push({k,label:MSTART[k].label,Istart,dip});
+  });
+  return {Ifla,Ssc,lim,out};
+}
+function calcMotor(){
+  const {Ifla,Ssc,lim,out}=motorCalc();
+  const m=gv('mMethod')||'dol';
+  const sel=out.find(o=>o.k===m)||out[0];
+  R.motor={Ifla,Istart:sel.Istart,dip:sel.dip,method:MSTART[m].label,limit:lim};
+  show('res-motor','grid-motor','verdict-motor',[
+    {v:Ifla.toFixed(1)+' A',l:'I_FLA'},
+    {v:sel.Istart.toFixed(0)+' A',l:'I_start'},
+    {v:sel.dip.toFixed(2)+'%',l:'PCC dip',cls:sel.dip<=lim?'pass':'fail'},
+    {v:(Ssc/1e6).toFixed(1)+' MVA',l:'PCC fault'}],
+    sel.dip<=lim?{cls:'v-ok',html:`✅ ${sel.dip.toFixed(2)}% dip ≤ ${lim}% limit <span class="pill p-info">${MSTART[m].label}</span>`}
+                :{cls:'v-fail',html:`❌ ${sel.dip.toFixed(2)}% dip exceeds ${lim}% <span class="pill p-info">${MSTART[m].label}</span> — use reduced-current starting or a stiffer supply`});
+  const tb=$('tbl-mstart').querySelector('tbody');
+  tb.innerHTML=out.map(o=>`<tr><td style="text-align:left">${o.label}${o.k===m?' <span class="pill p-info">selected</span>':''}</td><td>${o.Istart.toFixed(0)}</td><td>${o.dip.toFixed(2)}</td><td>${o.dip<=lim?pill('OK','p-ok'):pill('FAIL','p-fail')}</td></tr>`).join('');
+  flash('card-motor');toast('Ⓜ Motor start calculated');
+}
+
+/* ================= CABLE SHORT-CIRCUIT WITHSTAND ================= */
+function calcCableSC(){
+  const I=gv('kI')*1000,t=gv('kT'),k=parseFloat($('kMat').value)||143,S=gv('kA');
+  const sMin=I*Math.sqrt(t)/k;            // A·√s / k  → mm²
+  const tMax=Math.pow(k*S/I,2);           // (kS/I)²  → s
+  const ok=S>=sMin;
+  R.cableSc={I,t,k,sSel:S,sMin,tMax,ok};
+  show('res-cablesc','grid-cablesc','verdict-cablesc',[
+    {v:sMin.toFixed(1)+' mm²',l:'Min required',cls:ok?'pass':'fail'},
+    {v:S+' mm²',l:'Selected',cls:ok?'pass':'fail'},
+    {v:tMax.toFixed(3)+' s',l:'Max clearing',cls:tMax>=t?'pass':'fail'},
+    {v:(I*t/1000).toFixed(0)+' kA²s',l:'I²t'}],
+    ok?{cls:'v-ok',html:`✅ ${S} mm² ≥ ${sMin.toFixed(1)} mm² required — cable withstands ${I/1000} kA for ${t} s <span class="pill p-info">IEC 60364-4-43</span>`}
+      :{cls:'v-fail',html:`❌ ${S} mm² < ${sMin.toFixed(1)} mm² required — upsize, or clear the fault in ≤ ${tMax.toFixed(3)} s <span class="pill p-info">IEC 60364-4-43</span>`});
+  flash('card-cablesc');toast('🔥 Withstand checked');
+}
+
+/* ================= POWER FACTOR CORRECTION ================= */
+function calcPF(){
+  const P=gv('pKw'),pf1=gv('pPf1')||0.9,pf2=gv('pPf2')||0.95,V=gv('pVolt')||400;
+  const t1=Math.tan(Math.acos(Math.min(pf1,1))),t2=Math.tan(Math.acos(Math.min(pf2,1)));
+  const qc=P*(t1-t2);
+  const S1=P/pf1,S2=P/pf2,Q1=P*t1,Q2=P*t2;
+  const Ic=qc*1000/(SQRT3*V),C=qc*1000/(2*Math.PI*50*V*V)*1e6;
+  R.pf={P,pf1,pf2,qc,Ic,C,S1,S2};
+  const ok=pf2>pf1;
+  show('res-pf','grid-pf','verdict-pf',[
+    {v:qc.toFixed(1)+' kVar',l:'Capacitor bank',cls:'pass'},
+    {v:Ic.toFixed(1)+' A',l:'Cap current'},
+    {v:C.toFixed(0)+' µF',l:'Capacitance'},
+    {v:S1.toFixed(0)+' kVA',l:'Before',cls:'warn'},{v:S2.toFixed(0)+' kVA',l:'After',cls:'pass'}],
+    ok?{cls:'v-ok',html:`✅ Add a <b>${qc.toFixed(1)} kVar</b> bank to lift PF ${pf1.toFixed(2)} → ${pf2.toFixed(2)} · apparent power drops ${(S1-S2).toFixed(0)} kVA <span class="pill p-info">Q=P(tanφ₁−tanφ₂)</span>`}
+      :{cls:'v-warn',html:'⚠ Target PF should be higher than present PF'});
+  const tb=$('tbl-pf').querySelector('tbody');
+  tb.innerHTML=[
+    ['Power kW',P.toFixed(0),P.toFixed(0)],
+    ['Apparent kVA',S1.toFixed(1),S2.toFixed(1)],
+    ['Reactive kVar',Q1.toFixed(1),Q2.toFixed(1)],
+    ['Current A',(S1*1000/(SQRT3*V)).toFixed(1),(S2*1000/(SQRT3*V)).toFixed(1)],
+    ['Power factor',pf1.toFixed(3),pf2.toFixed(3)]
+  ].map(r=>`<tr><td style="text-align:left">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+  flash('card-pf');toast('⚙ Capacitor bank sized');
+}
+
 /* ---- Theme toggle ---- */
 function toggleTheme(){const h=document.documentElement;const light=h.dataset.theme!=='light';if(light)h.dataset.theme='light';else h.dataset.theme='';$('themeBtn').textContent=light?'☀️':'🌙';try{localStorage.setItem('vw-theme',light?'light':'dark');}catch(e){}drawLive();drawSLD();}
 try{if(localStorage.getItem('vw-theme')==='light'){document.documentElement.dataset.theme='light';}}catch(e){}
@@ -643,7 +995,8 @@ document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>
 $('footDate').textContent=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
 vwRestore();
 sldRestore();
-renderAnalysis();stdChanged();liveStudy();
+flowRestore();
+renderAnalysis();stdChanged();liveStudy();renderFlow();calcMotor();calcCableSC();calcPF();
 </script>
 </body>
 </html>
