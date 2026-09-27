@@ -153,7 +153,10 @@ tr:last-child td{border-bottom:none}
 .sld-steps button{width:26px;height:26px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-weight:700;font-size:14px;line-height:1}
 .sld-steps button:hover{border-color:var(--accent);color:var(--accent)}
 .sld-canvas-wrap{position:relative}
-#sldCanvas{width:100%;height:500px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);cursor:default;touch-action:none;display:block}
+.sld-canvas-wrap.pan #sldCanvas{cursor:grab}
+.sld-canvas-wrap.panning #sldCanvas{cursor:grabbing}
+#sldCanvas{width:100%;height:500px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);cursor:default;touch-action:none;display:block;outline:none}
+#sldCanvas:focus-visible{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
 .sld-canvas-wrap.dragover #sldCanvas{border-color:var(--accent);background:var(--accent-dim)}
 .sld-hint{position:absolute;left:10px;bottom:9px;font-size:10.5px;color:var(--faint);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:3px 9px;pointer-events:none;max-width:calc(100% - 20px)}
 /* empty state */
@@ -601,6 +604,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
         <button class="tbtn" id="sldUndoBtn" onclick="sldUndo()" title="Undo (Ctrl+Z)">↶ Undo</button>
         <button class="tbtn" id="sldRedoBtn" onclick="sldRedo()" title="Redo (Ctrl+Y)">↷ Redo</button>
         <span class="tsep"></span>
+        <button class="tbtn" id="sldPanBtn" onclick="sldTogglePan()" title="Pan tool — drag to move the drawing plane (or hold Space, or middle/right-drag)">✋ Pan</button>
         <button class="tbtn" onclick="sldZoom(1.2)" title="Zoom in">＋</button>
         <button class="tbtn" onclick="sldZoom(1/1.2)" title="Zoom out">－</button>
         <button class="tbtn" onclick="sldFit()" title="Fit everything in view">⤢ Fit</button>
@@ -617,7 +621,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
       </div>
       <div class="sld-selbar" id="sldSelbar"></div>
       <div class="sld-canvas-wrap" id="sldWrap">
-        <svg id="sldCanvas"></svg>
+        <svg id="sldCanvas" tabindex="0"></svg>
         <div class="sld-empty" id="sldEmpty">
           <div class="se-card">
             <h3>🗺 Draw your single-line diagram</h3>
@@ -629,7 +633,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
             <div class="se-tpl" id="sldEmptyTpl"></div>
           </div>
         </div>
-        <div class="sld-hint no-print">Click a component to add · drag a ● dot to connect (it snaps) · wheel = zoom · Space / middle-drag = pan anywhere · Del = delete</div>
+        <div class="sld-hint no-print">Click a component to add · drag a ● dot to connect (it snaps) · wheel = zoom · ✋ Pan / Space / middle / right-drag = move the plane · arrows = nudge · Del = delete</div>
       </div>
       <div class="sld-status">
         <span id="sldCount">0 components · 0 connections</span>
@@ -833,7 +837,7 @@ function resetAnalysis(){location.reload();}
 /* ---- SLD — easy editor (no modes to learn) ---- */
 let sldItems=[],sldWires=[],sldId=0,sldSelected=new Set(),sldView={x:0,y:0,k:1};
 let sldGrid=true,sldSnap=true,sldUndoStack=[],sldRedoStack=[];
-let sldDrag=null,sldPan=null,sldMarquee=null,sldSpace=false,sldWorld=null,sldSuppressClick=false;
+let sldDrag=null,sldPan=null,sldMarquee=null,sldSpace=false,sldWorld=null,sldSuppressClick=false,sldPanTool=false;
 let sldLink=null,sldHover=null,sldClickId=null,sldGuides=null;
 const SLD_GRID=20, SLD_W=800, SLD_H=440, SLD_STEPS=[50,75,100,125,150];
 const COMP={
@@ -1008,14 +1012,13 @@ function sldTidy(){
   drawSLD();sldSave();sldFit();toast('✨ Tidied into a clean layout');
 }
 function sldVisibleWorld(){
-  const svg=$('sldCanvas');if(!svg)return{x0:0,y0:0,x1:SLD_W,y1:SLD_H};
-  const g=sldWorld||svg;
-  const m=g.getScreenCTM&&g.getScreenCTM();
-  if(!m)return{x0:0,y0:0,x1:SLD_W,y1:SLD_H};
-  const r=svg.getBoundingClientRect(),inv=m.inverse(),pt=svg.createSVGPoint();
-  const conv=(cx,cy)=>{pt.x=cx;pt.y=cy;const p=pt.matrixTransform(inv);return p;};
-  const a=conv(r.left,r.top),b=conv(r.left+r.width,r.top+r.height);
-  return{x0:a.x,y0:a.y,x1:b.x,y1:b.y};
+  // Deterministic: derive the visible world rect from the view transform and the
+  // SVG's on-screen size. Do NOT rely on getScreenCTM() — the group is not yet
+  // attached when the grid is generated, and a detached node returns null.
+  const svg=$('sldCanvas');
+  const r=svg?svg.getBoundingClientRect():{width:SLD_W,height:SLD_H};
+  const w=r.width||SLD_W,h=r.height||SLD_H,k=sldView.k||1;
+  return{x0:(0-sldView.x)/k,y0:(0-sldView.y)/k,x1:(w-sldView.x)/k,y1:(h-sldView.y)/k};
 }
 // infinite grid: always covers the visible area, however far you pan or zoom out
 function sldGridSVG(){
@@ -1210,11 +1213,18 @@ function sldFit(){
 function sldToggleGrid(){sldGrid=!sldGrid;$('sldGridBtn').classList.toggle('sel',sldGrid);drawSLD();}
 function sldToggleSnap(){sldSnap=!sldSnap;$('sldSnapBtn').classList.toggle('sel',sldSnap);toast(sldSnap?'🧲 Snap on':'Snap off');}
 function sldAutoTag(){if(!sldItems.length)return;sldPush();const c={};sldItems.forEach(it=>{c[it.t]=(c[it.t]||0)+1;it.tag=COMP[it.t].tag+c[it.t];});drawSLD();sldSave();toast('# Tags renumbered');}
+function sldTogglePan(){
+  sldPanTool=!sldPanTool;
+  $('sldPanBtn').classList.toggle('sel',sldPanTool);
+  $('sldWrap').classList.toggle('pan',sldPanTool);
+  if(sldPanTool){$('sldCanvas').focus();toast('✋ Pan tool on — drag to move the plane');}
+  else toast('Pan tool off');
+}
 // --- canvas events (no modes — everything is direct manipulation) ---
 function sldClientToScreen(e){const r=$('sldCanvas').getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
 $('sldCanvas').addEventListener('wheel',e=>{e.preventDefault();const s=sldClientToScreen(e);sldZoom(e.deltaY<0?1.12:1/1.12,s.x,s.y);},{passive:false});
 $('sldCanvas').addEventListener('mousedown',e=>{
-  if(e.button===1||sldSpace){sldPan={x:e.clientX,y:e.clientY,vx:sldView.x,vy:sldView.y};e.preventDefault();return;}
+  if(e.button===1||e.button===2||sldSpace||sldPanTool){sldStartPan(e);return;}
   if(e.button!==0)return;
   const id=sldItemAt(e);
   if(id==null){
@@ -1226,6 +1236,23 @@ $('sldCanvas').addEventListener('mousedown',e=>{
   const mp=sldPos(e);
   sldDrag={mx:mp.x,my:mp.y,moved:false,ids:[...sldSelected],pre:sldSnapState(),
     snap:[...sldSelected].map(i=>{const it=sldById(i);return{id:i,x:it.x,y:it.y};})};drawSLD();
+});
+function sldStartPan(e){
+  sldPan={x:e.clientX,y:e.clientY,vx:sldView.x,vy:sldView.y};
+  $('sldWrap').classList.add('panning');
+  e.preventDefault();
+}
+$('sldCanvas').addEventListener('contextmenu',e=>{if(sldPanTool||sldSpace||true)e.preventDefault();});
+// arrow keys pan the plane when the canvas (or the SLD section) has focus
+document.addEventListener('keydown',e=>{
+  const inSld=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#sec-sld');
+  if(!inSld&&document.activeElement!==$('sldCanvas'))return;
+  const t=(e.target.tagName||'');if(t==='INPUT'||t==='SELECT'||t==='TEXTAREA')return;
+  const step=e.shiftKey?80:20;
+  if(e.key==='ArrowLeft'){sldView.x+=step;drawSLD();e.preventDefault();}
+  else if(e.key==='ArrowRight'){sldView.x-=step;drawSLD();e.preventDefault();}
+  else if(e.key==='ArrowUp'){sldView.y+=step;drawSLD();e.preventDefault();}
+  else if(e.key==='ArrowDown'){sldView.y-=step;drawSLD();e.preventDefault();}
 });
 // alignment guides: snap the dragged set to other elements' x/y (within 8 world px)
 function sldComputeGuides(){
@@ -1279,6 +1306,7 @@ window.addEventListener('mousemove',e=>{
   } else if(sldHover!=null){sldHover=null;drawSLD();}
 });
 window.addEventListener('mouseup',()=>{
+  $('sldWrap').classList.remove('panning');
   if(sldPan){sldPan=null;return;}
   if(sldLink){
     const lk=sldLink;sldLink=null;
@@ -1915,7 +1943,7 @@ sld:{icon:'🗺',title:'Single-Line Diagram — draw your system',
   '<b>Add</b>: click any component on the left and it drops onto the canvas, already wired to whatever you had selected. So clicking Generator → Breaker → Busbar → Transformer → Motor builds a feeder step by step. You can also drag a component straight onto the canvas.',
   '<b>Connect</b>: every symbol shows small ● dots. Drag from a dot onto another symbol to link them — the dot <b>snaps</b> to the nearest connection point, so you do not need to aim precisely, and a dashed line follows your pointer until you let go.',
   '<b>Move</b>: drag a symbol anywhere. It snaps to the grid and shows dashed <b>alignment guides</b> when it lines up with another element. Hold Shift and click to select several, or drag a box on empty space, then move or delete them together.',
-  '<b>Unlimited canvas</b>: the drawing area is not fixed. Pan anywhere with Space-drag or middle-drag, and zoom out with the mouse wheel — the grid keeps extending so you never run out of room.',
+  '<b>Unlimited canvas</b>: the drawing area is not fixed. Move the plane with the <b>✋ Pan</b> button (drag anywhere), or hold <b>Space</b> and drag, or drag with the <b>middle / right</b> mouse button. You can also nudge with the <b>arrow keys</b> (hold Shift to go faster). Zoom out with the mouse wheel — the grid keeps extending so you never run out of room.',
   '<b>Breaker</b>: double-click it (or use the button above) to open or close. Anything downstream greys out when it opens.',
   '<b>Load / motor</b>: double-click to step the loading up (50 → 75 → 100 → 125 → 150 %), or use the − / ＋ buttons above the canvas.',
   '<b>Fix the layout</b>: the ✨ Tidy up button arranges everything left-to-right automatically. ⤢ Fit brings it all into view.',

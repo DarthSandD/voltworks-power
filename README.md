@@ -85,10 +85,12 @@ The ↩ Reset button in the header clears saved state back to defaults.
   - **Double-click** a breaker to open/close it, or a load/motor to step its loading
     (50→75→100→125→150 %). The same actions appear as buttons in a **context bar**
     above the canvas when an element is selected.
-- **Unlimited canvas.** The drawing area is not a fixed box: pan anywhere with
-  Space-drag or middle-drag, and zoom from 8 % to 400 % with the wheel. The grid is
-  drawn in world space over whatever is visible and keeps extending as you zoom out,
-  so it never runs out.
+- **Unlimited canvas.** The drawing area is not a fixed box. Move the drawing plane
+  with the **✋ Pan** tool (click it, then drag anywhere), or hold **Space** and drag,
+  or drag with the **middle or right** mouse button. Nudge with the **arrow keys**
+  (Shift = bigger steps). Zoom from 8 % to 400 % with the wheel. The grid is drawn
+  in world space over whatever is visible and keeps extending as you zoom out, so it
+  never runs out.
 - **Empty-state help:** a fresh canvas shows a card with “Add a generator / Add a
   busbar” buttons and the template list, so there is never a blank page to figure out.
 - **Templates:** ⚡ Simple feeder · 🏭 11 kV substation · 🌀 Motor starter — one click
@@ -141,6 +143,15 @@ Pages rebuilds in ~1–2 min — verify live with:
 
 ## Changelog
 
+- **SLD movement tools + true infinite grid.** Two fixes for ETAP-like navigation:
+  (1) **the grid now really expands** — it was computed from a not-yet-attached SVG
+  group, so `getScreenCTM()` returned null and it silently fell back to the old fixed
+  800×440 box no matter how far you zoomed out; it is now derived from the view
+  transform directly, so at 8 % zoom it covers the full ~8 900-unit visible area and
+  keeps growing;
+  (2) **proper plane-movement tools** — a **✋ Pan** toolbar button (drag anywhere),
+  plus Space-drag, middle-drag, right-drag, and **arrow-key nudge** (Shift = 80 px),
+  with grab/grabbing cursors and a focus ring on the canvas.
 - **SLD usability pass** — fixed the three things that made the builder fiddly:
   (1) **unlimited canvas** — the fixed 800×440 drawing box is gone, so you can pan
   with Space/middle-drag and zoom from 8 % to 400 % without hitting an edge;
