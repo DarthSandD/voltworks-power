@@ -42,7 +42,7 @@ a **📚 Glossary** modal defines every technical term.
 | 05 | **PF Correction** | Capacitor sizing `Q = P(tanφ₁−tanφ₂)`, before/after kVA · kVar · current |
 | 06 | **Arc Flash** | Incident energy + arc-flash boundary, IEEE 1584-2018 empirical model: arcing current (full + reduced case), enclosure size correction, NFPA 70E PPE category. Equipment presets; 208 V–15 kV |
 | 07 | **Network Analysis** | Bus results, branch flows, short-circuit, compliance and dispatch tables |
-| 08 | **SLD Builder** | ETAP-style editor: real IEC/ANSI symbols, orthogonal auto-routed wires, grid + snap, multi-select (shift-click + marquee), undo/redo, zoom/pan/fit, per-element properties (tag, name, ratings, %Z), auto-tagging, energisation tracing, export SVG + PNG |
+| 08 | **SLD Builder** | Zero-mode editor: click a component to add it (auto-wired to the selection), drag the ● dots to connect, drag to move, ✨ Tidy up to auto-arrange. Real IEC/ANSI symbols, undo/redo, zoom/pan/fit, properties panel, auto-tagging, SVG + PNG export |
 | 09 | **Engineering Report** | Collects every module's latest result into one printable report |
 
 ## Interactive help & worked examples
@@ -66,27 +66,38 @@ Every input (numbers, selects, the load slider) autosaves to the site's own
 the first calculation on every load — refresh-safe, no account, no backend.
 The ↩ Reset button in the header clears saved state back to defaults.
 
+## SLD editor (zero-mode — built for ease)
+
+- **No modes.** The old Place / Wire / Operate switch is gone. Everything is direct
+  manipulation:
+  - **Click a component** in the left palette → it is dropped on the canvas *and
+    automatically wired to whatever was selected*. So Generator → Breaker → Busbar
+    → Transformer → Motor builds a whole feeder in five clicks, with no wiring step.
+  - **Drag a component** from the palette straight onto the canvas to place it
+    exactly where you want (a drop target highlights as you hover).
+  - **Drag the ● dots** on any symbol onto another symbol to connect them by hand —
+    a dashed line follows your pointer until you release.
+  - **Drag a symbol** to move it (grid snap, 20 px). Shift-click or drag a box on
+    empty space to multi-select, then move or delete the group.
+  - **Double-click** a breaker to open/close it, or a load/motor to step its loading
+    (50→75→100→125→150 %). The same actions appear as buttons in a **context bar**
+    above the canvas when an element is selected.
+- **Empty-state help:** a fresh canvas shows a card with “Add a generator / Add a
+  busbar” buttons and the template list, so there is never a blank page to figure out.
+- **Templates:** ⚡ Simple feeder · 🏭 11 kV substation · 🌀 Motor starter — one click
+  to load a finished, wired diagram.
+- **✨ Tidy up** auto-arranges the whole diagram into a clean left-to-right layout.
+- **Properties panel:** with one element selected, edit tag, name, rating (kVA/kV),
+  transformer %Z and breaker state; the tag auto-numbers per type (G1, B2, BUS1, T1 …).
+- **Undo/redo** 60-deep (Ctrl+Z / Ctrl+Y); Ctrl+D duplicates; Del deletes; Esc clears.
+- **View:** wheel = zoom to cursor, Space or middle-drag = pan, ⤢ Fit frames everything.
+- **Export:** ⬇ SVG (vector, for CAD) or ⬇ PNG (2× raster, for reports), in the active theme.
+
 ## SLD persistence
 
-The single-line diagram canvas (components, wires, breaker/load state, tags and
+The single-line diagram canvas (components, connections, breaker/load state, tags and
 properties) autosaves to `localStorage` (key `voltworks-sld-v1`) on every change —
-place, wire, operate, drag, property edit, delete, clear — and restores on load.
-
-## SLD editor (ETAP-style)
-
-- **Symbols:** generator, transformer, breaker, busbar, motor, load — drawn as real
-  IEC/ANSI glyphs (not text), theme-aware, with live energisation colouring.
-- **Routing:** wires are orthogonal (manhattan) paths anchored to each symbol's
-  connection point, previewed as a dashed ghost while you draw.
-- **Editing:** drag to move (grid snap, 20 px); Shift-click or drag a marquee to
-  multi-select and move/delete a group; **Ctrl+Z / Ctrl+Y** undo/redo (60-deep);
-  **Del** deletes; **# Auto-tag** renumbers every element (G1, B2, T1, BUS1 …).
-- **View:** wheel = zoom to cursor (0.3×–3×), Space or middle-drag = pan,
-  ⤢ Fit frames everything, ▦ Grid and 🧲 Snap toggle.
-- **Properties panel:** with one element selected, edit its tag, name, rating
-  (kVA / kV), transformer %Z and breaker state, and see its energisation status.
-- **Export:** ⬇ SVG (vector, for CAD) or ⬇ PNG (2× raster, for reports) — both
-  render exactly what is on the canvas, in the active theme.
+add, connect, move, operate, property edit, delete, clear — and restores on load.
 
 ## Power-flow persistence
 
@@ -123,6 +134,15 @@ Pages rebuilds in ~1–2 min — verify live with:
 
 ## Changelog
 
+- **SLD builder made easy (zero-mode redesign)** — removed the Place/Wire/Operate
+  mode switch entirely. Clicking a palette component now adds it *and* wires it to
+  the current selection, so a feeder is built by clicking Generator → Breaker →
+  Busbar → Transformer → Motor. Added drag-a-component-onto-the-canvas, drag-the-●
+  -dot-to-connect with a live dashed preview, a context action bar (open/close
+  breaker, step loading, duplicate, delete), an empty-state card with quick-add
+  buttons, one-click templates (simple feeder / 11 kV substation / motor starter),
+  a ✨ Tidy up auto-layout, per-type auto-tagging, and Ctrl+D duplicate. Fixed
+  typing in the properties panel losing focus after each keystroke.
 - **SLD builder rebuilt to ETAP grade (phase 2)** — real IEC/ANSI symbol glyphs;
   orthogonal auto-routed wires with a live ghost preview; grid + snap-to-grid;
   multi-select via shift-click and marquee, group move/delete; 60-step undo/redo
