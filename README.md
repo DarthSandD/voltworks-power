@@ -15,6 +15,22 @@ input, rules of thumb, and a **one-click worked example** that fills the inputs 
 runs the calculation. A header **“Explain everything”** button opens them all, and
 a **📚 Glossary** modal defines every technical term.
 
+## Design system
+
+- **Colour psychology (semantic, not decorative):** one primary accent
+  (**blue** `#4c8dff` dark / `#2563eb` light) for brand, actions and focus.
+  **Amber = caution**, **red = danger**, **green = pass** — reserved strictly for
+  meaning, never used as decoration, so a warning never looks like a logo.
+- **Dual themes, both first-class:** dark and light each define their own full
+  token set (`--bg`, `--surface`, `--border`, `--accent`, `--on-accent`, semantic
+  colours, elevation, glow). Canvas + SVG colours are read from the CSS variables
+  at runtime (`THEME()`), so the SLD and live-study chart re-theme correctly.
+- **Accessibility:** all 17 text/background pairs meet **WCAG AA (≥4.5:1)**;
+  `:focus-visible` rings on every interactive element; `prefers-reduced-motion`
+  respected; `--on-accent` keeps button labels legible on accent fills in both themes.
+- **Depth & polish:** layered shadows, tabular-nums on results, themed scrollbars,
+  hover elevation on cards, custom text selection.
+
 ## Modules
 
 | # | Module | What it does |
@@ -91,6 +107,11 @@ Pages rebuilds in ~1–2 min — verify live with:
 
 ## Changelog
 
+- **Design system + UI/UX refresh (phase 1)** — one semantic accent (blue);
+  amber/red/green reserved for caution/danger/pass; dual light+dark token sets;
+  WCAG AA verified (17/17 pairs); focus-visible rings, reduced-motion support,
+  themed scrollbars, layered elevation, tabular-nums results. Canvas/SVG colours
+  now read live CSS variables so both themes re-theme correctly.
 - **Beginner-friendly interactive layer** — “💡 How this works” panels on all 9
   sections (plain-English explanation + step-by-step + input glossary + rules of
   thumb), one-click worked examples that fill inputs and run the calc, a
