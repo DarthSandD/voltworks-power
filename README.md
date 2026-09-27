@@ -75,13 +75,20 @@ The ↩ Reset button in the header clears saved state back to defaults.
     → Transformer → Motor builds a whole feeder in five clicks, with no wiring step.
   - **Drag a component** from the palette straight onto the canvas to place it
     exactly where you want (a drop target highlights as you hover).
-  - **Drag the ● dots** on any symbol onto another symbol to connect them by hand —
-    a dashed line follows your pointer until you release.
-  - **Drag a symbol** to move it (grid snap, 20 px). Shift-click or drag a box on
-    empty space to multi-select, then move or delete the group.
+  - **Drag a ● dot** onto another symbol to connect by hand. The dot **snaps to the
+    nearest connection point** (within ~42 px, or anywhere over the target symbol's
+    body), so precise aiming is not needed; a dashed preview follows the pointer and
+    the target port lights up before you release.
+  - **Drag a symbol** to move it. It snaps to the 20 px grid and shows dashed
+    **alignment guides** when it lines up with a neighbour. Shift-click or drag a box
+    on empty space to multi-select, then move or delete the group.
   - **Double-click** a breaker to open/close it, or a load/motor to step its loading
     (50→75→100→125→150 %). The same actions appear as buttons in a **context bar**
     above the canvas when an element is selected.
+- **Unlimited canvas.** The drawing area is not a fixed box: pan anywhere with
+  Space-drag or middle-drag, and zoom from 8 % to 400 % with the wheel. The grid is
+  drawn in world space over whatever is visible and keeps extending as you zoom out,
+  so it never runs out.
 - **Empty-state help:** a fresh canvas shows a card with “Add a generator / Add a
   busbar” buttons and the template list, so there is never a blank page to figure out.
 - **Templates:** ⚡ Simple feeder · 🏭 11 kV substation · 🌀 Motor starter — one click
@@ -90,8 +97,8 @@ The ↩ Reset button in the header clears saved state back to defaults.
 - **Properties panel:** with one element selected, edit tag, name, rating (kVA/kV),
   transformer %Z and breaker state; the tag auto-numbers per type (G1, B2, BUS1, T1 …).
 - **Undo/redo** 60-deep (Ctrl+Z / Ctrl+Y); Ctrl+D duplicates; Del deletes; Esc clears.
-- **View:** wheel = zoom to cursor, Space or middle-drag = pan, ⤢ Fit frames everything.
-- **Export:** ⬇ SVG (vector, for CAD) or ⬇ PNG (2× raster, for reports), in the active theme.
+- **Export:** ⬇ SVG (vector, for CAD) or ⬇ PNG (2× raster, for reports), both cropped
+  to the drawing's own bounds so there is no wasted margin.
 
 ## SLD persistence
 
@@ -134,6 +141,16 @@ Pages rebuilds in ~1–2 min — verify live with:
 
 ## Changelog
 
+- **SLD usability pass** — fixed the three things that made the builder fiddly:
+  (1) **unlimited canvas** — the fixed 800×440 drawing box is gone, so you can pan
+  with Space/middle-drag and zoom from 8 % to 400 % without hitting an edge;
+  (2) **infinite grid** — the grid is now generated in world space over whatever is
+  visible, so it keeps extending as you zoom out instead of vanishing;
+  (3) **connection snapping** — dragging a ● dot now snaps to the nearest port within
+  ~42 px (or anywhere over the target symbol), with a highlighted target port, so no
+  pixel-perfect aiming is required. Also added dashed **alignment guides** while
+  dragging, scale-correct drag and marquee maths, a drop-target highlight, and
+  content-cropped SVG/PNG export.
 - **SLD builder made easy (zero-mode redesign)** — removed the Place/Wire/Operate
   mode switch entirely. Clicking a palette component now adds it *and* wires it to
   the current selection, so a feeder is built by clicking Generator → Breaker →

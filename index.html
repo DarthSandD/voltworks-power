@@ -153,7 +153,7 @@ tr:last-child td{border-bottom:none}
 .sld-steps button{width:26px;height:26px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-weight:700;font-size:14px;line-height:1}
 .sld-steps button:hover{border-color:var(--accent);color:var(--accent)}
 .sld-canvas-wrap{position:relative}
-#sldCanvas{width:100%;height:440px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);cursor:default;touch-action:none;display:block}
+#sldCanvas{width:100%;height:500px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);cursor:default;touch-action:none;display:block}
 .sld-canvas-wrap.dragover #sldCanvas{border-color:var(--accent);background:var(--accent-dim)}
 .sld-hint{position:absolute;left:10px;bottom:9px;font-size:10.5px;color:var(--faint);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:3px 9px;pointer-events:none;max-width:calc(100% - 20px)}
 /* empty state */
@@ -584,7 +584,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 <!-- ============ SLD ============ -->
 <section class="tool-section" id="sec-sld">
   <div class="sec-head"><span class="num">08</span><h2>Single-Line Diagram Builder</h2></div>
-  <p class="sec-sub">Click a component on the left to drop it on the canvas — <b>there are no modes to learn</b>. The new symbol is placed for you and, if something is already selected, <b>wired to it automatically</b>, so you can build a feeder by simply clicking Generator → Breaker → Busbar → Transformer → Motor. To connect two things by hand, drag the little <b>●</b> dots that appear on a symbol. Drag a symbol to move it, click a breaker to open or close it, double-click a load to change its loading. Wheel = zoom, Space or middle-drag = pan, Ctrl+Z = undo.</p>
+  <p class="sec-sub">Click a component on the left to drop it on the canvas — <b>there are no modes to learn</b>. The new symbol is placed for you and, if something is already selected, <b>wired to it automatically</b>, so you can build a feeder by simply clicking Generator → Breaker → Busbar → Transformer → Motor. To connect two things by hand, <b>drag a ● dot onto another symbol</b> — it snaps for you, so you don't need to aim precisely. The canvas is <b>unlimited</b>: pan with Space-drag or middle-drag and zoom out freely, and the grid follows you. Drag a symbol to move it (it snaps to the grid and shows alignment guides against its neighbours), click a breaker to open or close it, double-click a load to change its loading.</p>
   <div class="help-zone" data-help="sld"></div>
   <div class="sld-layout">
     <div class="palette no-print">
@@ -617,7 +617,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
       </div>
       <div class="sld-selbar" id="sldSelbar"></div>
       <div class="sld-canvas-wrap" id="sldWrap">
-        <svg id="sldCanvas" viewBox="0 0 800 440"></svg>
+        <svg id="sldCanvas"></svg>
         <div class="sld-empty" id="sldEmpty">
           <div class="se-card">
             <h3>🗺 Draw your single-line diagram</h3>
@@ -629,7 +629,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
             <div class="se-tpl" id="sldEmptyTpl"></div>
           </div>
         </div>
-        <div class="sld-hint no-print">Click a component to add · drag the ● dots to connect · wheel = zoom · Space / middle-drag = pan · Del = delete</div>
+        <div class="sld-hint no-print">Click a component to add · drag a ● dot to connect (it snaps) · wheel = zoom · Space / middle-drag = pan anywhere · Del = delete</div>
       </div>
       <div class="sld-status">
         <span id="sldCount">0 components · 0 connections</span>
@@ -834,7 +834,7 @@ function resetAnalysis(){location.reload();}
 let sldItems=[],sldWires=[],sldId=0,sldSelected=new Set(),sldView={x:0,y:0,k:1};
 let sldGrid=true,sldSnap=true,sldUndoStack=[],sldRedoStack=[];
 let sldDrag=null,sldPan=null,sldMarquee=null,sldSpace=false,sldWorld=null,sldSuppressClick=false;
-let sldLink=null,sldHover=null,sldClickId=null;
+let sldLink=null,sldHover=null,sldClickId=null,sldGuides=null;
 const SLD_GRID=20, SLD_W=800, SLD_H=440, SLD_STEPS=[50,75,100,125,150];
 const COMP={
   gen:{k:'accent',label:'Generator',tag:'G'},
@@ -896,10 +896,11 @@ function sldNextSlot(){
   let ref=null;
   if(sldSelected.size===1)ref=sldById([...sldSelected][0]);
   if(!ref&&sldItems.length)ref=sldItems.reduce((a,b)=>a.x>=b.x?a:b);
-  let x=ref?ref.x+120:160, y=ref?ref.y:220;
+  const w=sldVisibleWorld();
+  let x=ref?ref.x+120:Math.round((w.x0+w.x1)/2)-100, y=ref?ref.y:Math.round((w.y0+w.y1)/2);
   let guard=0;
-  while(sldItems.some(i=>Math.abs(i.x-x)<44&&Math.abs(i.y-y)<44)&&guard++<24){y+=60;if(y>SLD_H-60){y=80;x+=120;}}
-  return{x:Math.max(70,Math.min(SLD_W-70,x)),y:Math.max(60,Math.min(SLD_H-60,y))};
+  while(sldItems.some(i=>Math.abs(i.x-x)<44&&Math.abs(i.y-y)<44)&&guard++<24){y+=60;}
+  return{x,y};
 }
 function sldNextTag(type){
   let n=0;const c={};sldItems.forEach(it=>{if(it.t===type)n++;});
@@ -996,19 +997,63 @@ function sldTidy(){
   sldItems.forEach(i=>{if(!seen.has(i.id)){seen.add(i.id);depth[i.id]=maxD+1;order.push(i.id);}});
   const cols={};order.forEach(id=>{(cols[depth[id]]=cols[depth[id]]||[]).push(id);});
   const keys=Object.keys(cols).map(Number).sort((a,b)=>a-b);
+  const w=sldVisibleWorld();
+  const vh=Math.max(240,w.y1-w.y0), vw=Math.max(320,w.x1-w.x0);
+  const colGap=Math.max(130,Math.min(180,vw/(keys.length+0.5)));
   keys.forEach((k,ci)=>{const arr=cols[k];
-    const rowGap=arr.length>1?Math.min(90,(SLD_H-140)/(arr.length-1)):0;
-    const totH=(arr.length-1)*rowGap, y0=(SLD_H-totH)/2;
-    arr.forEach((id,ri)=>{const it=sldById(id);if(!it)return;it.x=sldSnapV(80+ci*130);it.y=sldSnapV(y0+ri*rowGap);});
+    const rowGap=arr.length>1?Math.min(90,(vh-100)/(arr.length-1)):0;
+    const totH=(arr.length-1)*rowGap, y0=w.y0+(vh-totH)/2;
+    arr.forEach((id,ri)=>{const it=sldById(id);if(!it)return;it.x=sldSnapV(w.x0+60+ci*colGap);it.y=sldSnapV(y0+ri*rowGap);});
   });
   drawSLD();sldSave();sldFit();toast('✨ Tidied into a clean layout');
 }
+function sldVisibleWorld(){
+  const svg=$('sldCanvas');if(!svg)return{x0:0,y0:0,x1:SLD_W,y1:SLD_H};
+  const g=sldWorld||svg;
+  const m=g.getScreenCTM&&g.getScreenCTM();
+  if(!m)return{x0:0,y0:0,x1:SLD_W,y1:SLD_H};
+  const r=svg.getBoundingClientRect(),inv=m.inverse(),pt=svg.createSVGPoint();
+  const conv=(cx,cy)=>{pt.x=cx;pt.y=cy;const p=pt.matrixTransform(inv);return p;};
+  const a=conv(r.left,r.top),b=conv(r.left+r.width,r.top+r.height);
+  return{x0:a.x,y0:a.y,x1:b.x,y1:b.y};
+}
+// infinite grid: always covers the visible area, however far you pan or zoom out
 function sldGridSVG(){
   if(!sldGrid)return '';
-  const T=THEME();let p='';
-  for(let x=0;x<=SLD_W;x+=SLD_GRID)p+=`M${x},0 L${x},${SLD_H} `;
-  for(let y=0;y<=SLD_H;y+=SLD_GRID)p+=`M0,${y} L${SLD_W},${y} `;
-  return `<path d="${p}" stroke="${T.border}" stroke-width="0.6" opacity="0.5"/>`;
+  const T=THEME(),w=sldVisibleWorld();
+  let step=SLD_GRID;
+  while(step*(sldView.k||1)<11)step*=2;           // keep on-screen spacing readable
+  const maj=step*5;
+  const x0=Math.floor(w.x0/step)*step, x1=Math.ceil(w.x1/step)*step;
+  const y0=Math.floor(w.y0/step)*step, y1=Math.ceil(w.y1/step)*step;
+  let minor='',major='';
+  const isMaj=v=>Math.abs(v/maj-Math.round(v/maj))<1e-6;
+  for(let x=x0;x<=x1;x+=step){const l=`M${x},${y0} L${x},${y1} `;if(isMaj(x))major+=l;else minor+=l;}
+  for(let y=y0;y<=y1;y+=step){const l=`M${x0},${y} L${x1},${y} `;if(isMaj(y))major+=l;else minor+=l;}
+  const sw=(1/(sldView.k||1)).toFixed(2);
+  return `<path d="${minor}" stroke="${T.border}" stroke-width="${sw}" opacity="0.30" fill="none"/>`
+       + `<path d="${major}" stroke="${T.border}" stroke-width="${sw}" opacity="0.65" fill="none"/>`;
+}
+// bounding box of everything drawn — used for fit-to-view and export
+function sldContentBounds(){
+  if(!sldItems.length)return{x0:0,y0:0,x1:SLD_W,y1:SLD_H};
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  sldItems.forEach(it=>{const pad=70;
+    x0=Math.min(x0,it.x-pad);x1=Math.max(x1,it.x+pad);
+    y0=Math.min(y0,it.y-pad);y1=Math.max(y1,it.y+pad);});
+  return{x0,y0,x1,y1};
+}
+// nearest connection point to a world-space point (used to snap connections)
+function sldNearestPort(worldPt,excludeId,maxDist){
+  let best=null,bd=maxDist==null?Infinity:maxDist;
+  sldItems.forEach(it=>{
+    if(it.id===excludeId)return;
+    sldPorts(it).forEach(p=>{
+      const d=Math.hypot(p.x-worldPt.x,p.y-worldPt.y);
+      if(d<bd){bd=d;best={id:it.id,x:p.x,y:p.y,dist:d};}
+    });
+  });
+  return best;
 }
 function drawSLD(skipProps){
   const svg=$('sldCanvas');if(!svg||!svg.getAttribute)return;
@@ -1036,7 +1081,27 @@ function drawSLD(skipProps){
       gh.setAttribute('d',sldPath(a,{x:sldLink.to.x,y:sldLink.to.y,t:'ghost'}));
       gh.setAttribute('fill','none');gh.setAttribute('stroke',T.accent);gh.setAttribute('stroke-width','2.5');
       gh.setAttribute('stroke-dasharray','6 4');gh.setAttribute('opacity','.85');vp.appendChild(gh);
-      const dot=document.createElementNS(NS,'circle');dot.setAttribute('cx',sldLink.to.x);dot.setAttribute('cy',sldLink.to.y);dot.setAttribute('r','4');dot.setAttribute('fill',T.accent);vp.appendChild(dot);}}
+      const dot=document.createElementNS(NS,'circle');dot.setAttribute('cx',sldLink.to.x);dot.setAttribute('cy',sldLink.to.y);
+      dot.setAttribute('r',sldLink.snap?7:4);dot.setAttribute('fill',T.accent);vp.appendChild(dot);
+      if(sldLink.snap){ // snap ring + halo on the port we will land on
+        const ring=document.createElementNS(NS,'circle');ring.setAttribute('cx',sldLink.snap.x);ring.setAttribute('cy',sldLink.snap.y);
+        ring.setAttribute('r','13');ring.setAttribute('fill',T.accent);ring.setAttribute('fill-opacity','0.18');
+        ring.setAttribute('stroke',T.accent);ring.setAttribute('stroke-width','2.5');vp.appendChild(ring);
+        const tgt=byId[sldLink.snap.id];
+        if(tgt){const box=document.createElementNS(NS,'rect');
+          box.setAttribute('x',tgt.x-30);box.setAttribute('y',tgt.y-30);box.setAttribute('width','60');box.setAttribute('height','60');
+          box.setAttribute('rx','8');box.setAttribute('fill','none');box.setAttribute('stroke',T.accent);
+          box.setAttribute('stroke-width','1.6');box.setAttribute('stroke-dasharray','5 4');vp.appendChild(box);}}}}
+  // alignment guides while dragging
+  if(sldGuides){const w=sldVisibleWorld();
+    sldGuides.v.forEach(x=>{const l=document.createElementNS(NS,'line');
+      l.setAttribute('x1',x);l.setAttribute('y1',w.y0);l.setAttribute('x2',x);l.setAttribute('y2',w.y1);
+      l.setAttribute('stroke',T.accent2);l.setAttribute('stroke-width',(1/(sldView.k||1)).toFixed(2));
+      l.setAttribute('stroke-dasharray','5 4');l.setAttribute('opacity','.9');vp.appendChild(l);});
+    sldGuides.h.forEach(y=>{const l=document.createElementNS(NS,'line');
+      l.setAttribute('x1',w.x0);l.setAttribute('y1',y);l.setAttribute('x2',w.x1);l.setAttribute('y2',y);
+      l.setAttribute('stroke',T.accent2);l.setAttribute('stroke-width',(1/(sldView.k||1)).toFixed(2));
+      l.setAttribute('stroke-dasharray','5 4');l.setAttribute('opacity','.9');vp.appendChild(l);});}
   // elements
   sldItems.forEach(it=>{
     const live=en.has(it.id),sel=sldSelected.has(it.id);
@@ -1057,15 +1122,17 @@ function drawSLD(skipProps){
     inner=`<circle r="30" fill="transparent"/>`+inner;
     g.innerHTML=inner;
     vp.appendChild(g);
-    // connection ports — always visible on the hovered/selected item, else faint dots
-    const showPorts=sel||sldHover===it.id;
+    // connection ports — always visible on the hovered/selected item, or on everything while linking
+    const showPorts=sel||sldHover===it.id||!!sldLink;
     sldPorts(it).forEach(p=>{
+      const isSnap=sldLink&&sldLink.snap&&sldLink.snap.id===it.id&&Math.abs(sldLink.snap.x-p.x)<0.5&&Math.abs(sldLink.snap.y-p.y)<0.5;
       const pg=document.createElementNS(NS,'g');
       pg.setAttribute('transform',`translate(${p.x},${p.y})`);pg.style.cursor='crosshair';
-      pg.innerHTML=`<circle r="${showPorts?6:4}" fill="${showPorts?T.accent:T.border}" stroke="${T.surface}" stroke-width="2" opacity="${showPorts?1:0.75}"/>`;
-      if(showPorts)pg.innerHTML+=`<circle r="11" fill="transparent"/>`;
+      pg.innerHTML=`<circle r="${isSnap?8:showPorts?6.5:4.5}" fill="${isSnap?T.accent2:showPorts?T.accent:T.border}" stroke="${T.surface}" stroke-width="2" opacity="${showPorts?1:0.8}"/>`;
+      // generous invisible grab area so starting a connection is easy
+      pg.innerHTML+=`<circle r="16" fill="transparent"/>`;
       pg.addEventListener('mousedown',ev=>{ev.stopPropagation();ev.preventDefault();
-        sldLink={from:it.id,to:{x:p.x,y:p.y}};drawSLD();});
+        sldLink={from:it.id,to:{x:p.x,y:p.y},snap:null,target:null};drawSLD();});
       vp.appendChild(pg);
     });
   });
@@ -1128,9 +1195,18 @@ function renderProps(){
 function sldProp(id,key,val){const it=sldById(id);if(!it)return;it[key]=val;drawSLD(true);sldSaveSoon();}
 function sldDeleteSel(){if(!sldSelected.size)return;sldPush();const ids=[...sldSelected];sldItems=sldItems.filter(x=>!ids.includes(x.id));sldWires=sldWires.filter(w=>!ids.includes(w.a)&&!ids.includes(w.b));sldSelected.clear();drawSLD();sldSave();toast('🗑 Deleted');}
 // --- view ---
-function sldZoom(f,cx,cy){const k=Math.max(0.3,Math.min(3,sldView.k*f));const svg=$('sldCanvas');const r=svg.getBoundingClientRect();cx=(cx==null?r.width/2:cx);cy=(cy==null?r.height/2:cy);const wx=(cx-sldView.x)/sldView.k,wy=(cy-sldView.y)/sldView.k;sldView.k=k;sldView.x=cx-wx*k;sldView.y=cy-wy*k;drawSLD();}
+function sldZoom(f,cx,cy){const k=Math.max(0.08,Math.min(4,sldView.k*f));const svg=$('sldCanvas');const r=svg.getBoundingClientRect();cx=(cx==null?r.width/2:cx);cy=(cy==null?r.height/2:cy);const wx=(cx-sldView.x)/sldView.k,wy=(cy-sldView.y)/sldView.k;sldView.k=k;sldView.x=cx-wx*k;sldView.y=cy-wy*k;drawSLD();}
 function sldZoomReset(){sldView={x:0,y:0,k:1};drawSLD();}
-function sldFit(){if(!sldItems.length)return sldZoomReset();const xs=sldItems.map(i=>i.x),ys=sldItems.map(i=>i.y);const minX=Math.min(...xs)-60,maxX=Math.max(...xs)+60,minY=Math.min(...ys)-60,maxY=Math.max(...ys)+60;const svg=$('sldCanvas'),r=svg.getBoundingClientRect();const k=Math.max(0.3,Math.min(3,Math.min(r.width/(maxX-minX),r.height/(maxY-minY))));sldView.k=k;sldView.x=(r.width-(minX+maxX)*k)/2;sldView.y=(r.height-(minY+maxY)*k)/2;drawSLD();}
+function sldFit(){
+  if(!sldItems.length)return sldZoomReset();
+  const b=sldContentBounds(),svg=$('sldCanvas'),r=svg.getBoundingClientRect();
+  const pad=40,bw=(b.x1-b.x0)+pad*2,bh=(b.y1-b.y0)+pad*2;
+  const k=Math.max(0.08,Math.min(4,Math.min(r.width/bw,r.height/bh)));
+  sldView.k=k;
+  sldView.x=r.width/2-((b.x0+b.x1)/2)*k;
+  sldView.y=r.height/2-((b.y0+b.y1)/2)*k;
+  drawSLD();
+}
 function sldToggleGrid(){sldGrid=!sldGrid;$('sldGridBtn').classList.toggle('sel',sldGrid);drawSLD();}
 function sldToggleSnap(){sldSnap=!sldSnap;$('sldSnapBtn').classList.toggle('sel',sldSnap);toast(sldSnap?'🧲 Snap on':'Snap off');}
 function sldAutoTag(){if(!sldItems.length)return;sldPush();const c={};sldItems.forEach(it=>{c[it.t]=(c[it.t]||0)+1;it.tag=COMP[it.t].tag+c[it.t];});drawSLD();sldSave();toast('# Tags renumbered');}
@@ -1151,20 +1227,49 @@ $('sldCanvas').addEventListener('mousedown',e=>{
   sldDrag={mx:mp.x,my:mp.y,moved:false,ids:[...sldSelected],pre:sldSnapState(),
     snap:[...sldSelected].map(i=>{const it=sldById(i);return{id:i,x:it.x,y:it.y};})};drawSLD();
 });
+// alignment guides: snap the dragged set to other elements' x/y (within 8 world px)
+function sldComputeGuides(){
+  if(!sldDrag)return;
+  const moving=new Set(sldDrag.ids);
+  const others=sldItems.filter(i=>!moving.has(i.id));
+  const tol=8/(sldView.k||1)>8?8:Math.max(3,8/(sldView.k||1));
+  const xs=new Set(),ys=new Set();
+  sldDrag.snap.forEach(o=>{xs.add(o.x);ys.add(o.y);});
+  const v=[],h=[];
+  others.forEach(o=>{
+    xs.forEach(mx=>{if(Math.abs(o.x-mx)<=tol)v.push(o.x);});
+    ys.forEach(my=>{if(Math.abs(o.y-my)<=tol)h.push(o.y);});
+  });
+  sldGuides=(v.length||h.length)?{v:[...new Set(v)],h:[...new Set(h)]}:null;
+}
 window.addEventListener('mousemove',e=>{
   if(sldPan){sldView.x=sldPan.vx+(e.clientX-sldPan.x);sldView.y=sldPan.vy+(e.clientY-sldPan.y);drawSLD();return;}
   if(sldDrag){
     const p=sldPos(e),dx=p.x-sldDrag.mx,dy=p.y-sldDrag.my;
-    if(Math.abs(dx)+Math.abs(dy)>2)sldDrag.moved=true;
+    if(Math.abs(dx)*sldView.k+Math.abs(dy)*sldView.k>3)sldDrag.moved=true;
     sldDrag.snap.forEach(o=>{const it=sldById(o.id);if(it){it.x=sldSnapV(o.x+dx);it.y=sldSnapV(o.y+dy);}});
-    drawSLD();return;
+    sldComputeGuides();
+    drawSLD(true);return;
   }
   if(sldLink){
+    const world=sldPos(e);
+    // generous snapping: 42 screen px, and if the pointer is over an element's
+    // body, snap to that element's nearest port regardless of exact distance
+    const maxD=42/(sldView.k||1);
+    let near=sldNearestPort(world,sldLink.from,maxD);
     const over=sldItemAt(e);
-    sldLink.target=(over!=null&&over!==sldLink.from)?over:null;
-    sldLink.to=sldPos(e);drawSLD();return;
+    if(over!=null&&over!==sldLink.from){
+      const ports=sldPorts(sldById(over));
+      let bp=null,bd=Infinity;
+      ports.forEach(p=>{const d=Math.hypot(p.x-world.x,p.y-world.y);if(d<bd){bd=d;bp=p;}});
+      if(bp)near={id:over,x:bp.x,y:bp.y,dist:bd};
+    }
+    sldLink.snap=near?{id:near.id,x:near.x,y:near.y}:null;
+    sldLink.target=near?near.id:null;
+    sldLink.to=near?{x:near.x,y:near.y}:world;
+    drawSLD(true);return;
   }
-  if(sldMarquee){const s=sldClientToScreen(e);sldMarquee.x1=s.x;sldMarquee.y1=s.y;if(Math.abs(sldMarquee.x1-sldMarquee.x0)>4||Math.abs(sldMarquee.y1-sldMarquee.y0)>4)sldSuppressClick=true;drawSLD();return;}
+  if(sldMarquee){const s=sldClientToScreen(e);sldMarquee.x1=s.x;sldMarquee.y1=s.y;if(Math.abs(sldMarquee.x1-sldMarquee.x0)>4||Math.abs(sldMarquee.y1-sldMarquee.y0)>4)sldSuppressClick=true;drawSLD(true);return;}
   // hover highlight (for showing connection dots) — skip while typing in a field
   const typing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#sldPropsBody');
   if(typing){if(sldHover!=null){sldHover=null;drawSLD();}return;}
@@ -1184,11 +1289,12 @@ window.addEventListener('mouseup',()=>{
     }
     drawSLD();sldSave();return;
   }
-  if(sldDrag){if(sldDrag.moved&&sldDrag.pre)sldUndoStack.push(sldDrag.pre),sldRedoStack=[];sldDrag=null;sldSave();return;}
+  if(sldDrag){if(sldDrag.moved&&sldDrag.pre)sldUndoStack.push(sldDrag.pre),sldRedoStack=[];sldDrag=null;sldGuides=null;sldSave();drawSLD();return;}
   if(sldMarquee){
     const r={x0:Math.min(sldMarquee.x0,sldMarquee.x1),y0:Math.min(sldMarquee.y0,sldMarquee.y1),x1:Math.max(sldMarquee.x0,sldMarquee.x1),y1:Math.max(sldMarquee.y0,sldMarquee.y1)};
     if(r.x1-r.x0>4&&r.y1-r.y0>4){
-      sldItems.forEach(it=>{const s={x:sldView.x+it.x*sldView.k,y:sldView.y+it.y*sldView.k};if(s.x>=r.x0&&s.x<=r.x1&&s.y>=r.y0&&s.y<=r.y1)sldSelected.add(it.id);});
+      const k=sldView.k;
+      sldItems.forEach(it=>{const s={x:sldView.x+it.x*k,y:sldView.y+it.y*k};if(s.x>=r.x0&&s.x<=r.x1&&s.y>=r.y0&&s.y<=r.y1)sldSelected.add(it.id);});
     }
     sldMarquee=null;drawSLD();return;
   }
@@ -1226,11 +1332,14 @@ document.addEventListener('keyup',e=>{if(e.code==='Space')sldSpace=false;});
 function clearSLD(){if(!sldItems.length&&!sldWires.length){toast('Canvas is already empty');return;}sldPush();sldItems=[];sldWires=[];sldLink=null;sldSelected.clear();drawSLD();sldSave();toast('🗑 Canvas cleared');}
 function sldSVGString(){
   const T=THEME(),en=sldEnergized(),byId={};sldItems.forEach(i=>byId[i.id]=i);
-  let s='';
-  for(let x=0;x<=SLD_W;x+=SLD_GRID)s+=`<path d="M${x},0 L${x},${SLD_H}" stroke="${T.border}" stroke-width="0.6" opacity="0.5"/>`;
-  for(let y=0;y<=SLD_H;y+=SLD_GRID)s+=`<path d="M0,${y} L${SLD_W},${y}" stroke="${T.border}" stroke-width="0.6" opacity="0.5"/>`;
-  sldWires.forEach(w=>{const a=byId[w.a],b=byId[w.b];if(!a||!b)return;const live=en.has(w.a)&&en.has(w.b);
-    s+=`<path d="${sldPath(a,b)}" fill="none" stroke="${live?T.accent:T.border}" stroke-width="2.5" stroke-linejoin="round"/>`;});
+  const b=sldContentBounds();
+  const pad=24;
+  const X0=b.x0-pad, Y0=b.y0-pad, W=(b.x1-b.x0)+pad*2, H=(b.y1-b.y0)+pad*2;
+  let s=`<rect x="${X0}" y="${Y0}" width="${W}" height="${H}" fill="${T.bg}"/>`;
+  for(let x=Math.floor(X0/SLD_GRID)*SLD_GRID;x<=X0+W;x+=SLD_GRID)s+=`<path d="M${x},${Y0} L${x},${Y0+H}" stroke="${T.border}" stroke-width="0.6" opacity="0.4"/>`;
+  for(let y=Math.floor(Y0/SLD_GRID)*SLD_GRID;y<=Y0+H;y+=SLD_GRID)s+=`<path d="M${X0},${y} L${X0+W},${y}" stroke="${T.border}" stroke-width="0.6" opacity="0.4"/>`;
+  sldWires.forEach(w=>{const a=byId[w.a],b2=byId[w.b];if(!a||!b2)return;const live=en.has(w.a)&&en.has(w.b);
+    s+=`<path d="${sldPath(a,b2)}" fill="none" stroke="${live?T.accent:T.border}" stroke-width="2.5" stroke-linejoin="round"/>`;});
   sldItems.forEach(it=>{const live=en.has(it.id);let C=T[(COMP[it.t]||{}).k]||T.text;
     if(it.t==='load'||it.t==='motor')C=sldLoadColor(it,live);else if(!live)C=T.faint;
     if(it.t==='brk'&&it.closed===false)C=T.danger;
@@ -1239,7 +1348,7 @@ function sldSVGString(){
     s+=`<text y="${it.t==='bus'?-9:44}" text-anchor="middle" fill="${T.muted}" font-size="10" font-weight="600" font-family="Inter,sans-serif">${sldTag(it)}</text>`;
     if(it.name&&it.t!=='bus')s+=`<text y="${it.t==='bus'?14:56}" text-anchor="middle" fill="${T.faint}" font-size="9" font-family="Inter,sans-serif">${it.name}</text>`;
     s+=`</g>`;});
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SLD_W} ${SLD_H}" width="${SLD_W}" height="${SLD_H}"><rect width="${SLD_W}" height="${SLD_H}" fill="${T.bg}"/>${s}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${X0} ${Y0} ${W} ${H}" width="${W}" height="${H}">${s}</svg>`;
 }
 function exportSLD(){
   const blob=new Blob([sldSVGString()],{type:'image/svg+xml'});
@@ -1248,8 +1357,10 @@ function exportSLD(){
 }
 function exportPNG(){
   const svg=sldSVGString(),img=new Image();
+  const m=svg.match(/width="(\d+)" height="(\d+)"/);
+  const W=m?+m[1]:SLD_W, H=m?+m[2]:SLD_H;
   const url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
-  img.onload=()=>{const cv=document.createElement('canvas');cv.width=SLD_W*2;cv.height=SLD_H*2;const g=cv.getContext('2d');g.scale(2,2);g.drawImage(img,0,0);cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='voltworks-sld.png';a.click();toast('⬇ SLD exported (PNG)');});};
+  img.onload=()=>{const cv=document.createElement('canvas');cv.width=W*2;cv.height=H*2;const g=cv.getContext('2d');g.scale(2,2);g.drawImage(img,0,0);cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='voltworks-sld.png';a.click();toast('⬇ SLD exported (PNG)');});};
   img.onerror=()=>toast('⚠ PNG export failed — use SVG');
   img.src=url;
 }
@@ -1799,20 +1910,21 @@ analysis:{icon:'📊',title:'Network Analysis — the whole system on one page',
  rules:'Look for red rows first — they are the violations. Amber means marginal.',
  ex:'The preloaded demo case is already populated — just explore it.'},
 sld:{icon:'🗺',title:'Single-Line Diagram — draw your system',
- what:'A single-line diagram is the schematic of your power system: sources, breakers, transformers, busbars and loads. There are <b>no modes to learn</b> — you just click to add, drag to move, and drag the little ● dots to connect. Build a whole feeder in a few clicks.',
+ what:'A single-line diagram is the schematic of your power system: sources, breakers, transformers, busbars and loads. There are <b>no modes to learn</b> — you just click to add, drag to move, and drag the ● dots to connect. Build a whole feeder in a few clicks.',
  how:[
   '<b>Add</b>: click any component on the left and it drops onto the canvas, already wired to whatever you had selected. So clicking Generator → Breaker → Busbar → Transformer → Motor builds a feeder step by step. You can also drag a component straight onto the canvas.',
-  '<b>Connect</b>: every symbol shows small ● dots. Drag from a dot onto another symbol to link them — a dashed line follows your pointer until you let go.',
-  '<b>Move</b>: drag a symbol anywhere. Hold Shift and click to select several, or drag a box on empty space, then move or delete them together.',
+  '<b>Connect</b>: every symbol shows small ● dots. Drag from a dot onto another symbol to link them — the dot <b>snaps</b> to the nearest connection point, so you do not need to aim precisely, and a dashed line follows your pointer until you let go.',
+  '<b>Move</b>: drag a symbol anywhere. It snaps to the grid and shows dashed <b>alignment guides</b> when it lines up with another element. Hold Shift and click to select several, or drag a box on empty space, then move or delete them together.',
+  '<b>Unlimited canvas</b>: the drawing area is not fixed. Pan anywhere with Space-drag or middle-drag, and zoom out with the mouse wheel — the grid keeps extending so you never run out of room.',
   '<b>Breaker</b>: double-click it (or use the button above) to open or close. Anything downstream greys out when it opens.',
   '<b>Load / motor</b>: double-click to step the loading up (50 → 75 → 100 → 125 → 150 %), or use the − / ＋ buttons above the canvas.',
   '<b>Fix the layout</b>: the ✨ Tidy up button arranges everything left-to-right automatically. ⤢ Fit brings it all into view.',
   '<b>Edit details</b>: select one element and the right panel edits its tag, name, rating and transformer impedance.',
-  '<b>Undo anything</b>: Ctrl+Z. <b>Delete</b>: the Del key. <b>Zoom</b>: mouse wheel. <b>Pan</b>: Space-drag or middle-drag.',
-  '<b>Export</b>: ⬇ SVG for CAD, ⬇ PNG for reports.'
+  '<b>Undo anything</b>: Ctrl+Z. <b>Delete</b>: the Del key.',
+  '<b>Export</b>: ⬇ SVG for CAD, ⬇ PNG for reports — both crop neatly to your drawing.'
  ],
  rules:'Loading colours follow the Live Load Study slider: green ≤80%, amber 80–100%, red >100%. A red breaker is open, and everything it feeds goes dark.',
- ex:'Click a template in the left panel (or “⚡ Simple feeder” on the empty canvas) to see a finished diagram, then drag the ● dots and double-click the breaker.'},
+ ex:'Click a template in the left panel (or “⚡ Simple feeder” on the empty canvas) to see a finished diagram, then drag a ● dot onto another symbol and double-click the breaker.'},
 report:{icon:'📄',title:'Engineering Report — your results, one document',
  what:'Collects the latest result from every module into a single professional report you can print or save as PDF.',
  how:[
