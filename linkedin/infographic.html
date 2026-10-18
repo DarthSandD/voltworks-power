@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#080b12; --surface:#0f1420; --surface2:#151b2a; --border:#1e2739;
+    --text:#eef2f8; --text2:#93a0b8; --text3:#5f6d85;
+    --blue:#2f7dff; --cyan:#00d4ff; --amber:#ffb020; --green:#22c98a; --red:#ff5c5c;
+  }
+  body{background:#000;font-family:'Inter',sans-serif}
+  .card{
+    width:1080px;height:1350px;position:relative;overflow:hidden;
+    background:var(--bg);color:var(--text);padding:44px 48px 34px;
+    display:flex;flex-direction:column;
+  }
+  .card::before{
+    content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(47,125,255,.035) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(47,125,255,.035) 1px,transparent 1px);
+    background-size:54px 54px;pointer-events:none;
+  }
+  .in{position:relative;z-index:2;display:flex;flex-direction:column;height:100%}
+
+  /* header */
+  .top{display:flex;justify-content:space-between;align-items:flex-start;
+       border-bottom:2px solid var(--blue);padding-bottom:16px;margin-bottom:18px}
+  .kicker{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;
+          letter-spacing:.18em;color:var(--cyan);text-transform:uppercase}
+  h1{font-size:44px;font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-top:7px}
+  h1 span{color:var(--cyan)}
+  .badge{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+         color:var(--amber);border:1px solid var(--amber);border-radius:6px;
+         padding:6px 11px;letter-spacing:.1em;white-space:nowrap}
+
+  /* grid */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;flex:1}
+  .sec{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+       padding:15px 17px;display:flex;flex-direction:column;overflow:hidden}
+  .sec.wide{grid-column:1 / -1}
+  .sh{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+  .num{width:23px;height:23px;border-radius:6px;background:var(--blue);color:#fff;
+       font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+       display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .st{font-size:16.5px;font-weight:800;letter-spacing:-.01em;text-transform:uppercase;
+      letter-spacing:.03em}
+  .sec p{font-size:16px;color:var(--text2);line-height:1.45}
+  .sec p + p{margin-top:7px}
+
+  .formula{font-family:'JetBrains Mono',monospace;font-size:25px;font-weight:700;
+           color:var(--cyan);text-align:center;background:var(--surface2);
+           border:1px solid var(--border);border-radius:9px;padding:14px 8px;margin:4px 0 11px}
+  .legend{font-size:14.5px;color:var(--text2);line-height:1.62}
+  .legend b{color:var(--text);font-family:'JetBrains Mono',monospace;font-weight:700}
+
+  table{width:100%;border-collapse:collapse;font-size:15px}
+  th{text-align:left;font-size:12.5px;font-weight:700;color:var(--text3);
+     text-transform:uppercase;letter-spacing:.09em;padding:5px 7px;
+     border-bottom:1px solid var(--border)}
+  td{padding:6.5px 7px;border-bottom:1px solid rgba(30,39,57,.6);color:var(--text2)}
+  td:first-child{color:var(--text);font-weight:600}
+  tr:last-child td{border-bottom:none}
+  .ok{color:var(--green);font-weight:700}
+  .warn{color:var(--amber);font-weight:700}
+
+  ul{list-style:none}
+  li{font-size:15.5px;color:var(--text2);line-height:1.42;padding-left:19px;
+     position:relative;margin-bottom:7.5px}
+  li::before{content:'';position:absolute;left:0;top:7.5px;width:6px;height:6px;
+             border-radius:50%;background:var(--cyan)}
+  li b{color:var(--text);font-weight:700}
+  li.x::before{background:var(--red)}
+  li.n{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--cyan);font-size:15px}
+
+  .steps{counter-reset:s;list-style:none}
+  .steps li{padding-left:0;margin-bottom:6px;font-size:15.5px;
+            display:flex;gap:9px;align-items:baseline}
+  .steps li::before{display:none}
+  .steps li .n2{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--blue);
+                flex:0 0 auto;font-size:14px}
+
+  .foot{margin-top:16px;border-top:1px solid var(--border);padding-top:13px;
+        display:flex;justify-content:space-between;align-items:center;
+        font-family:'JetBrains Mono',monospace;font-size:14.5px;color:var(--text3)}
+  .foot .u{color:var(--cyan);font-weight:700}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="in">
+
+    <div class="top">
+      <div>
+        <div class="kicker">Power Systems · Reference Card</div>
+        <h1>Cable Sizing &amp;<br><span>Voltage Drop</span></h1>
+      </div>
+      <div class="badge">IEC · NEC · BS</div>
+    </div>
+
+    <div class="grid">
+
+      <!-- 1 -->
+      <div class="sec">
+        <div class="sh"><div class="num">1</div><div class="st">The Formula</div></div>
+        <div class="formula">Vd = k · ρ · L · I / A</div>
+        <div class="legend">
+          <b>k</b> = 2 single-phase, √3 three-phase<br>
+          <b>ρ</b> = resistivity (Ω·mm²/m)<br>
+          <b>L</b> = one-way run length (m)<br>
+          <b>I</b> = design current (A)<br>
+          <b>A</b> = conductor area (mm²)
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="sec">
+        <div class="sh"><div class="num">2</div><div class="st">Drop Limits</div></div>
+        <table>
+          <tr><th>Standard</th><th>Lighting</th><th>Power</th></tr>
+          <tr><td>IEC 60364</td><td>3%</td><td>5%</td></tr>
+          <tr><td>BS 7671</td><td>3%</td><td>5%</td></tr>
+          <tr><td>NEC 210.19</td><td>3%</td><td>5%*</td></tr>
+          <tr><td>AS/NZS 3008</td><td colspan="2">5% total</td></tr>
+        </table>
+        <p style="margin-top:9px;font-size:14px">*3% branch + 2% feeder. Measured from origin of installation.</p>
+      </div>
+
+      <!-- 3 -->
+      <div class="sec">
+        <div class="sh"><div class="num">3</div><div class="st">Resistivity ρ</div></div>
+        <table>
+          <tr><th>Conductor</th><th>20 °C</th><th>70 °C</th><th>90 °C</th></tr>
+          <tr><td>Copper</td><td>0.0175</td><td>0.0217</td><td>0.0232</td></tr>
+          <tr><td>Aluminium</td><td>0.0282</td><td>0.0345</td><td>0.0369</td></tr>
+        </table>
+        <p style="margin-top:9px;font-size:14px">Using 20 °C ρ understates drop. Size at operating temperature.</p>
+      </div>
+
+      <!-- 4 -->
+      <div class="sec">
+        <div class="sh"><div class="num">4</div><div class="st">Derating</div></div>
+        <ul>
+          <li><b>Ca</b> — ambient air temperature</li>
+          <li><b>Cg</b> — grouping of circuits</li>
+          <li><b>Cs</b> — soil thermal resistivity</li>
+          <li><b>Cd</b> — depth of burial</li>
+          <li><b>Ch</b> — triplen harmonics</li>
+        </ul>
+      </div>
+
+      <!-- 5 -->
+      <div class="sec wide">
+        <div class="sh"><div class="num">5</div><div class="st">Sizing Sequence</div></div>
+        <ul class="steps" style="display:grid;grid-template-columns:1fr 1fr;gap:0 22px">
+          <li><span class="n2">01</span><span>Design current <b>Ib</b> from connected load</span></li>
+          <li><span class="n2">05</span><span>Select cable → <b>It</b> from tables</span></li>
+          <li><span class="n2">02</span><span>Device rating <b>In</b> ≥ Ib</span></li>
+          <li><span class="n2">06</span><span>Check <b>voltage drop</b> ≤ limit</span></li>
+          <li><span class="n2">03</span><span>Apply factors <b>Ca · Cg · …</b></span></li>
+          <li><span class="n2">07</span><span>Check <b>thermal</b>: k²S² ≥ I²t</span></li>
+          <li><span class="n2">04</span><span>Required <b>Iz</b> ≥ In / (Ca · Cg)</span></li>
+          <li><span class="n2">08</span><span>Check <b>earth fault loop</b> Zs</span></li>
+        </ul>
+      </div>
+
+      <!-- 6 -->
+      <div class="sec wide">
+        <div class="sh"><div class="num">6</div><div class="st">Where Designs Go Wrong</div></div>
+        <ul style="display:grid;grid-template-columns:1fr 1fr;gap:0 22px">
+          <li class="x">Sizing on <b>20 °C ρ</b>, then ignoring conductor temperature rise</li>
+          <li class="x">Skipping <b>grouping factor</b> when circuits share a tray or conduit</li>
+          <li class="x">Confirming voltage drop but never the <b>thermal</b> withstand</li>
+          <li class="x">Forgetting <b>Zs</b> — the cable trips, but the breaker never does</li>
+          <li class="x">Mixing <b>one-way</b> and <b>total</b> length in the drop calc</li>
+          <li class="x">Upsizing the cable to fix drop when the real issue is <b>length</b></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="foot">
+      <span>Built by Darren Lieu · Power Systems &amp; Automation</span>
+      <span class="u">darthsandd.github.io/voltworks-power</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
