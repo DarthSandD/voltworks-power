@@ -265,6 +265,62 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;bac
 [data-theme="light"] .eq{background:var(--surface2)}
 [data-theme="light"] .rcard,[data-theme="light"] #liveCanvas,[data-theme="light"] #sldCanvas{background:var(--bg-input)}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ---- 3D Substation Viewer ---- */
+.vw3d-wrap{position:relative;background:#0b1220;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.vw3d-wrap canvas{display:block;width:100%;height:520px;touch-action:none;cursor:grab}
+.vw3d-wrap.small canvas{height:420px}
+.vw3d-wrap canvas:active{cursor:grabbing}
+.vw3d-fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:13px;color:var(--muted);background:var(--bg-input)}
+.vw3d-fallback.show{display:flex}
+.vw3d-info{position:absolute;left:12px;top:12px;max-width:320px;background:rgba(8,12,22,.88);border:1px solid var(--border);border-radius:10px;padding:10px 13px;font-size:12px;line-height:1.5;pointer-events:none}
+.vw3d-info b{color:var(--accent)}
+.vw3d-info .sub{color:var(--muted)}
+.vw3d-bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:7px;margin-bottom:8px}
+.vw3d-bar .lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:0 2px 0 6px}
+.vw3d-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:10px}
+.vw3d-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:10px}
+.vw3d-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.vw3d-mini{margin-left:auto;padding:3px 9px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--accent);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.vw3d-mini:hover{border-color:var(--accent);background:var(--accent-dim)}
+.vw3d-sld{margin-top:10px}
+[data-theme="light"] .vw3d-wrap{background:#eef2f8}
+[data-theme="light"] .vw3d-info{background:rgba(255,255,255,.92)}
+
+
+/* ---- branding refresh: hero steps, task picker, standards ---- */
+.hero-steps{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px auto 0;max-width:860px;text-align:left}
+.hstep{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;flex:1;min-width:210px}
+.hstep b{font-family:var(--display);font-size:15px;color:var(--accent);background:var(--accent-dim);border-radius:8px;min-width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+.hstep span{font-size:12px;color:var(--muted);line-height:1.5}
+.hstep strong{color:var(--text)}
+.task-picker{margin:18px auto 0;max-width:860px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.tp-title{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:10px}
+.tp-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.tp-btns button{padding:9px 15px;border-radius:9px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--display);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.tp-btns button:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.std-strip{margin:16px auto 0;max-width:860px;font-size:11.5px;color:var(--muted);line-height:1.6}
+.std-strip b{color:var(--text)}
+/* ---- onboarding: tour overlay + coach ---- */
+.coach-btn{margin-left:auto;padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--accent);font-family:var(--display);font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+.coach-btn:hover{border-color:var(--accent);background:var(--accent-dim)}
+#tourSpot{position:fixed;z-index:700;pointer-events:none;border:2px solid var(--accent);border-radius:12px;box-shadow:0 0 0 4000px rgba(3,6,12,.55),0 0 0 3px rgba(76,141,255,.35);display:none;transition:all .3s}
+#tourCard{position:fixed;z-index:710;width:min(380px,calc(100vw - 24px));background:var(--surface);border:1px solid var(--accent);border-radius:14px;padding:18px;box-shadow:var(--shadow);display:none}
+#tourCard h3{font-family:var(--display);font-size:16px;margin-bottom:4px}
+#tourCard .tprog{font-size:11px;color:var(--muted);margin-bottom:8px}
+#tourCard .tdots{display:flex;gap:5px;margin-bottom:10px}
+#tourCard .tdots i{width:18px;height:4px;border-radius:2px;background:var(--border);display:block}
+#tourCard .tdots i.done{background:var(--success)}
+#tourCard .tdots i.now{background:var(--accent)}
+#tourCard p{font-size:13px;color:#c9d2e3;line-height:1.6;margin-bottom:12px}
+#tourCard .tbtns{display:flex;gap:8px;flex-wrap:wrap}
+#tourCard .tbtns button{padding:9px 14px;border-radius:9px;border:none;font-family:var(--display);font-size:12px;font-weight:700;cursor:pointer}
+#tourCard .tnext{background:var(--accent);color:var(--on-accent)}
+#tourCard .tback{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+#tourCard .tskip{background:transparent;color:var(--muted)}
+#tourCard .ttry{background:var(--surface3);color:var(--text);border:1px solid var(--border-strong)}
+[data-theme="light"] #tourCard p{color:#334155}
+
 /* toast + footer */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--accent);color:var(--text);padding:11px 22px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;z-index:500;pointer-events:none}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -319,6 +375,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
     <button class="nav-btn" data-sec="arcflash">Arc Flash</button>
     <button class="nav-btn" data-sec="analysis">Analysis</button>
     <button class="nav-btn" data-sec="sld">SLD Builder</button>
+    <button class="nav-btn" data-sec="3d">3D Substation</button>
     <button class="nav-btn" data-sec="report">Report</button>
   </nav>
   <button class="btn ghost" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark theme" style="width:auto;padding:8px 14px;margin-top:0">🌙</button>
@@ -326,20 +383,37 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
   <div class="status-pill"><span class="dot"></span><span id="statusText">Ready · client-side</span></div>
 </header>
 
-<div class="hero">
-  <div class="hero-badge">⚡ POWER EDITION — FEEDERS · TRANSFORMERS · FAULT LEVELS · NETWORK ANALYSIS</div>
-  <h1>Design. Check. <span>Energize.</span></h1>
-  <p>Feeder voltage drop, transformer sizing, cable sizing, fault levels, network analysis, single-line diagrams and professional reports — all running instantly in your browser. No server, no uploads.</p>
+<div class="hero" id="heroTop">
+  <div class="hero-badge">⚡ POWER ENGINEERING — MADE OBVIOUS</div>
+  <h1>Design power systems with <span>confidence.</span></h1>
+  <p>VoltWorks turns a blank page into a checked, documented power design: size feeders, transformers and cables, check fault levels and arc-flash PPE, draw the single-line diagram, and walk the substation in 3D. Everything runs in your browser — no sign-up, no uploads, nothing to break.</p>
   <div class="hero-stats">
     <div class="hstat"><b>10</b><span>power modules</span></div>
-    <div class="hstat"><b>6</b><span>report tables</span></div>
+    <div class="hstat"><b>11</b><span>guided tours</span></div>
     <div class="hstat"><b>100%</b><span>client-side</span></div>
   </div>
+  <div class="hero-steps">
+    <div class="hstep"><b>1</b><span><strong>Enter your numbers</strong> — plain labels, worked examples, no jargon.</span></div>
+    <div class="hstep"><b>2</b><span><strong>Read the verdict</strong> — green means go, red tells you exactly what to fix.</span></div>
+    <div class="hstep"><b>3</b><span><strong>Export the report</strong> — one document, ready to print or file.</span></div>
+  </div>
+  <div class="task-picker">
+    <div class="tp-title">Not sure where to start? Pick your job:</div>
+    <div class="tp-btns">
+      <button onclick="vwTask('tx')">🏭 Size a transformer</button>
+      <button onclick="vwTask('vd')">📏 Check voltage drop</button>
+      <button onclick="vwTask('arc')">🦺 Check arc-flash PPE</button>
+      <button onclick="vwTask('sld')">🗺 Draw a single-line diagram</button>
+      <button onclick="vwTask('tour')">🧭 Take the 2-minute tour</button>
+    </div>
+  </div>
+  <div class="std-strip">Built on <b>IEC 60364</b> · <b>IEC 60909</b> · <b>IEEE 1584-2018</b> · <b>NFPA 70E</b> · <b>IEC 60076</b> · <b>IEEE C57</b> · <b>AS/NZS 3000</b> — a design aid: verify safety-critical results against your protection study before use.</div>
 </div>
 
 <div class="startbar">
   <span>👋 <b>New here?</b> Each section has a <b>“How this works”</b> panel with a plain-English explanation and a one-click worked example.</span>
   <div class="sp">
+    <button onclick="vwStartTour()">🧭 Guided tour</button>
     <button onclick="toggleAllHelp(true)">📖 Explain everything</button>
     <button onclick="openGlossary()">📚 Glossary</button>
     <button onclick="scrollTo(0,0)">↑ Top</button>
@@ -652,6 +726,9 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
         <span class="tsep"></span>
         <button class="tbtn" onclick="exportSLD()" title="Export as SVG (vector — for CAD)">⬇ SVG</button>
         <button class="tbtn" onclick="exportPNG()" title="Export as PNG (image — for reports)">⬇ PNG</button>
+        <span class="tsep"></span>
+        <button class="tbtn" id="sld3dBtn" onclick="vw3dToggleSLD()" title="Show this diagram as a 3D substation, right here">🧊 3D view</button>
+        <button class="tbtn" onclick="vw3dOpenSLD()" title="Open this diagram in the full 3D Substation viewer">⤢ Full 3D →</button>
       </div>
       <div class="sld-selbar" id="sldSelbar"></div>
       <div class="sld-canvas-wrap" id="sldWrap">
@@ -679,11 +756,64 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
       <div id="sldPropsBody" class="props-empty">Select an element to edit its properties.</div>
     </div>
   </div>
+  <div class="vw3d-sld no-print" id="sld3dPanel" hidden>
+    <div class="vw3d-bar">
+      <span class="lbl">3D of this diagram</span>
+      <button class="tbtn" onclick="vw3dSetView('yard','sld')">Perspective</button>
+      <button class="tbtn" onclick="vw3dSetView('top','sld')">Top</button>
+      <button class="tbtn" onclick="vw3dSetView('front','sld')">Front</button>
+      <button class="tbtn sel" id="sld3dFlowBtn" onclick="vw3dToggleOpt('sld','flow',this)">Flow</button>
+      <button class="tbtn sel" id="sld3dLblBtn" onclick="vw3dToggleOpt('sld','labels',this)">Labels</button>
+      <button class="tbtn sel" id="sld3dDetailHighBtn" onclick="vw3dToggleDetail('sld')">High detail</button>
+      <button class="tbtn" id="sld3dDetailFastBtn" onclick="vw3dToggleDetail('sld')">Fast</button>
+      <button class="tbtn" onclick="vw3dToggleSLD()">✕ Close 3D</button>
+    </div>
+    <div class="vw3d-wrap small"><canvas id="sld3dCanvas"></canvas><div class="vw3d-fallback" id="sld3dFallback">3D could not load (Three.js CDN blocked). The 2D diagram above still works — check your connection and reopen this panel.</div><div class="vw3d-info" id="sld3dInfo"></div></div>
+    <p class="sec-sub" style="margin-top:8px">Live mirror of the diagram above: breakers you open de-energise everything downstream, and load colours follow each load's loading %. Drag to orbit · scroll to zoom · right-drag to pan · click equipment for details.</p>
+  </div>
+</section>
+
+<!-- ============ 3D SUBSTATION ============ -->
+<section class="tool-section" id="sec-3d">
+  <div class="sec-head"><span class="num">09</span><h2>3D Substation Viewer</h2></div>
+  <p class="sec-sub">The whole substation in 3D — what every tool in this app is actually describing. Grid infeed → gantry → breaker → 11 kV bus → transformer → LV switchgear → capacitor bank → motor + loads, with live loading colours, power-flow particles and the arc-flash zone around the switchgear. Switch the source to <b>SLD diagram</b> and the same viewer rebuilds itself from whatever you drew in the SLD Builder.</p>
+  <div class="help-zone" data-help="3d"></div>
+  <div class="vw3d-bar no-print">
+    <span class="lbl">Source</span>
+    <button class="tbtn sel" id="vw3dSrcCalc" onclick="vw3dSetSource('calc')">🧮 Calculators</button>
+    <button class="tbtn" id="vw3dSrcSld" onclick="vw3dSetSource('sld')">🗺 SLD diagram</button>
+    <span class="lbl">Focus</span>
+    <button class="tbtn" onclick="vw3dOpenFocus('yard')">Yard</button>
+    <button class="tbtn" onclick="vw3dOpenFocus('feeder')">Feeder</button>
+    <button class="tbtn" onclick="vw3dOpenFocus('transformer')">Transformer</button>
+    <button class="tbtn" onclick="vw3dOpenFocus('cable')">Cable</button>
+    <button class="tbtn" onclick="vw3dOpenFocus('motor')">Motor</button>
+    <button class="tbtn" onclick="vw3dOpenFocus('capacitor')">Capacitor</button>
+    <button class="tbtn" onclick="vw3dOpenFocus('arc')">Arc zone</button>
+  </div>
+  <div class="vw3d-bar no-print">
+    <span class="lbl">View</span>
+    <button class="tbtn" onclick="vw3dSetView('yard','main')">Perspective</button>
+    <button class="tbtn" onclick="vw3dSetView('top','main')">Top</button>
+    <button class="tbtn" onclick="vw3dSetView('front','main')">Front</button>
+    <button class="tbtn" onclick="vw3dSetView('side','main')">Side</button>
+    <button class="tbtn sel" id="vw3dFlowBtn" onclick="vw3dToggleOpt('main','flow',this)">Flow</button>
+    <button class="tbtn sel" id="vw3dLblBtn" onclick="vw3dToggleOpt('main','labels',this)">Labels</button>
+    <button class="tbtn" id="vw3dRotBtn" onclick="vw3dToggleOpt('main','autorotate',this)">Auto-rotate</button>
+    <button class="tbtn" id="vw3dXrayBtn" onclick="vw3dToggleOpt('main','xray',this)">X-ray</button>
+    <button class="tbtn sel" id="vw3dDetailHighBtn" onclick="vw3dToggleDetail('main')">High detail</button>
+    <button class="tbtn" id="vw3dDetailFastBtn" onclick="vw3dToggleDetail('main')">Fast</button>
+    <button class="tbtn" onclick="vw3dRefresh(true)">↻ Re-sync</button>
+  </div>
+  <div class="vw3d-wrap"><canvas id="vw3dCanvas"></canvas><div class="vw3d-fallback" id="vw3dFallback">3D could not load (Three.js CDN blocked). All calculators and the 2D SLD still work — check your connection and press Re-sync.</div><div class="vw3d-info" id="vw3dInfo"></div></div>
+  <div class="vw3d-stats" id="vw3dStats"></div>
+  <div class="vw3d-legend"><span><i style="background:#22c55e"></i>≤ 80% loaded</span><span><i style="background:#f59e0b"></i>80–100%</span><span><i style="background:#f04a4a"></i>&gt; 100% / open / arc zone</span><span><i style="background:#9aa7bd"></i>De-energised</span><span>● Flow dots move from source → load; faster = heavier loading.</span></div>
+  <p class="sec-sub" style="margin-top:8px">True scale for design review — 1 unit = 1 metre, equipment heights match real dimensions (11 kV pylon 12 m · transformer ≈ 2.5 m · worker 1.8 m). Positions are illustrative, not construction drawings. Drag to orbit · scroll to zoom · right-drag to pan · click any equipment for its details.</p>
 </section>
 
 <!-- ============ REPORT ============ -->
 <section class="tool-section" id="sec-report">
-  <div class="sec-head"><span class="num">09</span><h2>Engineering Report</h2></div>
+  <div class="sec-head"><span class="num">10</span><h2>Engineering Report</h2></div>
   <p class="sec-sub">Collects your latest results from every module above into one professional report. Print or save as PDF.</p>
   <div class="help-zone" data-help="report"></div>
   <div class="btn-row" style="max-width:520px">
@@ -693,7 +823,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
   <div class="report-out" id="reportOut"></div>
 </section>
 </main>
-<footer>VoltWorks Power · from PowerSys Pro + psextract · all calculations run locally in your browser · <span id="footDate"></span><!-- sc-credit-marker -->
+<footer>VoltWorks Power — power engineering, made obvious · from PowerSys Pro + psextract · all calculations run locally in your browser · <span id="footDate"></span><!-- sc-credit-marker -->
 <div class="site-credit site-credit--inline">
   <p class="sc-made">Built by <strong>Darren Lieu</strong>
     <span class="sc-links sc-links--inline"><a href="https://github.com/DarthSandD" target="_blank" rel="noopener">GitHub</a><span>·</span><a href="https://darrenlin.pages.dev/" target="_blank" rel="noopener">Portfolio</a><span>·</span><a href="https://www.instagram.com/darren.lin_ai" target="_blank" rel="noopener">@darren.lin_ai</a></span>
@@ -704,6 +834,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
 </div>
 </footer>
 </div>
+<div id="tourSpot"></div><div id="tourCard"></div>
 <div id="toast"></div>
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modalBody"></div>
@@ -1980,6 +2111,19 @@ analysis:{icon:'📊',title:'Network Analysis — the whole system on one page',
  ],
  rules:'Look for red rows first — they are the violations. Amber means marginal.',
  ex:'The preloaded demo case is already populated — just explore it.'},
+'3d':{icon:'🧊',title:'3D Substation — see what the numbers describe',
+ what:'Every calculator in this app describes one physical thing in a substation yard. This viewer draws that yard in 3D so you can see the whole system at once: where the power comes in, where it is transformed, where it is switched, and where it is used.',
+ how:[
+  '<b>Source: Calculators</b> — the yard is built from your actual inputs: transformer kVA, feeder length, cable size, motor kW, capacitor bank from the PF tool, and the arc-flash zone from the Arc Flash tool.',
+  '<b>Source: SLD diagram</b> — the viewer rebuilds itself from whatever you drew in the SLD Builder, in the same left-to-right layout. Open a breaker in the diagram and everything downstream goes dark in 3D too.',
+  '<b>Focus</b> — jump the camera to one piece of equipment. Every calculator card also has its own <b>🧊 3D</b> button that jumps here and focuses its equipment.',
+  '<b>Colours</b> — the lamp on top of each item shows its loading: green ≤ 80%, amber 80–100%, red &gt; 100%. De-energised items go grey and their flow dots stop.',
+  '<b>Flow</b> — the moving dots run source → load. They speed up as loading rises. Turn them off if they distract.',
+  '<b>X-ray</b> — makes enclosures see-through so you can check what sits behind what. <b>Auto-rotate</b> slowly orbits for presentations.'
+ ],
+ inputs:[['Transformer size','The transformer tank grows/shrinks with the kVA you entered.'],['Loading %','From the Live Load Study slider and each SLD load\'s own loading %.'],['Arc zone','Sphere around the LV switchgear, sized by the arc-flash boundary and coloured by PPE category.']],
+ rules:'This is a schematic review model, not a construction drawing — use it to explain and to spot mistakes, then verify dimensions against the datasheets.',
+ ex:'Run the Power example, then press the Transformer card\'s 🧊 3D button — the camera flies to the transformer and its lamp shows the live loading.'},
 sld:{icon:'🗺',title:'Single-Line Diagram — draw your system',
  what:'A single-line diagram is the schematic of your power system: sources, breakers, transformers, busbars and loads. There are <b>no modes to learn</b> — you just click to add, drag to move, and drag the ● dots to connect. Build a whole feeder in a few clicks.',
  how:[
@@ -2031,6 +2175,7 @@ function runExample(k){
  else if(k==='analysis'){resetAnalysis();recalcAnalysis();}
  else if(k==='sld'){loadDemoSLD();}
  else if(k==='report'){buildReport();}
+ else if(k==='3d'){vw3dOpenFocus('yard');}
 }
 function tryExample(k){
  if(k==='power'){setInput('loadKw',500);setInput('pf',0.85);setInput('lineLength',250);setInput('vSecondary',0.4);setInput('lineR',0.25);setInput('lineX',0.08);setInput('transformerKva',1000);setInput('pctZ',5);setInput('vPrimary',11);setInput('vSecondary2',0.4);setInput('cLoad',90);setInput('cVolt',400);setInput('cPf',0.85);setInput('cLen',60);setInput('sTx',1000);setInput('sZ',5);setInput('sV',0.4);}
@@ -2040,7 +2185,7 @@ function tryExample(k){
  else if(k==='arcflash'){setInput('afV',480);setInput('afIbf',45);setInput('afT',100);setInput('afD',609.6);setInput('afG',32);setInput('afBox','610x610x254');$('afEC').value='VCB';}
  else if(k==='flow'){flowReset();}
  else if(k==='analysis'){resetAnalysis();}
- const anchor={power:'sec-power',flow:'sec-flow',motor:'sec-motor',cablesc:'sec-cablesc',pf:'sec-pf',arcflash:'sec-arcflash',analysis:'sec-analysis',sld:'sec-sld',report:'sec-report'}[k];
+ const anchor={power:'sec-power',flow:'sec-flow',motor:'sec-motor',cablesc:'sec-cablesc',pf:'sec-pf',arcflash:'sec-arcflash',analysis:'sec-analysis',sld:'sec-sld','3d':'sec-3d',report:'sec-report'}[k];
  if(anchor)document.getElementById(anchor).scrollIntoView({behavior:'smooth',block:'start'});
  runExample(k);toast('⚡ Example loaded — values filled and calculated');
 }
@@ -2097,6 +2242,1382 @@ function vwRestore(){let s=null;try{s=JSON.parse(localStorage.getItem(VW_STORE_K
 function vwReset(){try{localStorage.removeItem(VW_STORE_KEY);}catch(e){}VW_FIELDS.forEach(el=>vwWrite(el,VW_DEFAULTS[el.id]));saveBase();renderAnalysis();stdChanged();liveStudy();toast('↩ Inputs reset to defaults');}
 ['input','change'].forEach(ev=>document.addEventListener(ev,e=>{const t=e.target;if(t&&t.id&&/^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName))vwSaveSoon();}));
 
+
+/* ================= 3D SUBSTATION VIEWER (Three.js, lazy, guarded) ================= */
+/* One model collector (calculators OR live SLD) -> one builder -> two viewers (main + SLD inline).
+   No new dependencies beyond Three.js core from CDN; if the CDN is blocked the
+   fallback message shows and every other tool keeps working. No data leaves the browser. */
+let VW3D = { main:null, sld:null, source:'calc', focus:'yard', three:null, threeFailed:false, loading:null };
+const VW3D_LOADCOL = { 'calc':'#22c55e', 'sld':'#4c8dff' };
+function vw3dLoadThree(){
+  if(VW3D.three) return Promise.resolve(VW3D.three);
+  if(VW3D.threeFailed) return Promise.reject(new Error('Three.js unavailable'));
+  if(VW3D.loading) return VW3D.loading;
+  VW3D.loading = new Promise((resolve, reject)=>{
+    const trySrc = (src, next)=>{
+      const el = document.createElement('script');
+      el.src = src; el.async = true;
+      el.onload = ()=>{ if(window.THREE){ VW3D.three = window.THREE; resolve(window.THREE); } else if(next){ trySrc(next, null); } else { VW3D.threeFailed = true; reject(new Error('THREE missing')); } };
+      el.onerror = ()=>{ if(next){ trySrc(next, null); } else { VW3D.threeFailed = true; reject(new Error('CDN failed')); } };
+      document.head.appendChild(el);
+    };
+    trySrc('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+           'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js');
+  });
+  return VW3D.loading;
+}
+function vw3dNum(id, def){ try{ const v = gv(id); return (isFinite(v) && v !== 0) ? v : def; }catch(e){ return def; } }
+function vw3dLoadColor(load, live){
+  if(!live) return 0x9aa7bd;
+  if(load > 1) return 0xf04a4a;
+  if(load >= 0.8) return 0xf59e0b;
+  return 0x22c55e;
+}
+/* ---- model: normalised equipment + connections, from calculators ---- */
+function vw3dCalcModel(){
+  const txKva = vw3dNum('transformerKva', 1000), pctZ = vw3dNum('pctZ', 5);
+  const vPri = vw3dNum('vPrimary', 11), vSec = vw3dNum('vSecondary2', 0.4);
+  const loadKw = vw3dNum('loadKw', 500), pf = vw3dNum('pf', 0.85);
+  const mKw = vw3dNum('mKw', 75), cLen = vw3dNum('cLen', 60);
+  const pKw = vw3dNum('pKw', 500), pf1 = vw3dNum('pPf1', 0.75), pf2 = vw3dNum('pPf2', 0.95);
+  const f = (typeof LOAD_PCT === 'number' ? LOAD_PCT : 100) / 100;
+  const txLoad = Math.max(0, (loadKw / Math.max(pf, 0.1)) / Math.max(txKva, 1)) * f;
+  let qc = (R.pf && isFinite(R.pf.qc)) ? R.pf.qc : pKw * (Math.tan(Math.acos(Math.min(pf1, 0.999))) - Math.tan(Math.acos(Math.min(pf2, 0.999))));
+  if(!isFinite(qc) || qc < 0) qc = 0;
+  const sTx = vw3dNum('sTx', txKva), sZ = vw3dNum('sZ', pctZ), sV = vw3dNum('sV', vSec);
+  let isc = (R.sc && isFinite(R.sc.Ik)) ? R.sc.Ik : (R.tr && isFinite(R.tr.scSym)) ? R.tr.scSym
+    : (sTx / 1000) / (SQRT3 * Math.max(sV, 0.05) * Math.max(sZ, 0.5) / 100);
+  const vd = (R.line && isFinite(R.line.vDpct)) ? R.line.vDpct : null;
+  const arc = R.arc || null;
+  const afb = arc ? Math.max(arc.reduced.AFB, arc.full.AFB) : 0;
+  const cal = arc ? Math.max(arc.reduced.cal, arc.full.cal) : 0;
+  /* TRUE SCALE (1 unit = 1 m): transformer dims grow with the cube root of kVA —
+     a 1000 kVA unit is ~2.5 m tall, 2.0 m long, 1.4 m deep (typical ONAN). */
+  const txS = Math.cbrt(Math.max(txKva, 50) / 1000);
+  const txH = Math.min(3.4, Math.max(1.9, 2.5 * txS));
+  const txW = Math.min(3.0, Math.max(1.4, 2.0 * txS));
+  const txD = Math.min(2.2, Math.max(1.0, 1.4 * txS));
+  /* Motor height by frame: 75 kW (frame 280) ≈ 1.05 m tall. */
+  const mH = Math.min(1.9, Math.max(0.85, 1.05 + 0.35 * Math.log10(Math.max(mKw, 1) / 75)));
+  const E = [];
+  const add = (id, kind, label, sub, x, z, w, h, d, load, live)=>{ E.push({id, kind, label, sub, x, z, w, h, d, load: load || 0, live: live !== false}); };
+  add('grid', 'grid', 'Grid infeed', vPri.toFixed(0) + ' kV incoming', -14, -9, 2.6, 12.0, 1.6, 0.1, true); /* 11 kV lattice pylon ≈ 12 m */
+  add('gantry', 'gantry', 'HV gantry', 'Overhead line termination', -8.5, -5, 3.4, 7.5, 0.8, 0.1, true); /* dead-end gantry ≈ 7.5 m */
+  add('brk', 'brk', 'HV breaker', 'B1 · ' + vPri.toFixed(0) + ' kV', -4, -2.5, 1.8, 2.4, 1.2, 0.1, true); /* 11 kV live-tank breaker ≈ 2.4 m */
+  add('hvbus', 'bus', '11 kV busbar', 'BUS-A · ' + vPri.toFixed(1) + ' kV', 0, -2.5, 3.6, 3.0, 1.0, 0.1, true); /* bus conductor ≈ 3.0 m above ground */
+  add('tx', 'tx', 'Transformer T1', txKva.toFixed(0) + ' kVA · ' + vPri.toFixed(1) + '/' + vSec.toFixed(2) + ' kV · %Z ' + pctZ.toFixed(1) + ' · ' + (txLoad * 100).toFixed(0) + '% loaded', 2.8, 0.5, txW, txH, txD, txLoad, true);
+  add('lvsw', 'switchgear', 'LV switchgear', vSec.toFixed(2) + ' kV · Isc ' + (isFinite(isc) ? isc.toFixed(1) : '?') + ' kA' + (arc ? ' · AFB ' + (afb / 1000).toFixed(2) + ' m · PPE Cat ' + arc.ppe : ''), 6.6, 0.5, 3.4, 2.3, 1.4, txLoad, true); /* standard cubicle ≈ 2.3 m */
+  if(qc > 1) add('cap', 'cap', 'Capacitor bank', qc.toFixed(0) + ' kVar · PF ' + pf1.toFixed(2) + ' → ' + pf2.toFixed(2), 6.6, 4.2, 2.6, 1.9, 1.4, Math.min(1, qc / 400), true); /* floor-standing bank ≈ 1.9 m */
+  add('motor', 'motor', 'Motor M1', mKw.toFixed(0) + ' kW', 10.6, -3.2, 1.7, mH, 1.0, 0.85 * f, true);
+  add('load', 'load', 'Load / panel', loadKw.toFixed(0) + ' kW · PF ' + pf.toFixed(2) + (vd != null ? ' · VD ' + vd.toFixed(2) + '%' : ''), 10.6, 3.4, 3.2, 3.4, 2.6, Math.min(1.5, f), true); /* single-storey plant room ≈ 3.4 m */
+  add('bldg', 'bldg', 'Control building', 'Protection + metering', -7.5, 5.5, 4.0, 3.6, 3.0, 0, true); /* control room ≈ 3.6 m */
+  const conns = [
+    {a:'grid', b:'gantry'}, {a:'gantry', b:'brk'}, {a:'brk', b:'hvbus'}, {a:'hvbus', b:'tx'},
+    {a:'tx', b:'lvsw'}, {a:'lvsw', b:'motor'}, {a:'lvsw', b:'load'}
+  ];
+  if(qc > 1) conns.push({a:'lvsw', b:'cap'});
+  return { source:'calc', equip:E, conns, stats:{ txKva, txLoad, isc, vd, qc, afb, cal, ppe: arc ? arc.ppe : '—', cableLen: cLen }, arcZone: afb > 0 ? { at:'lvsw', r: Math.min(4.5, Math.max(0.8, afb / 1000)), cal } : null };
+}
+/* ---- model: from the live SLD diagram ---- */
+function vw3dSldModel(){
+  if(!sldItems.length) return Object.assign(vw3dCalcModel(), { source:'sld', sldEmpty:true });
+  let en = new Set(); try{ en = sldEnergized(); }catch(e){}
+  const kindOf = (t)=> t === 'gen' ? 'grid' : t === 'tx' ? 'tx' : t === 'brk' ? 'brk' : t === 'bus' ? 'bus' : t === 'motor' ? 'motor' : 'load';
+  const E = sldItems.map(it=>{
+    const kind = kindOf(it.t);
+    const x = Math.max(-15, Math.min(15, (it.x - 400) * 0.045));
+    const z = Math.max(-9, Math.min(9, (it.y - 220) * 0.045));
+    const load = (it.t === 'load' || it.t === 'motor') ? ((it.pct || LOAD_PCT || 100) / 100) : 0.1;
+    const live = en.has(it.id);
+    let sub = '';
+    if(it.name) sub += it.name + ' · ';
+    if(it.kv) sub += it.kv + ' kV';
+    if(it.kva) sub += (sub ? ' · ' : '') + it.kva + ' kVA';
+    if(it.t === 'tx' && it.pctZ != null) sub += (sub ? ' · ' : '') + '%Z ' + it.pctZ;
+    if(it.t === 'brk') sub += (sub ? ' · ' : '') + (it.closed === false ? 'OPEN' : 'Closed');
+    if(it.t === 'load' || it.t === 'motor') sub += (sub ? ' · ' : '') + (it.pct || 100) + '% loading';
+    const kvaS = it.kva ? Math.cbrt(it.kva / 1000) : 1; /* true scale, same as calc model */
+    return { id:'s' + it.id, kind, label: sldTag(it), sub: sub || COMP[it.t].label, x, z,
+      w: kind === 'tx' ? Math.min(3.0, Math.max(1.4, 2.0 * kvaS)) : kind === 'bus' ? 3.4 : kind === 'load' ? 3.2 : kind === 'grid' ? 2.6 : kind === 'motor' ? 1.7 : 2.0,
+      h: kind === 'tx' ? Math.min(3.4, Math.max(1.9, 2.5 * kvaS)) : kind === 'grid' ? 12.0 : kind === 'bus' ? 3.0 : kind === 'motor' ? 1.05 : kind === 'load' ? 3.4 : kind === 'brk' ? 2.4 : 2.2,
+      d: kind === 'bus' ? 1.0 : kind === 'motor' ? 1.0 : kind === 'load' ? 2.6 : kind === 'tx' ? Math.min(2.2, Math.max(1.0, 1.4 * kvaS)) : kind === 'brk' ? 1.2 : 1.6, load, live, sldId: it.id };
+  });
+  const byId = {}; E.forEach(e=>{ byId[e.sldId] = e.id; });
+  const conns = sldWires.filter(w=>byId[w.a] && byId[w.b]).map(w=>({ a: byId[w.a], b: byId[w.b] }));
+  return { source:'sld', equip:E, conns,
+    stats:{ txKva:null, txLoad:null, isc:null, vd:null, qc:null, afb:0, cal:0, ppe:'—', cableLen:null },
+    arcZone:null };
+}
+function vw3dCollect(source){ return source === 'sld' ? vw3dSldModel() : vw3dCalcModel(); }
+/* ---- label sprite ---- */
+function vw3dSprite(THREE, text, sub, color){
+  const cv = document.createElement('canvas'); cv.width = 512; cv.height = sub ? 112 : 72;
+  const g = cv.getContext('2d');
+  g.fillStyle = 'rgba(8,12,22,0.82)'; g.fillRect(0, 0, cv.width, cv.height);
+  g.strokeStyle = color || '#4c8dff'; g.lineWidth = 3; g.strokeRect(2, 2, cv.width - 4, cv.height - 4);
+  g.fillStyle = '#eef2fa'; g.font = '700 34px Inter, sans-serif'; g.textAlign = 'center';
+  g.fillText(String(text).slice(0, 30), cv.width / 2, 46);
+  if(sub){ g.fillStyle = '#96a1b8'; g.font = '500 24px Inter, sans-serif'; g.fillText(String(sub).slice(0, 42), cv.width / 2, 84); }
+  const tex = new THREE.CanvasTexture(cv);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false }));
+  sp.scale.set(4.4, sub ? 0.96 : 0.62, 1);
+  return sp;
+}
+/* ---- cylinder between two points ---- */
+function vw3dTube(THREE, a, b, r, mat){
+  const dir = new THREE.Vector3().subVectors(b, a);
+  const len = Math.max(0.05, dir.length());
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 8), mat);
+  mesh.position.copy(a).addScaledVector(dir, 0.5);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+  mesh.userData.solid = true;
+  return mesh;
+}
+function vw3dBox(THREE, w, h, d, mat, x, y, z){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+  m.position.set(x, y, z); m.userData.solid = true; return m;
+}
+/* ============================================================================
+   VoltWorks Power — 3D REALISM MODULE (BIM LOD 300-350, Inventor-style)
+   ----------------------------------------------------------------------------
+   Drop-in replacement for the simple-box 3D builders in index.html.
+   MERGE: paste this ENTIRE file in place of the old vw3dBuildEquip function
+   in index.html (see _3d_merge_notes.md for exact anchors), plus the small
+   call-site / toolbar edits listed there. Do NOT paste it as a second
+   <script> block after the page script — it must live inside the same
+   <script> so it shares vw3dSprite / vw3dLoadColor / VW3D.
+
+   API contract (unchanged from the original):
+     vw3dBuildEquip(THREE, e, mats, labels) -> THREE.Group at (e.x, 0, e.z)
+       with group.userData.equip = e.  `e` = {id,kind,label,sub,x,z,w,h,d,load,live}
+       w/h/d are the equipment envelope in METRES (1 unit = 1 m, real scale).
+     vw3dTube / vw3dSprite keep working (this file does not replace them).
+     Viewer object fields (group, flow, ring, opts, sph, target) untouched.
+
+   Performance: unit-geometry cache (one Box / Cylinder / Sphere / Torus
+   geometry shared by every mesh via mesh.scale), materials created fresh per
+   build (the host setModel() disposes them on rebuild). Detail-2 parts
+   (anchor bolts, shed discs past the first 3, breather, vents) are hidden
+   by vw3dSetDetail(viewer,'fast'). Target budget: ~490 meshes for the
+   default calculator scene, < 600 total including connections/flow dots.
+   Every per-kind builder is wrapped in try/catch: a failure in one
+   equipment falls back to a plain labelled box, never throws.
+   No external assets, no network calls, Three.js core (r128) only.
+   No closing-script-tag string anywhere in this file (keeps the host HTML safe).
+   ========================================================================== */
+
+/* ---- deterministic pseudo-random (stable textures, no Math.random drift) -- */
+function vw3dRand(seed){
+  var s = (seed >>> 0) || 1;
+  return function(){
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+}
+/* ---- load colour (delegates to the host helper when present) ---- */
+function vw3dRLoadColor(load, live){
+  if(typeof vw3dLoadColor === 'function') return vw3dLoadColor(load, live);
+  if(!live) return 0x9aa7bd;
+  if(load > 1) return 0xf04a4a;
+  if(load >= 0.8) return 0xf59e0b;
+  return 0x22c55e;
+}
+/* ---- shared unit geometries (scaled per mesh; r128-safe to reuse) ---- */
+var VW3D_GEO = null;
+function vw3dGeo(THREE){
+  if(VW3D_GEO && VW3D_GEO.T === THREE) return VW3D_GEO;
+  VW3D_GEO = { T: THREE,
+    box: new THREE.BoxGeometry(1, 1, 1),
+    cyl: new THREE.CylinderGeometry(0.5, 0.5, 1, 10),
+    cylFine: new THREE.CylinderGeometry(0.5, 0.5, 1, 16),
+    sph: new THREE.SphereGeometry(0.5, 12, 10),
+    torus: new THREE.TorusGeometry(0.5, 0.12, 6, 20),
+    plane: new THREE.PlaneGeometry(1, 1)
+  };
+  return VW3D_GEO;
+}
+/* ---- mesh helpers: B=box, C=cylinder, S=sphere, TOR=torus (unit geo + scale) -- */
+function vw3dMesh(THREE, geo, mat, x, y, z, sx, sy, sz, detail){
+  var m = new THREE.Mesh(geo, mat);
+  m.position.set(x || 0, y || 0, z || 0);
+  m.scale.set(sx == null ? 1 : sx, sy == null ? 1 : sy, sz == null ? 1 : sz);
+  m.userData.solid = true;
+  m.userData.detail = detail || 0;
+  m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+function vw3dB(THREE, mat, x, y, z, sx, sy, sz, detail){
+  return vw3dMesh(THREE, vw3dGeo(THREE).box, mat, x, y, z, sx, sy, sz, detail);
+}
+function vw3dC(THREE, mat, x, y, z, r, len, detail, axis){
+  var m = vw3dMesh(THREE, vw3dGeo(THREE).cyl, mat, x, y, z, r * 2, len, r * 2, detail);
+  if(axis === 'x') m.rotation.z = Math.PI / 2;
+  else if(axis === 'z') m.rotation.x = Math.PI / 2;
+  return m;
+}
+function vw3dCf(THREE, mat, x, y, z, r, len, detail, axis){
+  var m = vw3dMesh(THREE, vw3dGeo(THREE).cylFine, mat, x, y, z, r * 2, len, r * 2, detail);
+  if(axis === 'x') m.rotation.z = Math.PI / 2;
+  else if(axis === 'z') m.rotation.x = Math.PI / 2;
+  return m;
+}
+function vw3dS(THREE, mat, x, y, z, r, detail){
+  return vw3dMesh(THREE, vw3dGeo(THREE).sph, mat, x, y, z, r * 2, r * 2, r * 2, detail);
+}
+function vw3dTor(THREE, mat, x, y, z, r, tube, detail, rx){
+  var m = vw3dMesh(THREE, vw3dGeo(THREE).torus, mat, x, y, z, r, r, 1, detail);
+  m.scale.set(r / 0.5, r / 0.5, tube / 0.12);
+  if(rx != null) m.rotation.x = rx;
+  return m;
+}
+/* ---- straight strut between two points (own copy: no host dependency) ---- */
+function vw3dStrut(THREE, a, b, r, mat, detail){
+  var dir = new THREE.Vector3().subVectors(b, a);
+  var len = Math.max(0.02, dir.length());
+  var m = new THREE.Mesh(vw3dGeo(THREE).cyl, mat);
+  m.position.copy(a).addScaledVector(dir, 0.5);
+  m.scale.set(r * 2, len, r * 2);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+  m.userData.solid = true; m.userData.detail = detail || 0;
+  m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+/* ---- catenary / sagging conductor (overhead jumpers) ---- */
+function vw3dSagTube(THREE, a, b, sag, r, mat, detail){
+  var mid = new THREE.Vector3().addVectors(a, b).multiplyScalar(0.5);
+  mid.y -= (sag == null ? 0.4 : sag);
+  var curve = new THREE.QuadraticBezierCurve3(a.clone(), mid, b.clone());
+  var geo = new THREE.TubeGeometry(curve, 20, r, 6, false);
+  var m = new THREE.Mesh(geo, mat);
+  m.userData.solid = true; m.userData.detail = detail || 0;
+  m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+/* ---- procedural canvas textures (no external assets) ---- */
+var VW3D_TEX = {};
+function vw3dCanvasTexture(THREE, kind){
+  if(VW3D_TEX[kind]) return VW3D_TEX[kind];
+  var cv = document.createElement('canvas'); cv.width = 256; cv.height = 256;
+  var g = cv.getContext('2d');
+  var rnd = vw3dRand(kind === 'concrete' ? 11 : kind === 'gravel' ? 23 : kind === 'galv' ? 37 : kind === 'hazard' ? 41 : 53);
+  if(kind === 'hazard'){
+    g.fillStyle = '#f5c518'; g.fillRect(0, 0, 256, 256);
+    g.fillStyle = '#161616';
+    for(var i = -256; i < 512; i += 64){
+      g.beginPath(); g.moveTo(i, 256); g.lineTo(i + 32, 256); g.lineTo(i + 32 + 256, 0); g.lineTo(i + 256, 0); g.closePath(); g.fill();
+    }
+  } else if(kind === 'gravel'){
+    g.fillStyle = '#3a3e46'; g.fillRect(0, 0, 256, 256);
+    for(var k = 0; k < 2600; k++){
+      var v = 40 + Math.floor(rnd() * 110);
+      g.fillStyle = 'rgb(' + v + ',' + (v + 2) + ',' + (v + 8) + ')';
+      var s = 1 + rnd() * 3;
+      g.fillRect(rnd() * 256, rnd() * 256, s, s);
+    }
+  } else if(kind === 'galv'){
+    g.fillStyle = '#a9b3be'; g.fillRect(0, 0, 256, 256);
+    for(var x = 0; x < 256; x += 2){
+      var v2 = 150 + Math.floor(rnd() * 60);
+      g.fillStyle = 'rgba(' + v2 + ',' + (v2 + 6) + ',' + (v2 + 12) + ',0.35)';
+      g.fillRect(x, 0, 2, 256);
+    }
+    for(var d = 0; d < 260; d++){ /* zinc spangle */
+      g.fillStyle = 'rgba(230,236,242,' + (0.12 + rnd() * 0.25) + ')';
+      g.beginPath(); g.arc(rnd() * 256, rnd() * 256, 2 + rnd() * 7, 0, 6.29); g.fill();
+    }
+  } else if(kind === 'brick'){
+    g.fillStyle = '#b8a89a'; g.fillRect(0, 0, 256, 256); /* mortar */
+    for(var row = 0; row < 8; row++){
+      var off = (row % 2) * 32;
+      for(var col = -1; col < 5; col++){
+        var r = 118 + Math.floor(rnd() * 46), gg = 74 + Math.floor(rnd() * 30);
+        g.fillStyle = 'rgb(' + r + ',' + gg + ',' + (gg - 18) + ')';
+        g.fillRect(col * 64 + off + 2, row * 32 + 2, 60, 28);
+      }
+    }
+  } else { /* concrete */
+    g.fillStyle = '#9aa0a6'; g.fillRect(0, 0, 256, 256);
+    for(var n = 0; n < 4200; n++){
+      var v3 = 120 + Math.floor(rnd() * 90);
+      g.fillStyle = 'rgba(' + v3 + ',' + v3 + ',' + (v3 + 4) + ',0.5)';
+      g.fillRect(rnd() * 256, rnd() * 256, 1.6, 1.6);
+    }
+    g.strokeStyle = 'rgba(70,74,80,0.35)'; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(20, 200); g.lineTo(90, 170); g.lineTo(150, 185); g.stroke();
+  }
+  var tex = new THREE.CanvasTexture(cv);
+  tex.wrapS = THREE.RepeatWrapping; tex.wrapT = THREE.RepeatWrapping;
+  VW3D_TEX[kind] = tex;
+  return tex;
+}
+/* ---- per-build material palette (fresh each build: host disposes on rebuild) -- */
+function vw3dPalette(THREE, mats, tex){
+  function std(color, rough, metal, extra){
+    var o = { color: color, roughness: rough == null ? 0.6 : rough, metalness: metal == null ? 0.2 : metal };
+    if(extra) for(var k in extra) o[k] = extra[k];
+    return new THREE.MeshStandardMaterial(o);
+  }
+  return {
+    steel: mats.steel, dark: mats.dark, body: mats.body, copper: mats.copper,
+    porcelain: mats.porcelain, concrete: mats.concrete,
+    galv: std(0xaeb8c2, 0.45, 0.65, { map: tex.galv }),
+    galvDark: std(0x6d7681, 0.55, 0.55),
+    alum: std(0xc8ccd2, 0.35, 0.8),
+    white: std(0xf2f4f6, 0.55, 0.05),
+    black: std(0x17191d, 0.7, 0.1),
+    glass: std(0x9fc4d8, 0.15, 0.1, { transparent: true, opacity: 0.55 }),
+    oilGreen: std(0x2e4a38, 0.5, 0.3),
+    hvOrange: std(0xd96b1e, 0.55, 0.2),
+    hivis: std(0xff6a00, 0.6, 0.05, { emissive: 0x903800, emissiveIntensity: 0.25 }),
+    helmet: std(0xf5d90a, 0.4, 0.1),
+    skin: std(0xc9a184, 0.7, 0),
+    jeans: std(0x2c3a55, 0.85, 0),
+    brick: std(0xffffff, 0.9, 0, { map: tex.brick }),
+    concreteTex: std(0xffffff, 0.95, 0, { map: tex.concrete }),
+    hazard: std(0xffffff, 0.7, 0, { map: tex.hazard }),
+    red: std(0xc22e2e, 0.55, 0.1),
+    yellow: std(0xe8b400, 0.55, 0.1)
+  };
+}
+/* ---- small reusable parts ---- */
+function vw3dShedStack(THREE, g, mat, x, yBase, z, nDisc, discR, pitch, coreR){
+  /* Insulator / bushing shed stack: core + discs. Discs past the first 3 are
+     detail level 2 (hidden by Fast mode). Returns the top Y. */
+  var top = yBase + nDisc * pitch;
+  g.add(vw3dC(THREE, mat, x, yBase + (top - yBase) / 2, z, coreR, top - yBase, 0, 'y'));
+  for(var i = 0; i < nDisc; i++){
+    g.add(vw3dC(THREE, mat, x, yBase + (i + 0.5) * pitch, z, discR, 0.035, i < 3 ? 1 : 2, 'y'));
+  }
+  return top;
+}
+function vw3dAnchorBolts(THREE, g, mat, w, d, y, count){
+  /* 4-8 anchor bolts around the foundation pad (detail 2). */
+  var xs = [-w / 2 - 0.18, w / 2 + 0.18], zs = [-d / 2 - 0.18, d / 2 + 0.18];
+  var pts = [];
+  xs.forEach(function(px){ zs.forEach(function(pz){ pts.push([px, pz]); }); });
+  if(count >= 8){ pts.push([0, -d / 2 - 0.18]); pts.push([0, d / 2 + 0.18]); pts.push([-w / 2 - 0.18, 0]); pts.push([w / 2 + 0.18, 0]); }
+  pts.forEach(function(p){
+    g.add(vw3dC(THREE, mat, p[0], y + 0.03, p[1], 0.035, 0.07, 2, 'y'));
+  });
+}
+function vw3dEarthStrap(THREE, g, mat, x, y, z, hgt){
+  g.add(vw3dB(THREE, mat, x, y + hgt / 2, z, 0.05, hgt, 0.02, 0));
+  g.add(vw3dB(THREE, mat, x, 0.05, z + 0.12, 0.05, 0.1, 0.26, 0));
+}
+function vw3dNameplate(THREE, g, P, text, sub, x, y, z, wdt){
+  /* White equipment nameplate + tiny text sprite (reuses host vw3dSprite). */
+  g.add(vw3dB(THREE, P.white, x, y, z, wdt || 0.55, 0.34, 0.02, 0));
+  if(typeof vw3dSprite === 'function'){
+    try{
+      var sp = vw3dSprite(THREE, text, sub || '', '#1a1a1a');
+      sp.scale.set(wdt || 0.55, 0.3, 1);
+      sp.position.set(x, y, z + 0.03);
+      sp.userData.detail = 0;
+      g.add(sp);
+    }catch(err){ /* plate alone is fine */ }
+  }
+}
+function vw3dWarningSign(THREE, g, P, text, x, y, z){
+  g.add(vw3dB(THREE, P.yellow, x, y, z, 0.6, 0.4, 0.02, 0));
+  if(typeof vw3dSprite === 'function'){
+    try{
+      var sp = vw3dSprite(THREE, 'DANGER', text || '400 V', '#b00000');
+      sp.scale.set(0.58, 0.36, 1);
+      sp.position.set(x, y, z + 0.03);
+      sp.userData.detail = 0;
+      g.add(sp);
+    }catch(err){ /* sign plate alone is fine */ }
+  }
+}
+function vw3dFoundation(THREE, g, P, e, y0){
+  /* Two-step concrete foundation: base slab + chamfered pad (texture). */
+  g.add(vw3dB(THREE, P.concreteTex, 0, 0.07, 0, e.w + 0.9, 0.14, e.d + 0.9, 0));
+  g.add(vw3dB(THREE, P.concreteTex, 0, y0 - 0.05, 0, e.w + 0.7, 0.2, e.d + 0.7, 0));
+  vw3dAnchorBolts(THREE, g, P.galvDark, e.w + 0.7, e.d + 0.7, y0 + 0.05, (e.w * e.d > 10) ? 8 : 4);
+}
+function vw3dStatusLamp(THREE, g, P, e, y){
+  var col = vw3dRLoadColor(e.load, e.live);
+  var lampMat = new THREE.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 0.9 });
+  g.add(vw3dC(THREE, P.black, 0, y - 0.08, 0, 0.06, 0.12, 0, 'y'));
+  var lamp = vw3dS(THREE, lampMat, 0, y + 0.06, 0, 0.11, 0);
+  lamp.userData.solid = false; /* lamp glow: never casts a shadow */
+  g.add(lamp);
+}
+
+/* ============================================================================
+   PER-KIND BUILDERS — each appends to group g, in LOCAL coords.
+   Origin = equipment centre at pad level; y0 = 0.28 = top of foundation.
+   All dims are fractions of the envelope (e.w / e.h / e.d) so SLD items
+   (generic envelopes) get the same treatment as calculator items.
+   ========================================================================== */
+var VW3D_Y0 = 0.28;
+
+function vw3dLattice(THREE, g, P, cx, cz, yBase, yTop, half0, half1, levels){
+  /* 4-leg lattice column: legs + horizontal ties + diagonals. */
+  var corner = function(lv, i){
+    var t = lv / levels, hw = half0 + (half1 - half0) * t, y = yBase + (yTop - yBase) * t;
+    var sx = (i === 0 || i === 3) ? -1 : 1, sz = (i === 0 || i === 1) ? -1 : 1;
+    return new THREE.Vector3(cx + sx * hw, y, cz + sz * hw);
+  };
+  for(var lv = 0; lv < levels; lv++){
+    for(var i = 0; i < 4; i++){
+      g.add(vw3dStrut(THREE, corner(lv, i), corner(lv + 1, i), 0.035, P.galv, 1)); /* leg */
+      g.add(vw3dStrut(THREE, corner(lv + 1, i), corner(lv + 1, (i + 1) % 4), 0.022, P.galv, 1)); /* tie */
+      if(i % 2 === 0) g.add(vw3dStrut(THREE, corner(lv, i), corner(lv + 1, (i + 1) % 4), 0.018, P.galv, 1)); /* diagonal */
+    }
+  }
+  g.add(vw3dB(THREE, P.galvDark, cx, yBase + 0.06, cz, half0 * 2 + 0.24, 0.12, half0 * 2 + 0.24, 0)); /* base plate */
+}
+
+function vw3dBuildGrid(THREE, g, e, P, y0){
+  /* Lattice transmission pylon: tapered lattice mast, 2 cross-arms,
+     suspension insulator disc stacks, sagging jumper loops. */
+  var H = Math.max(e.h, 3.2), yTop = y0 + H;
+  vw3dLattice(THREE, g, P, 0, 0, y0, yTop - 0.9, 0.75, 0.22, 2);
+  g.add(vw3dB(THREE, P.galv, 0, yTop - 0.55, 0, 0.18, 0.5, 0.18, 0)); /* peak */
+  [-0.55, 0.15].forEach(function(dy){ /* two cross-arms */
+    var ay = yTop - 1.15 + dy;
+    g.add(vw3dB(THREE, P.galv, 0, ay, 0, 2.6, 0.14, 0.14, 0));
+    [-1.05, 0, 1.05].forEach(function(px){
+      /* suspension string: cap + shed stack + jumper loop */
+      var topY = ay - 0.08;
+      g.add(vw3dC(THREE, P.galvDark, px, topY - 0.05, 0, 0.06, 0.1, 1, 'y'));
+      var bot = vw3dShedStack(THREE, g, P.porcelain, px, topY - 0.12, 0, 4, 0.11, 0.09, 0.035);
+      g.add(vw3dSagTube(THREE, new THREE.Vector3(px, bot, 0), new THREE.Vector3(px + 0.5, bot - 0.35, 0.6), 0.3, 0.03, P.black, 1));
+    });
+  });
+}
+
+function vw3dBuildGantry(THREE, g, e, P, y0){
+  /* Dead-end gantry: 2 lattice columns + truss beam, 3 suspension strings. */
+  var H = Math.max(e.h, 3.0), yTop = y0 + H, hw = Math.max(e.w / 2 - 0.3, 1.2);
+  [-hw, hw].forEach(function(px){
+    vw3dLattice(THREE, g, P, px, 0, y0, yTop - 0.35, 0.55, 0.3, 2);
+  });
+  /* truss beam: top + bottom chords, verticals, diagonals */
+  g.add(vw3dB(THREE, P.galv, 0, yTop - 0.33, 0, hw * 2 + 0.5, 0.09, 0.09, 0)); /* beam top = e.h */
+  g.add(vw3dB(THREE, P.galv, 0, yTop - 0.85, 0, hw * 2 + 0.5, 0.07, 0.07, 0));
+  for(var i = 0; i <= 4; i++){
+    var bx = -hw + (i / 4) * hw * 2;
+    g.add(vw3dB(THREE, P.galv, bx, yTop - 0.59, 0, 0.05, 0.52, 0.05, 1));
+    if(i % 2 === 0 && i < 4) g.add(vw3dStrut(THREE, new THREE.Vector3(bx, yTop - 0.85, 0), new THREE.Vector3(bx + hw / 2, yTop - 0.33, 0), 0.02, P.galv, 1));
+  }
+  [-hw * 0.66, 0, hw * 0.66].forEach(function(px){
+    /* suspension insulator string + strain clamp */
+    var topY = yTop - 0.89;
+    g.add(vw3dB(THREE, P.galvDark, px, topY - 0.04, 0, 0.16, 0.08, 0.16, 1)); /* clamp */
+    var bot = vw3dShedStack(THREE, g, P.porcelain, px, topY - 0.1, 0, 4, 0.1, 0.09, 0.035);
+    g.add(vw3dC(THREE, P.copper, px, bot - 0.06, 0, 0.05, 0.12, 1, 'y')); /* strain clamp */
+    g.add(vw3dSagTube(THREE, new THREE.Vector3(px, bot - 0.12, 0), new THREE.Vector3(px + 0.7, bot - 0.6, 0.9), 0.35, 0.03, P.black, 1));
+  });
+}
+
+function vw3dBuildBreaker(THREE, g, e, P, y0){
+  /* Live-tank HV breaker: frame, mechanism cabinet, 3 interrupter poles
+     with shed-stack bushings, arcing horns, nameplate. */
+  var w = e.w, y1 = y0 + 0.55;
+  [-w / 2 + 0.25, w / 2 - 0.25].forEach(function(px){
+    g.add(vw3dB(THREE, P.galvDark, px, y0 + 0.3, -e.d / 2 + 0.15, 0.12, 0.6, 0.12, 0));
+    g.add(vw3dB(THREE, P.galvDark, px, y0 + 0.3, e.d / 2 - 0.15, 0.12, 0.6, 0.12, 0));
+  });
+  g.add(vw3dB(THREE, P.galvDark, 0, y0 + 0.06, 0, w * 0.8, 0.1, e.d * 0.8, 0));
+  /* mechanism cabinet */
+  var cw = Math.min(0.9, w * 0.45);
+  g.add(vw3dB(THREE, P.galv, 0, y0 + 0.42, 0, cw, 0.72, 0.5, 0));
+  g.add(vw3dB(THREE, P.galvDark, 0, y0 + 0.42, e.d * 0.28, cw - 0.1, 0.6, 0.02, 0)); /* door seam */
+  g.add(vw3dB(THREE, P.black, 0.25, y0 + 0.42, e.d * 0.3, 0.05, 0.16, 0.04, 1)); /* handle */
+  g.add(vw3dB(THREE, P.hvOrange, 0, y1 + 0.12, 0, w * 0.72, 0.1, e.d * 0.6, 0)); /* tank beam */
+  var nPole = 3, spacing = Math.min(0.62, (w * 0.7) / 2);
+  for(var i = 0; i < nPole; i++){
+    var px = (i - 1) * spacing, py = y1 + 0.17;
+    g.add(vw3dC(THREE, P.galv, px, py + 0.28, 0, 0.16, 0.56, 0, 'y')); /* interrupter tank */
+    g.add(vw3dC(THREE, P.hvOrange, px, py + 0.02, 0, 0.2, 0.08, 0, 'y'));
+    var top = vw3dShedStack(THREE, g, P.porcelain, px, py + 0.56, 0, 4, 0.14, 0.1, 0.05); /* HV bushing */
+    g.add(vw3dC(THREE, P.alum, px, top + 0.08, 0, 0.045, 0.16, 0, 'y')); /* terminal */
+    /* arcing horns: two angled rods either side of the bushing top */
+    g.add(vw3dStrut(THREE, new THREE.Vector3(px - 0.16, top - 0.1, 0), new THREE.Vector3(px - 0.34, top + 0.28, 0), 0.018, P.copper, 1));
+    g.add(vw3dStrut(THREE, new THREE.Vector3(px + 0.16, top - 0.1, 0), new THREE.Vector3(px + 0.34, top + 0.28, 0), 0.018, P.copper, 1));
+  }
+  vw3dNameplate(THREE, g, P, 'HV BREAKER', 'SF6 · 12 kV', 0, y0 + 0.42, e.d * 0.3, 0.55);
+}
+
+function vw3dBuildBus(THREE, g, e, P, y0){
+  /* 3-phase tubular aluminium bus on steel posts + porcelain post insulators.
+     TRUE SCALE: conductor height = envelope top (busY ≈ y0 + e.h − 0.3 ≈ 3.0 m),
+     like a real 11 kV outdoor busbar. */
+  var w = e.w, busY = y0 + Math.max(e.h - 0.3, 1.6);
+  var xs = [-w / 2 + 0.5, 0, w / 2 - 0.5];
+  var insTop = busY - 0.9;
+  xs.forEach(function(px){
+    g.add(vw3dC(THREE, P.galvDark, px, y0 + 0.12, 0, 0.12, 0.24, 0, 'y')); /* base flange */
+    g.add(vw3dC(THREE, P.galv, px, y0 + (insTop - y0) / 2, 0, 0.07, Math.max(0.1, insTop - y0 - 0.1), 0, 'y')); /* steel post */
+    var top = vw3dShedStack(THREE, g, P.porcelain, px, insTop, 0, 6, 0.12, 0.09, 0.05); /* post insulator */
+    g.add(vw3dC(THREE, P.galvDark, px, (top + busY) / 2, 0, 0.05, Math.max(0.05, busY - top), 1, 'y')); /* clamp riser */
+  });
+  /* 3 parallel tubes along X, spaced in Z (clear phase separation) */
+  [-0.24, 0, 0.24].forEach(function(dz){
+    g.add(vw3dC(THREE, P.alum, 0, busY, dz, 0.05, w - 0.3, 0, 'x'));
+    xs.forEach(function(px){ g.add(vw3dC(THREE, P.galvDark, px, busY, dz, 0.07, 0.06, 1, 'y')); });
+  });
+  /* dropper jumpers to next equipment (sagging) */
+  g.add(vw3dSagTube(THREE, new THREE.Vector3(w / 2 - 0.2, busY, 0), new THREE.Vector3(w / 2 + 1.1, busY - 0.5, 0.9), 0.3, 0.028, P.black, 1));
+}
+
+function vw3dBuildTx(THREE, g, e, P, y0){
+  /* Oil-immersed distribution transformer: tank + seams, plate radiators,
+     conservator + gauge, HV/LV bushings, drain valve, lugs, wheels + rails,
+     earthing strap, silica-gel breather, nameplate, oil bund. */
+  var w = e.w, h = e.h, d = e.d;
+  var tankH = Math.max(0.9, h - 1.28), tankY = y0 + 0.32 + tankH / 2, tankTop = y0 + 0.32 + tankH; /* drawn top (conservator) = e.h */
+  g.add(vw3dB(THREE, P.oilGreen, 0, tankY, 0, w, tankH, d, 0)); /* tank */
+  /* welded seams: vertical corner angles + lid rim */
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function(s){
+    g.add(vw3dB(THREE, P.galvDark, s[0] * (w / 2 - 0.03), tankY, s[1] * (d / 2 - 0.03), 0.07, tankH, 0.07, 0));
+  });
+  g.add(vw3dB(THREE, P.galvDark, 0, tankTop + 0.04, 0, w + 0.08, 0.09, d + 0.08, 0)); /* lid rim */
+  /* plate radiators: thin fins, both long sides */
+  var nFin = Math.max(6, Math.min(8, Math.floor(w / 0.28)));
+  [-1, 1].forEach(function(s){
+    for(var i = 0; i < nFin; i++){
+      var fx = -w / 2 + (i + 0.5) * (w / nFin);
+      g.add(vw3dB(THREE, P.oilGreen, fx, tankY, s * (d / 2 + 0.16), 0.09, tankH * 0.82, 0.3, 1));
+    }
+    /* top + bottom radiator headers */
+    g.add(vw3dC(THREE, P.oilGreen, 0, tankY + tankH * 0.42, s * (d / 2 + 0.16), 0.05, w * 0.92, 0, 'x'));
+    g.add(vw3dC(THREE, P.oilGreen, 0, tankY - tankH * 0.42, s * (d / 2 + 0.16), 0.05, w * 0.92, 0, 'x'));
+  });
+  /* conservator drum + oil gauge */
+  g.add(vw3dC(THREE, P.galv, 0, tankTop + 0.42, 0, 0.26, Math.min(1.1, w * 0.55), 0, 'x'));
+  g.add(vw3dC(THREE, P.galvDark, 0, tankTop + 0.18, 0, 0.05, 0.24, 1, 'y')); /* feed pipe */
+  var gauge = vw3dC(THREE, P.white, w / 2 - 0.1, tankTop + 0.42, d / 2 + 0.02, 0.11, 0.03, 1, 'z');
+  g.add(gauge);
+  g.add(vw3dC(THREE, P.black, w / 2 - 0.1, tankTop + 0.42, d / 2 + 0.05, 0.05, 0.02, 2, 'z')); /* gauge needle hub */
+  /* HV bushings (3, rear) + LV bushings (3, front), shed stacks */
+  for(var b = 0; b < 3; b++){
+    var bx = -w / 3 + b * (w / 3);
+    var hvTop = vw3dShedStack(THREE, g, P.porcelain, bx, tankTop + 0.09, -d / 4, 4, 0.12, 0.09, 0.04);
+    g.add(vw3dC(THREE, P.copper, bx, hvTop + 0.07, -d / 4, 0.035, 0.14, 0, 'y'));
+    var lvTop = vw3dShedStack(THREE, g, P.porcelain, bx, tankTop + 0.09, d / 4, 2, 0.09, 0.08, 0.04);
+    g.add(vw3dC(THREE, P.copper, bx, lvTop + 0.05, d / 4, 0.035, 0.1, 0, 'y'));
+  }
+  /* drain valve + sampling cock, lifting lugs, wheels + rails */
+  g.add(vw3dC(THREE, P.copper, -w / 2 + 0.15, y0 + 0.22, d / 2 + 0.08, 0.05, 0.14, 1, 'z')); /* drain */
+  g.add(vw3dS(THREE, P.red, -w / 2 + 0.15, y0 + 0.22, d / 2 + 0.17, 0.045, 1)); /* valve wheel */
+  [-1, 1].forEach(function(s){
+    g.add(vw3dB(THREE, P.galvDark, s * (w / 2 - 0.1), tankTop + 0.12, 0, 0.05, 0.16, 0.2, 1)); /* lifting lug */
+    g.add(vw3dB(THREE, P.galvDark, s * (w / 2 - 0.35), y0 + 0.1, -d / 2 + 0.15, 0.3, 0.2, 0.3, 0)); /* wheel block */
+    g.add(vw3dB(THREE, P.galvDark, s * (w / 2 - 0.35), y0 + 0.1, d / 2 - 0.15, 0.3, 0.2, 0.3, 0));
+    g.add(vw3dS(THREE, P.black, s * (w / 2 - 0.35), y0 + 0.08, -d / 2 + 0.15, 0.09, 0)); /* wheel */
+    g.add(vw3dS(THREE, P.black, s * (w / 2 - 0.35), y0 + 0.08, d / 2 - 0.15, 0.09, 0));
+  });
+  g.add(vw3dB(THREE, P.galvDark, 0, 0.32, -d / 2 - 0.25, w + 0.6, 0.08, 0.18, 0)); /* rails */
+  g.add(vw3dB(THREE, P.galvDark, 0, 0.32, d / 2 + 0.25, w + 0.6, 0.08, 0.18, 0));
+  /* silica-gel breather (detail 2) + earthing strap */
+  g.add(vw3dC(THREE, P.glass, w / 2 - 0.15, tankTop + 0.28, d / 2 + 0.12, 0.07, 0.3, 2, 'y'));
+  g.add(vw3dC(THREE, P.black, w / 2 - 0.15, tankTop + 0.46, d / 2 + 0.12, 0.08, 0.04, 2, 'y'));
+  vw3dEarthStrap(THREE, g, P.copper, w / 2 + 0.02, 0.3, 0, 0.8);
+  vw3dNameplate(THREE, g, P, 'TRANSFORMER', (e.sub || '').split('·')[0] || 'ONAN', 0, tankY, d / 2 + 0.02, 0.7);
+  /* oil containment bund: low kerb with hazard stripe */
+  var bw = w + 1.1, bd = d + 1.1;
+  g.add(vw3dB(THREE, P.hazard, 0, 0.13, -bd / 2, bw, 0.16, 0.1, 0));
+  g.add(vw3dB(THREE, P.hazard, 0, 0.13, bd / 2, bw, 0.16, 0.1, 0));
+  g.add(vw3dB(THREE, P.hazard, -bw / 2, 0.13, 0, 0.1, 0.16, bd, 0));
+  g.add(vw3dB(THREE, P.hazard, bw / 2, 0.13, 0, 0.1, 0.16, bd, 0));
+}
+
+function vw3dBuildSwitchgear(THREE, g, e, P, y0){
+  /* LV switchboard: 4 cubicles with doors, handles, vents, mimic strip,
+     plinth, front cable trench, DANGER sign. */
+  var w = e.w, h = e.h, d = e.d, nCab = 4, cw = w / nCab;
+  var cabH = h - 0.67, cabY = y0 + 0.22 + cabH / 2; /* carcass + top bus duct = e.h */
+  g.add(vw3dB(THREE, P.galvDark, 0, y0 + 0.11, 0, w + 0.15, 0.22, d + 0.15, 0)); /* plinth */
+  for(var i = 0; i < nCab; i++){
+    var cx = -w / 2 + (i + 0.5) * cw;
+    g.add(vw3dB(THREE, (i % 2) ? P.body : P.dark, cx, cabY, 0, cw - 0.06, cabH, d, 0)); /* carcass */
+    g.add(vw3dB(THREE, P.galvDark, cx, cabY, d / 2 + 0.01, cw - 0.14, cabH - 0.1, 0.02, 0)); /* door */
+    g.add(vw3dB(THREE, P.black, cx + cw / 2 - 0.18, cabY + 0.1, d / 2 + 0.04, 0.04, 0.18, 0.04, 1)); /* handle */
+    g.add(vw3dB(THREE, P.black, cx - cw / 2 + 0.12, cabY - cabH / 2 + 0.18, d / 2 + 0.03, 0.1, 0.12, 0.02, 1)); /* lock */
+    for(var v = 0; v < 2; v++){ /* louvred vents (detail 2) */
+      g.add(vw3dB(THREE, P.black, cx, cabY - cabH / 2 + 0.35 + v * 0.07, d / 2 + 0.025, cw - 0.4, 0.03, 0.02, 2));
+    }
+    /* mimic strip + pilot lamp */
+    g.add(vw3dB(THREE, P.copper, cx, cabY + cabH / 2 - 0.16, d / 2 + 0.03, cw - 0.3, 0.03, 0.01, 1));
+    var lc = vw3dRLoadColor(e.load, e.live);
+    var lm = new THREE.MeshStandardMaterial({ color: lc, emissive: lc, emissiveIntensity: 0.8 });
+    var dot = vw3dS(THREE, lm, cx - cw / 2 + 0.14, cabY + cabH / 2 - 0.28, d / 2 + 0.04, 0.035, 1);
+    dot.userData.solid = false; g.add(dot);
+    g.add(vw3dB(THREE, P.white, cx, cabY + cabH / 2 - 0.44, d / 2 + 0.025, cw - 0.34, 0.14, 0.01, 1)); /* label strip */
+  }
+  g.add(vw3dB(THREE, P.copper, 0, y0 + 0.22 + cabH + 0.08, 0, w + 0.1, 0.09, d + 0.1, 0)); /* top bus duct */
+  /* cable trench in front: recessed dark box + 3 cover slats */
+  g.add(vw3dB(THREE, P.black, 0, 0.1, d / 2 + 0.55, w, 0.2, 0.8, 0));
+  for(var t = 0; t < 3; t++) g.add(vw3dB(THREE, P.galvDark, -w / 2 + (t + 0.5) * (w / 3), 0.21, d / 2 + 0.55, w / 3 - 0.08, 0.03, 0.7, 1));
+  vw3dWarningSign(THREE, g, P, '400 V', w / 2 - 0.45, cabY + 0.2, d / 2 + 0.03);
+  vw3dNameplate(THREE, g, P, 'LV SWITCHBOARD', 'Form 4 · IP54', -w / 2 + 0.5, cabY - 0.3, d / 2 + 0.03, 0.6);
+}
+
+function vw3dBuildCap(THREE, g, e, P, y0){
+  /* Capacitor bank: galvanised frame, 6 cans with bushings + fuses,
+     discharge resistor block, mesh-fence hint. */
+  var w = e.w, y1 = y0 + 0.75;
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function(s){
+    g.add(vw3dB(THREE, P.galv, s[0] * (w / 2 - 0.15), y0 + 0.65, s[1] * (e.d / 2 - 0.15), 0.1, 1.3, 0.1, 0));
+  });
+  g.add(vw3dB(THREE, P.galv, 0, y0 + 0.12, 0, w, 0.1, e.d, 0));
+  g.add(vw3dB(THREE, P.galv, 0, y0 + 1.28, 0, w, 0.1, e.d, 0));
+  for(var c = 0; c < 3; c++){
+    for(var r = 0; r < 2; r++){
+      var cx = -w / 3 + c * (w / 3), cz = -e.d / 4 + r * (e.d / 2);
+      g.add(vw3dC(THREE, P.galv, cx, y1, cz, 0.26, 0.85, 0, 'y')); /* can */
+      g.add(vw3dC(THREE, P.galvDark, cx, y1 + 0.45, cz, 0.28, 0.05, 1, 'y')); /* lid */
+      g.add(vw3dC(THREE, P.porcelain, cx, y1 + 0.6, cz, 0.05, 0.22, 1, 'y')); /* bushing */
+      g.add(vw3dB(THREE, P.black, cx + 0.3, y1 + 0.25, cz, 0.08, 0.3, 0.08, 1)); /* fuse */
+    }
+  }
+  /* discharge resistor block + small control box */
+  g.add(vw3dB(THREE, P.black, w / 2 - 0.25, y0 + 0.35, 0, 0.3, 0.4, 0.3, 1));
+  g.add(vw3dB(THREE, P.white, 0, y0 + 0.35, e.d / 2 + 0.06, 0.4, 0.25, 0.05, 1));
+  /* mesh fence hint: 4 posts + 2 rails + translucent mesh plane */
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function(s){
+    g.add(vw3dB(THREE, P.galv, s[0] * (w / 2 + 0.35), y0 + 0.6, s[1] * (e.d / 2 + 0.35), 0.05, 1.2, 0.05, 1));
+  });
+  var meshMat = new THREE.MeshStandardMaterial({ color: 0x8a929c, roughness: 0.6, metalness: 0.6, transparent: true, opacity: 0.28 });
+  var mp = new THREE.Mesh(vw3dGeo(THREE).plane, meshMat);
+  mp.position.set(0, y0 + 0.6, e.d / 2 + 0.35); mp.scale.set(w + 0.7, 1.1, 1);
+  mp.userData.detail = 2; g.add(mp);
+  vw3dNameplate(THREE, g, P, 'CAPACITOR BANK', (e.sub || '').split('·')[0] || 'kVar', 0, y0 + 0.35, e.d / 2 + 0.09, 0.6);
+}
+
+function vw3dBuildMotor(THREE, g, e, P, y0){
+  /* TEFC motor — TRUE SCALE: S is chosen so the drawn top equals the envelope
+     height e.h (75 kW / frame 280 ≈ 1.05 m tall). Old builder drew ~2.1 m. */
+  var S = Math.min(0.95, Math.max(0.25, (e.h - 0.28) / 1.84));
+  var y1 = y0 + 0.95 * S;
+  g.add(vw3dB(THREE, P.galvDark, 0, y0 + 0.08 * S, 0, 2.0 * S, 0.16 * S, 1.3 * S, 0)); /* baseplate */
+  /* finned frame: cylinder + 8 longitudinal fins */
+  g.add(vw3dCf(THREE, P.body, 0, y1, 0, 0.62 * S, 1.7 * S, 0, 'x')); /* barrel */
+  for(var f = 0; f < 8; f++){
+    var a = (f / 8) * Math.PI * 2;
+    g.add(vw3dB(THREE, P.body, 0, y1 + Math.sin(a) * 0.66 * S, Math.cos(a) * 0.66 * S, 1.55 * S, 0.05 * S, 0.16 * S, 1));
+  }
+  g.add(vw3dCf(THREE, P.galvDark, -1.05 * S, y1, 0, 0.68 * S, 0.35 * S, 0, 'x')); /* fan cowl */
+  g.add(vw3dC(THREE, P.black, -1.26 * S, y1, 0, 0.3 * S, 0.03 * S, 2, 'x')); /* cowl grille */
+  g.add(vw3dB(THREE, P.galvDark, 0.1 * S, y1 + 0.72 * S, 0, 0.6 * S, 0.34 * S, 0.45 * S, 0)); /* terminal box */
+  g.add(vw3dB(THREE, P.black, 0.1 * S, y1 + 0.72 * S, 0.24 * S, 0.3 * S, 0.12 * S, 0.03 * S, 1)); /* cable gland */
+  [-0.6, 0.6].forEach(function(dx){ g.add(vw3dB(THREE, P.galvDark, dx * S, y0 + 0.32 * S, 0, 0.25 * S, 0.5 * S, 1.0 * S, 0)); }); /* feet */
+  /* shaft + coupling + driven pump */
+  g.add(vw3dC(THREE, P.alum, 1.15 * S, y1, 0, 0.09 * S, 0.6 * S, 0, 'x')); /* shaft */
+  g.add(vw3dC(THREE, P.hvOrange, 1.5 * S, y1, 0, 0.16 * S, 0.18 * S, 0, 'x')); /* coupling */
+  g.add(vw3dB(THREE, P.galv, 2.0 * S, y1, 0, 0.7 * S, 0.9 * S, 0.9 * S, 0)); /* pump volute block */
+  g.add(vw3dC(THREE, P.galv, 2.0 * S, y1 + 0.55 * S, 0, 0.12 * S, 0.3 * S, 1, 'y')); /* suction */
+  g.add(vw3dC(THREE, P.galv, 2.35 * S, y1, 0, 0.12 * S, 0.3 * S, 1, 'x')); /* discharge */
+  g.add(vw3dB(THREE, P.galvDark, 2.0 * S, y0 + 0.18 * S, 0, 0.9 * S, 0.36 * S, 1.0 * S, 0)); /* pump feet */
+  vw3dNameplate(THREE, g, P, 'MOTOR M1', (e.sub || '').split('·')[0] || 'TEFC IP55', 0.1 * S, y1, 0.26 * S, 0.5 * S); /* on barrel side, not above terminal box */
+}
+
+function vw3dBuildLoad(THREE, g, e, P, y0){
+  /* Load building / panel room: jointed walls, door, louvred vent, windows,
+     parapet roof, wall light, cable gland plate, wall AC unit. */
+  var w = e.w, h = e.h, d = e.d, wallH = h - 0.57, wallY = y0 + wallH / 2; /* parapet top = e.h */
+  g.add(vw3dB(THREE, P.brick, 0, wallY, 0, w, wallH, d, 0)); /* walls */
+  for(var j = 1; j < 4; j++){ /* panel joints */
+    g.add(vw3dB(THREE, P.galvDark, -w / 2 + (j / 4) * w, wallY, d / 2 + 0.01, 0.03, wallH, 0.02, 1));
+  }
+  g.add(vw3dB(THREE, P.galvDark, 0, y0 + wallH + 0.08, 0, w + 0.3, 0.16, d + 0.3, 0)); /* roof slab */
+  g.add(vw3dB(THREE, P.galvDark, 0, y0 + wallH + 0.22, 0, w + 0.36, 0.14, d + 0.36, 0)); /* parapet */
+  /* door + handle + step */
+  g.add(vw3dB(THREE, P.galv, -w / 4, y0 + 0.72, d / 2 + 0.02, 0.72, 1.44, 0.05, 0));
+  g.add(vw3dB(THREE, P.black, -w / 4 + 0.24, y0 + 0.72, d / 2 + 0.06, 0.04, 0.16, 0.04, 1));
+  g.add(vw3dB(THREE, P.concreteTex, -w / 4, y0 + 0.03, d / 2 + 0.18, 0.9, 0.06, 0.36, 0));
+  /* louvred vent (detail 2 slats) */
+  for(var v = 0; v < 3; v++) g.add(vw3dB(THREE, P.black, w / 4, y0 + wallH - 0.45 + v * 0.1, d / 2 + 0.02, 0.6, 0.04, 0.03, 2));
+  /* windows with frames + glass */
+  [-0.05, 0.55].forEach(function(fx){
+    var wx = fx * w;
+    g.add(vw3dB(THREE, P.white, wx, y0 + wallH - 0.7, d / 2 + 0.02, 0.8, 0.7, 0.04, 0));
+    g.add(vw3dB(THREE, P.glass, wx, y0 + wallH - 0.7, d / 2 + 0.045, 0.68, 0.58, 0.02, 0));
+    g.add(vw3dB(THREE, P.white, wx, y0 + wallH - 0.7, d / 2 + 0.05, 0.03, 0.58, 0.02, 1));
+  });
+  /* wall light + cable gland plate + AC unit */
+  g.add(vw3dB(THREE, P.black, -w / 4, y0 + 1.62, d / 2 + 0.06, 0.05, 0.2, 0.05, 1));
+  var lb = vw3dS(THREE, P.yellow, -w / 4, y0 + 1.5, d / 2 + 0.1, 0.07, 1);
+  lb.userData.solid = false; g.add(lb);
+  g.add(vw3dB(THREE, P.galvDark, w / 2 - 0.4, y0 + 0.5, d / 2 + 0.03, 0.5, 0.3, 0.04, 1));
+  g.add(vw3dC(THREE, P.black, w / 2 - 0.5, y0 + 0.5, d / 2 + 0.08, 0.05, 0.08, 2, 'z'));
+  g.add(vw3dC(THREE, P.black, w / 2 - 0.3, y0 + 0.5, d / 2 + 0.08, 0.05, 0.08, 2, 'z'));
+  g.add(vw3dB(THREE, P.white, w / 2 - 0.4, y0 + wallH - 0.5, -d / 2 - 0.08, 0.7, 0.5, 0.18, 1)); /* AC unit */
+  g.add(vw3dB(THREE, P.black, w / 2 - 0.4, y0 + wallH - 0.5, -d / 2 - 0.18, 0.5, 0.06, 0.02, 2));
+}
+
+function vw3dBuildBldg(THREE, g, e, P, y0){
+  /* Control building: brick walls, door, framed windows, roof + parapet,
+     downpipe, small sign. */
+  var w = e.w, h = e.h, d = e.d, wallH = h - 0.57, wallY = y0 + wallH / 2; /* parapet top = e.h */
+  g.add(vw3dB(THREE, P.brick, 0, wallY, 0, w, wallH, d, 0));
+  for(var j = 1; j < 4; j++){
+    g.add(vw3dB(THREE, P.galvDark, -w / 2 + (j / 4) * w, wallY, d / 2 + 0.01, 0.03, wallH, 0.02, 1));
+  }
+  g.add(vw3dB(THREE, P.galvDark, 0, y0 + wallH + 0.08, 0, w + 0.3, 0.16, d + 0.3, 0));
+  g.add(vw3dB(THREE, P.galvDark, 0, y0 + wallH + 0.22, 0, w + 0.36, 0.14, d + 0.36, 0));
+  g.add(vw3dB(THREE, P.galv, 0, y0 + 0.85, d / 2 + 0.02, 0.95, 1.7, 0.05, 0)); /* door */
+  g.add(vw3dB(THREE, P.black, 0.32, y0 + 0.85, d / 2 + 0.06, 0.04, 0.16, 0.04, 1));
+  g.add(vw3dB(THREE, P.concreteTex, 0, y0 + 0.03, d / 2 + 0.18, 1.15, 0.06, 0.36, 0)); /* step */
+  [-w / 4, w / 4].forEach(function(wx){
+    g.add(vw3dB(THREE, P.white, wx, y0 + wallH - 0.75, d / 2 + 0.02, 0.9, 0.8, 0.04, 0));
+    g.add(vw3dB(THREE, P.glass, wx, y0 + wallH - 0.75, d / 2 + 0.045, 0.78, 0.68, 0.02, 0));
+    g.add(vw3dB(THREE, P.white, wx, y0 + wallH - 0.75, d / 2 + 0.05, 0.03, 0.68, 0.02, 1));
+    g.add(vw3dB(THREE, P.white, wx, y0 + wallH - 0.75, d / 2 + 0.05, 0.78, 0.03, 0.02, 1));
+  });
+  g.add(vw3dC(THREE, P.galvDark, w / 2 - 0.15, y0 + wallH / 2, d / 2 + 0.08, 0.05, wallH, 1, 'y')); /* downpipe */
+  vw3dNameplate(THREE, g, P, 'CONTROL ROOM', 'Protection + metering', 0, y0 + wallH - 0.25, d / 2 + 0.03, 0.8);
+}
+
+/* ---- fallback: plain labelled box (used if a kind builder throws) ---- */
+function vw3dFallbackEquip(THREE, g, e, P, y0){
+  g.add(vw3dB(THREE, P.body, 0, y0 + e.h / 2, 0, Math.max(e.w, 0.5), e.h, Math.max(e.d, 0.5), 0));
+  g.add(vw3dB(THREE, P.galvDark, 0, y0 + e.h + 0.05, 0, Math.max(e.w, 0.5) + 0.1, 0.08, Math.max(e.d, 0.5) + 0.1, 0));
+}
+
+/* ============================================================================
+   REPLACEMENT vw3dBuildEquip — same signature, same return contract.
+   ========================================================================== */
+function vw3dBuildEquip(THREE, e, mats, labels){
+  var g = new THREE.Group();
+  g.position.set(e.x, 0, e.z);
+  g.userData.equip = e;
+  var tex = { concrete: vw3dCanvasTexture(THREE, 'concrete'), gravel: vw3dCanvasTexture(THREE, 'gravel'),
+    galv: vw3dCanvasTexture(THREE, 'galv'), hazard: vw3dCanvasTexture(THREE, 'hazard'),
+    brick: vw3dCanvasTexture(THREE, 'brick') };
+  var P = vw3dPalette(THREE, mats, tex);
+  var y0 = VW3D_Y0;
+  try{ vw3dFoundation(THREE, g, P, e, y0); }catch(err){ /* pad is cosmetic */ }
+  var kindFn = { grid: vw3dBuildGrid, gantry: vw3dBuildGantry, brk: vw3dBuildBreaker,
+    bus: vw3dBuildBus, tx: vw3dBuildTx, switchgear: vw3dBuildSwitchgear,
+    cap: vw3dBuildCap, motor: vw3dBuildMotor, load: vw3dBuildLoad, bldg: vw3dBuildBldg }[e.kind];
+  try{
+    if(kindFn) kindFn(THREE, g, e, P, y0);
+    else vw3dFallbackEquip(THREE, g, e, P, y0);
+  }catch(err){
+    vw3dFallbackEquip(THREE, g, e, P, y0); /* never throw: plain box instead */
+  }
+  try{ vw3dEarthStrap(THREE, g, P.copper, e.w / 2 + 0.02, 0.3, 0, Math.min(0.8, e.h * 0.6)); }catch(err){ /* cosmetic */ }
+  try{ vw3dStatusLamp(THREE, g, P, e, e.h + 0.75); }catch(err){ /* cosmetic */ }
+  if(labels){
+    try{
+      var sp = vw3dSprite(THREE, e.label, e.sub, '#' + vw3dRLoadColor(e.load, e.live).toString(16).padStart(6, '0'));
+      sp.position.set(0, e.h + 1.9, 0);
+      g.add(sp);
+    }catch(err){ /* labels are cosmetic */ }
+  }
+  return g;
+}
+
+/* ============================================================================
+   VIEWER REALISM — call vw3dApplyRealism(viewer, model) at the END of the
+   host viewer setModel() (after v.select(null)). Idempotent: safe to call
+   on every rebuild. It does NOT replace the host viewer — it only tunes
+   the renderer / lights / shadows / fog, fixes X-ray for the locally
+   created materials, applies the detail level, and (re)builds scene extras.
+   ========================================================================== */
+function vw3dApplyRealism(viewer, model){
+  if(!viewer || !viewer.ready || !viewer.scene || !viewer.renderer) return;
+  var THREE = (typeof VW3D !== 'undefined' && VW3D.three) ? VW3D.three : null;
+  if(!THREE) return;
+  try{
+    /* one-time renderer + light tuning */
+    if(!viewer._realismApplied){
+      viewer.renderer.shadowMap.enabled = true;
+      viewer.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      viewer.scene.fog = new THREE.Fog(
+        document.documentElement.dataset.theme === 'light' ? 0xeef2f8 : 0x0b1220, 48, 100);
+      viewer.scene.traverse(function(o){
+        if(o.isDirectionalLight && !o.userData.vw3dKey){
+          o.userData.vw3dKey = true;
+          o.color.setHex(0xfff1dd); /* slightly warm key light */
+          o.intensity = 1.15;
+          o.castShadow = true;
+          o.shadow.mapSize.set(2048, 2048);
+          o.shadow.camera.left = -28; o.shadow.camera.right = 28;
+          o.shadow.camera.top = 28; o.shadow.camera.bottom = -28;
+          o.shadow.camera.near = 1; o.shadow.camera.far = 90;
+          o.shadow.bias = -0.0004;
+          o.shadow.camera.updateProjectionMatrix();
+        } else if(o.isDirectionalLight){
+          o.color.setHex(0x9db8ff); /* cool fill */
+          o.intensity = 0.4;
+        }
+      });
+      viewer._realismApplied = true;
+    }
+    /* ground: gravel texture + receive shadows (ground is built by setModel) */
+    if(viewer.group) viewer.group.traverse(function(o){
+      if(!o.isMesh) return;
+      var isGround = o.geometry && o.geometry.type === 'PlaneGeometry' &&
+        o.geometry.parameters && o.geometry.parameters.width > 10; /* yard slab, not the cap-bank mesh fence */
+      var transparent = o.material && o.material.transparent;
+      if(isGround){
+        o.receiveShadow = true; o.castShadow = false;
+        if(!viewer._groundTextured && o.material && o.material.map !== vw3dCanvasTexture(THREE, 'gravel')){
+          try{
+            o.material.map = vw3dCanvasTexture(THREE, 'gravel');
+            o.material.needsUpdate = true;
+            viewer._groundTextured = true;
+          }catch(err){ /* keep plain ground */ }
+        }
+        return;
+      }
+      /* shadows: solid meshes cast + receive; transparent / lamps / dots do not */
+      if(transparent || o.userData.solid === false){ o.castShadow = false; }
+      else if(o.userData.solid === true){ o.castShadow = true; o.receiveShadow = true; }
+      /* X-ray: the host setModel only fades its 6 shared mats; fade ours too */
+      if(viewer.opts && viewer.opts.xray){
+        if(o.material && o.material.isMeshStandardMaterial && !o.userData.vw3dXray){
+          o.material.transparent = true; o.material.opacity = 0.4;
+          o.castShadow = false;
+        }
+      }
+    });
+    /* detail visibility (level lives in viewer.opts.detail, default 'high') */
+    vw3dApplyDetail(viewer);
+    /* scene extras (human figure + scale bar) — calc mode only */
+    vw3dSceneExtras(viewer, model, THREE);
+  }catch(err){ /* realism must never break the viewer */ }
+}
+function vw3dApplyDetail(viewer){
+  if(!viewer || !viewer.group) return;
+  var level = (viewer.opts && viewer.opts.detail) || 'high';
+  viewer.group.traverse(function(o){
+    if(o.userData && o.userData.detail === 2) o.visible = (level === 'high');
+  });
+}
+function vw3dSetDetail(viewer, level){
+  if(!viewer) return;
+  viewer.opts = viewer.opts || {};
+  viewer.opts.detail = (level === 'fast') ? 'fast' : 'high';
+  vw3dApplyDetail(viewer);
+  /* keep the two toolbar buttons in sync (ids exist in both toolbars) */
+  var pfx = (viewer.which === 'sld') ? 'sld3dDetail' : 'vw3dDetail';
+  var hi = document.getElementById(pfx + 'HighBtn'), fa = document.getElementById(pfx + 'FastBtn');
+  if(hi) hi.classList.toggle('sel', viewer.opts.detail === 'high');
+  if(fa) fa.classList.toggle('sel', viewer.opts.detail === 'fast');
+}
+function vw3dToggleDetail(which){
+  /* Toolbar handler: vw3dToggleDetail('main' | 'sld'). Flips high <-> fast
+     without a rebuild (detail-2 parts are just hidden/shown). */
+  var v = null;
+  try{ v = (which === 'sld') ? VW3D.sld : VW3D.main; }catch(err){ v = null; }
+  if(!v) return;
+  var next = ((v.opts && v.opts.detail) || 'high') === 'high' ? 'fast' : 'high';
+  vw3dSetDetail(v, next);
+}
+/* ---- scene extras: 1.8 m human figure + 5 m scale bar (calc mode only) ---- */
+function vw3dSceneExtras(viewer, model, THREE){
+  if(viewer._extras){
+    if(viewer._extras.parent) viewer._extras.parent.remove(viewer._extras);
+    viewer._extras = null;
+  }
+  if(!model || model.source !== 'calc') return; /* SLD scenes: no fixed yard */
+  var g = new THREE.Group();
+  var P = vw3dPalette(THREE, { steel: null, dark: null, body: null, copper: null, porcelain: null, concrete: null },
+    { concrete: vw3dCanvasTexture(THREE, 'concrete'), gravel: vw3dCanvasTexture(THREE, 'gravel'),
+      galv: vw3dCanvasTexture(THREE, 'galv'), hazard: vw3dCanvasTexture(THREE, 'hazard'),
+      brick: vw3dCanvasTexture(THREE, 'brick') });
+  /* fix: palette fallbacks above passed null shared mats — rebuild the two
+     materials we actually need locally so extras never depend on host mats */
+  var orange = new THREE.MeshStandardMaterial({ color: 0xff6a00, roughness: 0.6, emissive: 0x903800, emissiveIntensity: 0.25 });
+  var navy = new THREE.MeshStandardMaterial({ color: 0x2c3a55, roughness: 0.85 });
+  var helm = new THREE.MeshStandardMaterial({ color: 0xf5d90a, roughness: 0.4 });
+  var skin = new THREE.MeshStandardMaterial({ color: 0xc9a184, roughness: 0.7 });
+  var dark = new THREE.MeshStandardMaterial({ color: 0x1c1f24, roughness: 0.7 });
+  /* human figure, 1.80 m, standing in open yard by the LV switchgear
+     (switchgear spans x 4.9-8.3, z -0.2-1.2; load building starts x 9.0, z 2.1) */
+  var hx = 8.6, hz = 1.7;
+  g.add(vw3dB(THREE, dark, hx - 0.09, 0.42, hz, 0.13, 0.84, 0.16, 0));
+  g.add(vw3dB(THREE, dark, hx + 0.09, 0.42, hz, 0.13, 0.84, 0.16, 0));
+  g.add(vw3dB(THREE, navy, hx, 0.98, hz, 0.2, 0.34, 0.16, 0));
+  g.add(vw3dC(THREE, orange, hx, 1.32, hz, 0.21, 0.42, 0, 'y')); /* hi-vis torso */
+  g.add(vw3dC(THREE, orange, hx, 1.62, hz, 0.24, 0.1, 0, 'y')); /* shoulders */
+  g.add(vw3dS(THREE, skin, hx, 1.74, hz, 0.1, 0)); /* head */
+  g.add(vw3dS(THREE, helm, hx, 1.82, hz, 0.12, 0)); /* helmet */
+  /* 5 m scale bar near the yard edge: 5 x 1 m black/white segments + posts */
+  var bx = -12, bz = 8.2;
+  for(var i = 0; i < 5; i++){
+    g.add(vw3dB(THREE, (i % 2) ? dark : P.white, bx + i + 0.5, 0.14, bz, 1, 0.16, 0.28, 0));
+  }
+  g.add(vw3dB(THREE, dark, bx - 0.05, 0.45, bz, 0.06, 0.9, 0.06, 0));
+  g.add(vw3dB(THREE, dark, bx + 5.05, 0.45, bz, 0.06, 0.9, 0.06, 0));
+  if(typeof vw3dSprite === 'function'){
+    try{
+      var sp = vw3dSprite(THREE, '5 m', 'scale', '#ffffff');
+      sp.scale.set(1.6, 0.4, 1);
+      sp.position.set(bx + 2.5, 0.85, bz);
+      g.add(sp);
+    }catch(err){ /* bar alone is fine */ }
+  }
+  g.traverse(function(o){ if(o.isMesh){ o.castShadow = true; o.receiveShadow = true; } });
+  viewer._extras = g;
+  if(viewer.scene) viewer.scene.add(g);
+}
+/* ---- viewer ---- */
+function vw3dMakeViewer(canvasId, infoId, fallbackId, which){
+  const v = { which, canvas: document.getElementById(canvasId), info: document.getElementById(infoId),
+    fallback: document.getElementById(fallbackId), ready:false, model:null, group:null, flow:[],
+    sph:{ theta:0.85, phi:1.02, radius:26 }, sphT:{ theta:0.85, phi:1.02, radius:26 },
+    target:new THREE.Vector3(1, 1, 0), targetT:new THREE.Vector3(1, 1, 0),
+    opts:{ flow:true, labels:true, autorotate:false, xray:false, detail:'high' }, selected:null, ring:null, drag:null, moved:false };
+  v.init = function(){
+    if(v.ready || !v.canvas) return;
+    const THREE = VW3D.three; if(!THREE) return;
+    v.renderer = new THREE.WebGLRenderer({ canvas: v.canvas, antialias:true });
+    v.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    v.scene = new THREE.Scene();
+    v.scene.background = new THREE.Color(document.documentElement.dataset.theme === 'light' ? 0xeef2f8 : 0x0b1220);
+    v.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 300);
+    v.scene.add(new THREE.HemisphereLight(0xbfd4ff, 0x1a2233, 0.95));
+    const dl = new THREE.DirectionalLight(0xffffff, 1.05); dl.position.set(14, 20, 10); v.scene.add(dl);
+    const dl2 = new THREE.DirectionalLight(0x88aaff, 0.35); dl2.position.set(-12, 8, -10); v.scene.add(dl2);
+    v.ray = new THREE.Raycaster(); v.mouse = new THREE.Vector2();
+    v.bind(); v.resize(); v.ready = true;
+    const loop = (t)=>{
+      requestAnimationFrame(loop);
+      if(!v.ready) return;
+      if(!v.canvas.offsetParent) return;
+      const dt = Math.min(0.05, (t - (v.lastT || t)) / 1000 || 0.016); v.lastT = t;
+      if(v.opts.autorotate) v.sphT.theta += dt * 0.18;
+      ['theta','phi','radius'].forEach(k=>{ v.sph[k] += (v.sphT[k] - v.sph[k]) * 0.12; });
+      v.target.lerp(v.targetT, 0.12);
+      const sp = v.sph;
+      v.camera.position.set(
+        v.target.x + sp.radius * Math.sin(sp.phi) * Math.sin(sp.theta),
+        v.target.y + sp.radius * Math.cos(sp.phi),
+        v.target.z + sp.radius * Math.sin(sp.phi) * Math.cos(sp.theta));
+      v.camera.lookAt(v.target);
+      if(v.opts.flow) v.flow.forEach(f=>{
+        f.t = (f.t + dt * f.speed) % 1;
+        f.meshes.forEach((m, i)=>{ const tt = (f.t + i / f.meshes.length) % 1; m.position.lerpVectors(f.a, f.b, tt); });
+      });
+      v.renderer.render(v.scene, v.camera);
+    };
+    requestAnimationFrame(loop);
+  };
+  v.resize = function(){
+    if(!v.ready) return;
+    const w = v.canvas.clientWidth || 800, hgt = v.canvas.clientHeight || 520;
+    v.renderer.setSize(w, hgt, false);
+    v.camera.aspect = w / hgt; v.camera.updateProjectionMatrix();
+  };
+  v.bind = function(){
+    const c = v.canvas;
+    c.addEventListener('pointerdown', ev=>{ v.drag = { x:ev.clientX, y:ev.clientY, btn:ev.button, sph:{...v.sphT}, tgt:v.targetT.clone() }; v.moved = false; c.setPointerCapture(ev.pointerId); });
+    c.addEventListener('pointermove', ev=>{
+      if(!v.drag) return;
+      const dx = ev.clientX - v.drag.x, dy = ev.clientY - v.drag.y;
+      if(Math.abs(dx) + Math.abs(dy) > 3) v.moved = true;
+      if(v.drag.btn === 0){ v.sphT.theta = v.drag.sph.theta - dx * 0.005; v.sphT.phi = Math.max(0.15, Math.min(1.45, v.drag.sph.phi - dy * 0.005)); }
+      else { const s = v.sphT.radius * 0.0016; const right = new THREE.Vector3(1, 0, 0).applyQuaternion(v.camera.quaternion); const up = new THREE.Vector3(0, 1, 0).applyQuaternion(v.camera.quaternion);
+        v.targetT.copy(v.drag.tgt).addScaledVector(right, -dx * s).addScaledVector(up, dy * s); }
+    });
+    const end = ev=>{
+      if(v.drag && !v.moved && ev.button === 0) v.pick(ev);
+      v.drag = null;
+    };
+    c.addEventListener('pointerup', end); c.addEventListener('pointercancel', ()=>{ v.drag = null; });
+    c.addEventListener('wheel', ev=>{ ev.preventDefault(); v.sphT.radius = Math.max(6, Math.min(60, v.sphT.radius * (ev.deltaY > 0 ? 1.12 : 1 / 1.12))); }, { passive:false });
+  };
+  v.pick = function(ev){
+    if(!v.group) return;
+    const r = v.canvas.getBoundingClientRect();
+    v.mouse.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+    v.ray.setFromCamera(v.mouse, v.camera);
+    const hits = v.ray.intersectObjects(v.group.children, true);
+    for(const h of hits){
+      let o = h.object; while(o && !o.userData.equip) o = o.parent;
+      if(o && o.userData.equip){ v.select(o.userData.equip); return; }
+    }
+    v.select(null);
+  };
+  v.select = function(e){
+    v.selected = e;
+    if(v.ring) v.ring.visible = !!e;
+    if(e){
+      if(!v.ring){
+        const THREE = VW3D.three;
+        v.ring = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.07, 8, 40), new THREE.MeshBasicMaterial({ color:0x4c8dff }));
+        v.ring.rotation.x = Math.PI / 2; v.scene.add(v.ring);
+      }
+      v.ring.position.set(e.x, 0.25, e.z);
+      const sc = Math.max(e.w, e.d) / 2 + 0.6; v.ring.scale.set(sc, sc, 1);
+      if(v.info) v.info.innerHTML = '<b>' + e.label + '</b><br><span class="sub">' + (e.sub || '') + '</span><br>Loading ' + Math.round(e.load * 100) + '% · ' + (e.live ? 'Energised' : 'De-energised');
+    } else if(v.info){ v.info.innerHTML = 'Click any equipment for its details.'; }
+  };
+  v.setModel = function(model){
+    const THREE = VW3D.three; if(!THREE || !v.ready) return;
+    v.model = model;
+    if(v.group){ v.scene.remove(v.group); v.group.traverse(o=>{ if(o.geometry) o.geometry.dispose(); if(o.material){ (Array.isArray(o.material) ? o.material : [o.material]).forEach(m=>{ if(m.map) m.map.dispose(); m.dispose(); }); } }); }
+    const mats = {
+      steel: new THREE.MeshStandardMaterial({ color:0x9aa7bd, roughness:0.55, metalness:0.5 }),
+      dark: new THREE.MeshStandardMaterial({ color:0x2b3547, roughness:0.7, metalness:0.3 }),
+      body: new THREE.MeshStandardMaterial({ color:0x3d5a80, roughness:0.6, metalness:0.4 }),
+      copper: new THREE.MeshStandardMaterial({ color:0xb87333, roughness:0.4, metalness:0.7 }),
+      porcelain: new THREE.MeshStandardMaterial({ color:0xe8e4da, roughness:0.35, metalness:0.05 }),
+      concrete: new THREE.MeshStandardMaterial({ color:0x8d949e, roughness:0.95 })
+    };
+    if(v.opts.xray) Object.values(mats).forEach(m=>{ m.transparent = true; m.opacity = 0.4; });
+    const g = new THREE.Group();
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(46, 34), new THREE.MeshStandardMaterial({ color: document.documentElement.dataset.theme === 'light' ? 0xdde3ec : 0x141a26, roughness:1 }));
+    ground.rotation.x = -Math.PI / 2; g.add(ground);
+    const grid = new THREE.GridHelper(46, 46, 0x4c8dff, 0x2a3550); grid.material.transparent = true; grid.material.opacity = 0.18; grid.position.y = 0.02; g.add(grid);
+    const byId = {};
+    model.equip.forEach(e=>{ byId[e.id] = e; const eg = vw3dBuildEquip(THREE, e, mats, v.opts.labels); g.add(eg); });
+    const wireMat = new THREE.MeshStandardMaterial({ color:0x64748b, roughness:0.5, metalness:0.6 });
+    v.flow = [];
+    model.conns.forEach(cn=>{
+      const a = byId[cn.a], b = byId[cn.b]; if(!a || !b) return;
+      const pa = new THREE.Vector3(a.x, Math.max(1.2, a.h * 0.62), a.z);
+      const pb = new THREE.Vector3(b.x, Math.max(1.2, b.h * 0.62), b.z);
+      g.add(vw3dTube(THREE, pa, pb, 0.07, wireMat));
+      if(a.live && b.live && v.opts.flow){
+        const col = vw3dLoadColor(Math.max(a.load, b.load), true);
+        const fm = new THREE.MeshBasicMaterial({ color: col });
+        const dots = [];
+        for(let i = 0; i < 3; i++){ const d = new THREE.Mesh(new THREE.SphereGeometry(0.16, 10, 8), fm); g.add(d); dots.push(d); }
+        v.flow.push({ a:pa, b:pb, t: Math.random(), speed: 0.06 + Math.min(0.35, Math.max(a.load, b.load) * 0.22), meshes: dots });
+      }
+    });
+    if(model.arcZone){
+      const at = byId[model.arcZone.at];
+      if(at){
+        const zm = new THREE.Mesh(new THREE.SphereGeometry(model.arcZone.r, 24, 18),
+          new THREE.MeshBasicMaterial({ color: model.arcZone.cal > 8 ? 0xf04a4a : model.arcZone.cal > 1.2 ? 0xf59e0b : 0x22c55e, transparent:true, opacity:0.16, depthWrite:false }));
+        zm.position.set(at.x, at.h * 0.6, at.z); g.add(zm);
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(model.arcZone.r, 0.05, 8, 48), new THREE.MeshBasicMaterial({ color:0xf04a4a }));
+        ring.rotation.x = Math.PI / 2; ring.position.set(at.x, 0.12, at.z); g.add(ring);
+      }
+    }
+    if(model.sldEmpty && v.info) v.info.innerHTML = 'SLD canvas is empty — showing the calculator substation instead. Draw a diagram in the SLD Builder to see it here.';
+    else if(v.info && !v.selected) v.info.innerHTML = 'Click any equipment for its details.';
+    v.group = g; v.scene.add(g);
+    v.select(null);
+    vw3dApplyRealism(v, model);
+  };
+  return v;
+}
+/* ---- views / focus ---- */
+const VW3D_VIEWS = {
+  yard:{ pos:[16, 13, 18], tgt:[1, 1, 0] }, top:{ pos:[0.5, 30, 0.5], tgt:[1, 0, 0] },
+  front:{ pos:[1, 6, 24], tgt:[1, 1, 0] }, side:{ pos:[26, 6, 0], tgt:[1, 1, 0] }
+};
+const VW3D_FOCUS = { yard:'yard', feeder:'gantry', transformer:'tx', cable:'lvsw', motor:'motor', capacitor:'cap', arc:'lvsw', breaker:'brk', load:'load', bus:'hvbus' };
+function vw3dApplyView(v, name){
+  if(!v || !v.ready) return;
+  const vw = VW3D_VIEWS[name] || VW3D_VIEWS.yard;
+  const focusId = VW3D_FOCUS[VW3D.focus];
+  let tgt = vw.tgt.slice();
+  if(v.model && focusId){
+    const sldKind = { gantry:'grid', tx:'tx', lvsw:'bus', motor:'motor', cap:'load', arc:'bus', brk:'brk', load:'load', bus:'bus' }[focusId];
+    const e = v.model.equip.find(x=>x.id === focusId || (VW3D.source === 'sld' && x.kind === sldKind));
+    if(e && name === 'yard' && VW3D.focus !== 'yard'){ tgt = [e.x, 1, e.z]; }
+  }
+  if(name !== 'yard' && VW3D.focus !== 'yard' && v.model){
+    const e = v.model.equip.find(x=>x.id === VW3D_FOCUS[VW3D.focus]);
+    if(e) tgt = [e.x, 1, e.z];
+  }
+  v.targetT.set(tgt[0], tgt[1], tgt[2]);
+  if(name === 'yard' && VW3D.focus !== 'yard' && v.model){
+    const e = v.model.equip.find(x=>x.id === VW3D_FOCUS[VW3D.focus]);
+    if(e){ v.sphT.theta = 0.85; v.sphT.phi = 1.02; v.sphT.radius = 13; v.select(e); return; }
+  }
+  if(name === 'top'){ v.sphT.theta = 0; v.sphT.phi = 0.12; v.sphT.radius = 30; }
+  else if(name === 'front'){ v.sphT.theta = 0; v.sphT.phi = 1.25; v.sphT.radius = 24; }
+  else if(name === 'side'){ v.sphT.theta = Math.PI / 2; v.sphT.phi = 1.25; v.sphT.radius = 24; }
+  else { v.sphT.theta = 0.85; v.sphT.phi = 1.02; v.sphT.radius = VW3D.focus === 'yard' ? 26 : 13; }
+}
+function vw3dSetView(name, which){ const v = which === 'sld' ? VW3D.sld : VW3D.main; vw3dApplyView(v, name); }
+function vw3dToggleOpt(which, opt, btn){
+  const v = which === 'sld' ? VW3D.sld : VW3D.main; if(!v) return;
+  v.opts[opt] = !v.opts[opt];
+  if(btn) btn.classList.toggle('sel', v.opts[opt]);
+  if(opt === 'labels' || opt === 'xray' || opt === 'flow'){ if(v.model) v.setModel(v.model); }
+}
+function vw3dUpdateStats(model){
+  const el = document.getElementById('vw3dStats'); if(!el) return;
+  const st = model.stats || {};
+  const chip = (val, lab, cls)=>'<div class="rcard"><div class="rv ' + (cls || 'info') + '">' + val + '</div><div class="rl">' + lab + '</div></div>';
+  const loadCls = st.txLoad == null ? 'info' : st.txLoad > 1 ? 'fail' : st.txLoad >= 0.8 ? 'warn' : 'pass';
+  el.innerHTML =
+    chip(model.source === 'sld' ? model.equip.length + ' items' : (st.txKva != null ? st.txKva.toFixed(0) + ' kVA' : '—'), model.source === 'sld' ? 'SLD components' : 'Transformer') +
+    chip(st.txLoad != null ? (st.txLoad * 100).toFixed(0) + '%' : (model.source === 'sld' ? model.conns.length + ' links' : '—'), model.source === 'sld' ? 'Connections' : 'TX loading', loadCls) +
+    chip(st.isc != null ? st.isc.toFixed(1) + ' kA' : '—', 'Fault Isc') +
+    chip(st.vd != null ? st.vd.toFixed(2) + '%' : '—', 'Feeder VD', st.vd != null && st.vd > 5 ? 'fail' : 'pass') +
+    chip(st.qc != null ? st.qc.toFixed(0) + ' kVar' : '—', 'Capacitor bank') +
+    chip(st.afb ? (st.afb / 1000).toFixed(2) + ' m' : '—', 'Arc boundary') +
+    chip(st.ppe || '—', 'PPE category', st.ppe === 'DANGER >40' ? 'fail' : 'info');
+}
+function vw3dRefresh(silent){
+  const m = vw3dCollect(VW3D.source);
+  if(VW3D.main && VW3D.main.ready){ VW3D.main.setModel(m); vw3dUpdateStats(m); }
+  if(VW3D.sld && VW3D.sld.ready && !document.getElementById('sld3dPanel').hidden){
+    VW3D.sld.setModel(vw3dCollect('sld'));
+  }
+  if(!silent) toast('🧊 3D re-synced from ' + (VW3D.source === 'sld' ? 'SLD diagram' : 'calculators'));
+}
+function vw3dSetSource(src){
+  VW3D.source = src;
+  const a = document.getElementById('vw3dSrcCalc'), b = document.getElementById('vw3dSrcSld');
+  if(a) a.classList.toggle('sel', src === 'calc');
+  if(b) b.classList.toggle('sel', src === 'sld');
+  vw3dRefresh(true);
+}
+function vw3dEnsureMain(){
+  return vw3dLoadThree().then(()=>{
+    if(!VW3D.main){
+      VW3D.main = vw3dMakeViewer('vw3dCanvas', 'vw3dInfo', 'vw3dFallback', 'main');
+      VW3D.main.init(); VW3D.main.resize();
+    }
+    return VW3D.main;
+  }).catch(()=>{ const f = document.getElementById('vw3dFallback'); if(f) f.classList.add('show'); });
+}
+function vw3dOpenFocus(focus){
+  VW3D.focus = focus || 'yard';
+  if(focus !== 'yard') VW3D.source = 'calc', vw3dSetSource('calc');
+  const sec = document.getElementById('sec-3d');
+  if(sec) sec.scrollIntoView({ behavior:'smooth' });
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.toggle('active', x.dataset.sec === '3d'));
+  vw3dEnsureMain().then(()=>{
+    vw3dRefresh(true);
+    setTimeout(()=>{ if(VW3D.main){ VW3D.main.resize(); vw3dApplyView(VW3D.main, 'yard'); } }, 350);
+    toast('🧊 3D — focusing ' + (focus || 'yard'));
+  });
+}
+function vw3dOpenSLD(){
+  VW3D.source = 'sld'; VW3D.focus = 'yard'; vw3dSetSource('sld');
+  const sec = document.getElementById('sec-3d');
+  if(sec) sec.scrollIntoView({ behavior:'smooth' });
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.toggle('active', x.dataset.sec === '3d'));
+  vw3dEnsureMain().then(()=>{ vw3dRefresh(true); setTimeout(()=>{ if(VW3D.main){ VW3D.main.resize(); vw3dApplyView(VW3D.main, 'yard'); } }, 350); });
+}
+function vw3dToggleSLD(){
+  const panel = document.getElementById('sld3dPanel'); if(!panel) return;
+  const open = panel.hidden;
+  panel.hidden = !open;
+  const btn = document.getElementById('sld3dBtn'); if(btn) btn.classList.toggle('sel', open);
+  if(!open) return;
+  vw3dLoadThree().then(()=>{
+    if(!VW3D.sld){
+      VW3D.sld = vw3dMakeViewer('sld3dCanvas', 'sld3dInfo', 'sld3dFallback', 'sld');
+      VW3D.sld.opts.flow = true; VW3D.sld.opts.labels = true;
+      VW3D.sld.init();
+    }
+    VW3D.sld.setModel(vw3dCollect('sld'));
+    setTimeout(()=>{ if(VW3D.sld){ VW3D.sld.resize(); vw3dApplyView(VW3D.sld, 'yard'); } }, 80);
+  }).catch(()=>{ const f = document.getElementById('sld3dFallback'); if(f) f.classList.add('show'); });
+}
+function vw3dInit(){
+  /* per-card "View in 3D" buttons */
+  const MAP = [['card-line','feeder'],['card-tr','transformer'],['card-cable','cable'],['card-sc','breaker'],
+    ['card-motor','motor'],['card-cablesc','cable'],['card-pf','capacitor'],['card-arc','arc'],['card-live','yard']];
+  MAP.forEach(pair=>{
+    const card = document.getElementById(pair[0]); if(!card || card.querySelector('.vw3d-mini')) return;
+    const h = card.querySelector('h3'); if(!h) return;
+    const b = document.createElement('button');
+    b.className = 'vw3d-mini'; b.type = 'button'; b.textContent = '🧊 3D';
+    b.title = 'See this in the 3D substation';
+    b.addEventListener('click', ev=>{ ev.stopPropagation(); vw3dOpenFocus(pair[1]); });
+    h.appendChild(b);
+  });
+  /* lazy-load the main viewer when the 3D section scrolls into view */
+  const sec = document.getElementById('sec-3d');
+  if(sec && 'IntersectionObserver' in window){
+    const io = new IntersectionObserver(entries=>{
+      if(entries.some(e=>e.isIntersecting)){
+        io.disconnect();
+        vw3dEnsureMain().then(()=>{ vw3dRefresh(true); setTimeout(()=>{ if(VW3D.main){ VW3D.main.resize(); vw3dApplyView(VW3D.main, 'yard'); } }, 120); });
+      }
+    }, { rootMargin:'200px' });
+    io.observe(sec);
+  }
+  window.addEventListener('resize', ()=>{ if(VW3D.main) VW3D.main.resize(); if(VW3D.sld) VW3D.sld.resize(); });
+}
+/* keep 3D in sync when the diagram, the load slider, or any input changes */
+let vw3dSyncT = null;
+function vw3dQueueSync(){
+  clearTimeout(vw3dSyncT);
+  vw3dSyncT = setTimeout(()=>{
+    if(VW3D.main && VW3D.main.ready && document.getElementById('sec-3d').getBoundingClientRect().top < window.innerHeight + 400) vw3dRefresh(true);
+    if(VW3D.sld && VW3D.sld.ready && !document.getElementById('sld3dPanel').hidden) VW3D.sld.setModel(vw3dCollect('sld'));
+  }, 350);
+}
+const vw3dOrigDrawSLD = drawSLD;
+drawSLD = function(){ const r = vw3dOrigDrawSLD.apply(this, arguments); vw3dQueueSync(); return r; };
+const vw3dOrigLive = liveStudy;
+liveStudy = function(){ const r = vw3dOrigLive.apply(this, arguments); vw3dQueueSync(); return r; };
+
+
+/* ================= ONBOARDING: guided tour + per-feature coach ================= */
+const VW_TOUR_STEPS = [
+  { t:'#heroTop', title:'Welcome — what is VoltWorks?',
+    body:'VoltWorks is your power-system design desk. It sizes equipment, checks safety, draws the diagram and writes the report — all in your browser, nothing uploaded, nothing you can break. This tour takes about 2 minutes and visits every tool.', ex:null },
+  { t:'#sec-power', title:'1 · Power Systems — the everyday calculators',
+    body:'Five tools you will use on almost every job: feeder voltage drop, transformer sizing, cable sizing, fault level, and the live load study. Type your numbers, press Calculate, and read the verdict: green means go, red tells you what to fix.', ex:'power' },
+  { t:'#sec-flow', title:'2 · Power Flow — the whole network at once',
+    body:'When one feeder is not enough: list your buses and branches, press Solve load flow, and see every bus voltage and branch loading. Negative P means a load is consuming power.', ex:'flow' },
+  { t:'#sec-motor', title:'3 · Motor Starting — will the lights flicker?',
+    body:'A big motor starting pulls a huge inrush and drags the voltage down. Enter the motor nameplate and the fault level at the bus, and see the dip — plus which starting method (DOL, star-delta, soft starter, VFD) fixes it.', ex:'motor' },
+  { t:'#sec-cablesc', title:'4 · Cable Withstand — will the cable survive a fault?',
+    body:'During a fault the cable must absorb I²t without melting. Enter fault current and clearing time: the tool tells you the minimum cable size, or the fastest your protection must clear.', ex:'cablesc' },
+  { t:'#sec-pf', title:'5 · Power Factor — stop paying for wasted current',
+    body:'Poor power factor means extra current and usually a utility penalty. Enter present and target PF: the tool sizes the capacitor bank and shows what changes before vs after.', ex:'pf' },
+  { t:'#sec-arcflash', title:'6 · Arc Flash — how much danger, what PPE?',
+    body:'Safety-critical. Pick the equipment type, enter fault current and clearing time, and get incident energy, arc-flash boundary and the PPE category per NFPA 70E. Never work live without a proper study.', ex:'arcflash' },
+  { t:'#sec-analysis', title:'7 · Analysis — the whole system on one page',
+    body:'Bus voltages, branch flows, short-circuit duties and NERC compliance checks in one view. Red rows are violations — fix those first.', ex:'analysis' },
+  { t:'#sec-sld', title:'8 · SLD Builder — draw your system',
+    body:'Click components on the left and they drop onto the canvas, already wired to what you selected. Drag the dots to connect, double-click a breaker to open it, double-click a load to change its loading. Start from a template if you like.', ex:'sld' },
+  { t:'#sec-3d', title:'9 · 3D Substation — see what the numbers describe',
+    body:'The whole substation in 3D, built from your inputs or from your SLD diagram. Drag to orbit, click any equipment for its details. Open a breaker in the SLD and the 3D downstream goes dark — just like real life.', ex:'3d' },
+  { t:'#sec-report', title:'10 · Report — one document, ready to file',
+    body:'Run the calculators you need, then Generate report: every result, method and assumption in one printable document. That is the whole workflow: numbers → verdicts → diagram → 3D → report.', ex:'report' }
+];
+let vwTourIdx = -1, vwTourTimer = null;
+function vwTourPlace(){
+  const st = VW_TOUR_STEPS[vwTourIdx]; if(!st) return;
+  const el = document.querySelector(st.t); if(!el) return;
+  const r = el.getBoundingClientRect();
+  const spot = document.getElementById('tourSpot');
+  const pad = 10;
+  spot.style.display = 'block';
+  spot.style.left = Math.max(4, r.left - pad) + 'px';
+  spot.style.top = Math.max(4, r.top - pad) + 'px';
+  spot.style.width = Math.min(window.innerWidth - 8, r.width + pad * 2) + 'px';
+  spot.style.height = Math.min(window.innerHeight - 8, r.height + pad * 2) + 'px';
+  const card = document.getElementById('tourCard');
+  const dots = VW_TOUR_STEPS.map((_, i)=>'<i class="' + (i < vwTourIdx ? 'done' : i === vwTourIdx ? 'now' : '') + '"></i>').join('');
+  card.innerHTML = '<div class="tprog">Step ' + (vwTourIdx + 1) + ' of ' + VW_TOUR_STEPS.length + '</div><div class="tdots">' + dots + '</div>'
+    + '<h3>' + st.title + '</h3><p>' + st.body + '</p><div class="tbtns">'
+    + (vwTourIdx > 0 ? '<button class="tback" onclick="vwTourGo(' + (vwTourIdx - 1) + ')">← Back</button>' : '')
+    + (st.ex ? '<button class="ttry" onclick="vwTourTry(\'' + st.ex + '\')">⚡ Try it</button>' : '')
+    + '<button class="tskip" onclick="vwTourEnd(true)">Skip tour</button>'
+    + '<button class="tnext" onclick="vwTourGo(' + (vwTourIdx + 1) + ')">' + (vwTourIdx === VW_TOUR_STEPS.length - 1 ? 'Finish ✓' : 'Next →') + '</button></div>';
+  card.style.display = 'block';
+  const cr = card.getBoundingClientRect();
+  let top = r.bottom + 14, left = Math.max(12, Math.min(window.innerWidth - cr.width - 12, r.left));
+  if(top + cr.height > window.innerHeight - 12) top = Math.max(12, r.top - cr.height - 14);
+  card.style.top = top + 'px'; card.style.left = left + 'px';
+}
+function vwTourShow(){
+  const st = VW_TOUR_STEPS[vwTourIdx]; if(!st){ vwTourEnd(); return; }
+  const el = document.querySelector(st.t); if(!el){ vwTourEnd(); return; }
+  el.scrollIntoView({ behavior:'smooth', block:'center' });
+  clearTimeout(vwTourTimer);
+  vwTourTimer = setTimeout(vwTourPlace, 650);
+}
+function vwTourGo(i){
+  if(i >= VW_TOUR_STEPS.length){ vwTourEnd(); return; }
+  vwTourIdx = i; vwTourShow();
+}
+function vwTourTry(ex){
+  try{
+    if(ex === '3d') vw3dOpenFocus('yard');
+    else runExample(ex);
+  }catch(e){}
+  toast('⚡ Example loaded — try changing a number and pressing Calculate');
+}
+function vwTourEnd(skip){
+  vwTourIdx = -1;
+  const spot = document.getElementById('tourSpot'), card = document.getElementById('tourCard');
+  if(spot) spot.style.display = 'none';
+  if(card) card.style.display = 'none';
+  try{ localStorage.setItem('vw-tour-v1', skip ? 'skipped' : 'done'); }catch(e){}
+  if(!skip) toast('🎉 Tour complete — pick a job above, or just start typing numbers');
+}
+function vwStartTour(){ vwTourIdx = 0; vwTourShow(); }
+window.addEventListener('resize', ()=>{ if(vwTourIdx >= 0) vwTourPlace(); });
+/* ---- per-feature coach: plain words for every section ---- */
+const VW_COACH = {
+  power:{ title:'Power Systems — what do I do here?',
+    what:'These five calculators answer the questions on almost every LV/MV job: how much voltage will I lose, what transformer do I need, what cable, and how big is the fault?',
+    steps:['<b>Start</b> with the worked example: press “How this works” → “Load this example & run it”.','<b>Then</b> replace the example numbers with your own job’s numbers.','<b>Press Calculate</b> on each card and read the verdict: green = OK, amber = check it, red = fix it.','<b>Watch</b> the Live Load Study slider: drag it to see what happens at 125% load.'],
+    try:'power' },
+  flow:{ title:'Power Flow — what do I do here?',
+    what:'You describe the network (buses + branches) and the tool solves every voltage and current at once — like ETAP or PowerFactory, in your browser.',
+    steps:['<b>Start</b> from the demo network (4 buses) — it already works.','<b>Edit</b> a bus: name, voltage, type (slack = grid, PQ = load), P/Q in kW/kVar. Negative P = consuming.','<b>Edit</b> a branch: R, X and rating.','<b>Press “Solve load flow”.</b> Red Vm or branch >100% means the network needs fixing.'],
+    try:'flow' },
+  motor:{ title:'Motor Starting — what do I do here?',
+    what:'Big motors gulp current when they start and the voltage sags. This tells you how bad the sag is, and which starting method fixes it.',
+    steps:['<b>Enter</b> the motor nameplate: kW, voltage, efficiency, PF, and the starting-current multiple (usually 6–8).','<b>Enter</b> the fault level at the bus feeding it (kA) — stiffer supply = smaller dip.','<b>Press Calculate.</b> Compare the four start methods in the table; pick one whose dip is under your limit.'],
+    try:'motor' },
+  cablesc:{ title:'Cable Withstand — what do I do here?',
+    what:'A fault dumps huge energy into the cable. This checks the cable survives until the breaker trips.',
+    steps:['<b>Enter</b> fault current (kA) and how fast your protection clears it (seconds).','<b>Pick</b> conductor material + insulation — that sets k.','<b>Enter</b> the cable size you plan to use. The tool says OK or FAIL, and what size or clearing time you need instead.'],
+    try:'cablesc' },
+  pf:{ title:'Power Factor — what do I do here?',
+    what:'Low power factor = extra current = wasted capacity and often a penalty bill. A capacitor bank fixes it.',
+    steps:['<b>Enter</b> load kW, present PF (e.g. 0.75) and target PF (e.g. 0.95).','<b>Press Calculate.</b> You get the bank size in kVar plus the before/after table.','<b>Note:</b> in harmonic-rich systems use a detuned (reactor) bank, not a plain capacitor.'],
+    try:'pf' },
+  arcflash:{ title:'Arc Flash — what do I do here?',
+    what:'Estimates how much heat an arc flash would throw at a person, and what PPE they must wear. Safety-critical — get this right.',
+    steps:['<b>Pick</b> the equipment type — it fills in gap, box size and working distance.','<b>Enter</b> bolted fault current (kA) and arc duration (clearing time, ms).','<b>Press Calculate.</b> Read incident energy (cal/cm²), boundary (mm) and PPE category. Energy over 40 cal/cm² = do not work live.'],
+    try:'arcflash' },
+  analysis:{ title:'Analysis — what do I do here?',
+    what:'One page that shows a whole network: voltages, flows, fault duties and compliance checks.',
+    steps:['<b>Explore</b> the preloaded demo — it is already populated.','<b>Click</b> any Vm / load cell to edit a value, then Re-evaluate.','<b>Read red rows first</b> — they are violations. Amber = marginal.'],
+    try:'analysis' },
+  sld:{ title:'SLD Builder — what do I do here?',
+    what:'Draw the single-line diagram of your system: source → breaker → busbar → transformer → loads.',
+    steps:['<b>Fastest start:</b> click a template on the left (“11kV substation”).','<b>Add:</b> click any component — it drops in and wires itself to what you selected.','<b>Connect:</b> drag a ● dot onto another symbol. <b>Move:</b> drag a symbol. <b>Breaker:</b> double-click to open/close. <b>Load:</b> double-click to change loading.','<b>Export</b> SVG for CAD or PNG for reports. <b>3D:</b> press “🧊 3D view” to see your diagram as a substation.'],
+    try:'sld' },
+  '3d':{ title:'3D Substation — what do I do here?',
+    what:'See the substation your numbers describe — or your SLD diagram rebuilt in 3D. Everything is true scale (1 unit = 1 metre): the pylon is 12 m, the transformer about 2.5 m, the worker 1.8 m. Use it to explain the design and spot mistakes.',
+    steps:['<b>Pick a source:</b> Calculators (from your inputs) or SLD diagram (from your drawing).','<b>Pick a focus</b> (e.g. Transformer) or click any equipment for its details.','<b>Drag</b> to orbit, <b>scroll</b> to zoom, <b>right-drag</b> to pan. <b>X-ray</b> sees through enclosures.'],
+    try:'3d' },
+  report:{ title:'Report — what do I do here?',
+    what:'Turns all your results into one professional, printable document.',
+    steps:['<b>First</b> run the calculators you need (Power, Motor, Arc Flash…).','<b>Press “Generate report”.</b> Check the methods + assumptions section before issuing.','<b>Press “Print / PDF”</b> to save it.'],
+    try:'report' }
+};
+function vwCoach(key){
+  const c = VW_COACH[key]; if(!c) return;
+  openModal('❔ ' + c.title, 'Plain words — no jargon. You cannot break anything; everything runs in your browser.',
+    '<p style="font-size:13px;line-height:1.6">' + c.what + '</p><ol style="font-size:13px;line-height:1.65;padding-left:20px">' + c.steps.map(x=>'<li>' + x + '</li>').join('') + '</ol>'
+    + '<button class="try-btn" onclick="closeModal();vwTourTry(\'' + c.try + '\')">⚡ Load the example & try it</button>'
+    + '<button class="try-btn alt" onclick="closeModal();vwStartTour()">🧭 Take the full tour</button>');
+}
+function vwTask(job){
+  if(job === 'tour'){ vwStartTour(); return; }
+  const map = {
+    tx:{ sec:'sec-power', ex:'power', flash:'card-tr', msg:'🏭 Transformer sizing — check the rating, utilisation and fault current' },
+    vd:{ sec:'sec-power', ex:'power', flash:'card-line', msg:'📏 Feeder voltage drop — watch the % drop and the verdict' },
+    arc:{ sec:'sec-arcflash', ex:'arcflash', flash:'card-arc', msg:'🦺 Arc flash — read incident energy, boundary and PPE category' },
+    sld:{ sec:'sec-sld', ex:'sld', flash:null, msg:'🗺 SLD Builder — demo diagram loaded; click a component to add your own' }
+  };
+  const m = map[job]; if(!m) return;
+  const el = document.getElementById(m.sec); if(el) el.scrollIntoView({ behavior:'smooth' });
+  setTimeout(()=>{ try{ runExample(m.ex); }catch(e){} if(m.flash) flash(m.flash); toast(m.msg); }, 450);
+}
+/* ---- onboarding init: coach buttons + first-visit welcome ---- */
+function vwOnboardInit(){
+  document.querySelectorAll('section.tool-section').forEach(sec=>{
+    const key = sec.id.replace('sec-', '');
+    if(!VW_COACH[key]) return;
+    const head = sec.querySelector('.sec-head'); if(!head || head.querySelector('.coach-btn')) return;
+    const b = document.createElement('button');
+    b.className = 'coach-btn'; b.type = 'button'; b.textContent = '❔ How do I use this?';
+    b.addEventListener('click', ()=>vwCoach(key));
+    head.appendChild(b);
+  });
+  let seen = null;
+  try{ seen = localStorage.getItem('vw-tour-v1'); }catch(e){}
+  if(!seen){
+    setTimeout(()=>{
+      openModal('👋 Welcome to VoltWorks Power', 'You are in the right place — even if this is your first power-system design.',
+        '<p style="font-size:13px;line-height:1.65">VoltWorks sizes your feeders, transformers and cables, checks fault levels and arc-flash PPE, draws your single-line diagram, shows it in 3D, and writes the report. <b>Nothing is uploaded and nothing can break</b> — every number stays in your browser.</p>'
+        + '<p style="font-size:13px;line-height:1.65">New here? The 2-minute tour visits every tool and loads a working example in each one.</p>'
+        + '<button class="try-btn" onclick="closeModal();try{localStorage.setItem(\'vw-tour-v1\',\'started\')}catch(e){}vwStartTour()">🧭 Take the 2-minute tour</button>'
+        + '<button class="try-btn alt" onclick="closeModal();try{localStorage.setItem(\'vw-tour-v1\',\'skipped\')}catch(e){}">I’ll explore myself</button>');
+    }, 900);
+  }
+}
+
 /* nav + init */
 document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');
@@ -2106,7 +3627,7 @@ vwRestore();
 sldRestore();
 flowRestore();
 renderAnalysis();stdChanged();liveStudy();renderFlow();calcMotor();calcCableSC();calcPF();calcArc();
-sldBuildPalette();drawSLD();
+sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();
 </script>
 </body>
 </html>
