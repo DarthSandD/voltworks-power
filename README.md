@@ -1,5 +1,9 @@
 # VoltWorks Power
 
+<p align="center">
+  <img src="docs/assets/voltworks-power-banner.png" alt="VoltWorks Power banner">
+</p>
+
 Live site: https://darthsandd.github.io/voltworks-power/ (GitHub Pages, serves `index.html`).
 
 Single-file electrical calculator suite for power-systems engineers: system base
