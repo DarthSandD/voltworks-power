@@ -4080,6 +4080,23 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
     var map = null, powerLayer = null, subGroup = null;
     var initPromise = null, debounceTimer = null, currentCtrl = null;
     var cache = new Map();
+    var LS_KEY = 'vwSubCacheV1';
+
+    function savedTimeText(t){
+      try{ return new Date(t).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }catch(e){ return ''; }
+    }
+    function readSaved(key){
+      try{
+        var raw = window.localStorage.getItem(LS_KEY);
+        if(!raw) return null;
+        var rec = JSON.parse(raw);
+        if(rec && rec.key === key && typeof rec.t === 'number' && rec.t > 0 && Array.isArray(rec.elements)) return rec;
+      }catch(e){}
+      return null;
+    }
+    function writeSaved(key, elements){
+      try{ window.localStorage.setItem(LS_KEY, JSON.stringify({ key: key, t: Date.now(), elements: elements })); }catch(e){}
+    }
 
     function statusEl(){ return document.getElementById('subMapStatus'); }
     function setStatus(msg){ var el = statusEl(); if(el) el.textContent = msg; }
@@ -4132,7 +4149,7 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
       });
     }
 
-    function plotSubstations(elements){
+    function plotSubstations(elements, savedAt){
       if(!subGroup || !map) return;
       subGroup.clearLayers();
       var count = 0;
@@ -4161,13 +4178,19 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
           .addTo(subGroup);
         count++;
       });
-      setStatus(count ? ('Showing ' + count + ' live substations in this area.') : 'No live substations found in this area. Pan or zoom to explore.');
+      if(savedAt){
+        setStatus(count ? ('Showing ' + count + ' substations in this area, saved at ' + savedTimeText(savedAt) + '. Refreshing live data...') : 'No live substations found in this area. Pan or zoom to explore.');
+      }else{
+        setStatus(count ? ('Showing ' + count + ' live substations in this area.') : 'No live substations found in this area. Pan or zoom to explore.');
+      }
     }
 
     var OVERPASS_INSTANCES = [
       'https://overpass-api.de/api/interpreter',
+      'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
       'https://overpass.kumi.systems/api/interpreter'
     ];
+    var OVERPASS_ATTEMPT_MS = 50000;
 
     function waitRetry(ctrl, ms){
       return new Promise(function(resolve){
@@ -4176,41 +4199,64 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
       });
     }
 
-    async function fetchOverpass(ctrl, ql){
-      var lastErr = null;
-      for(var pass = 0; pass < 2; pass++){
-        if(pass > 0){
-          await waitRetry(ctrl, 5000);
-          if(ctrl.signal.aborted) throw new Error('Superseded');
+    function raceOverpass(ctrl, ql, staggers){
+      return new Promise(function(resolve, reject){
+        var settled = false, pending = OVERPASS_INSTANCES.length, lastErr = null;
+        var attemptCtrls = [], timers = [];
+        function cleanup(){
+          timers.forEach(function(t){ clearTimeout(t); });
+          attemptCtrls.forEach(function(c){ try{ c.abort(); }catch(e){} });
         }
-        for(var i = 0; i < OVERPASS_INSTANCES.length; i++){
-          if(ctrl.signal.aborted) throw new Error('Superseded');
-          var attemptCtrl = new AbortController();
-          var onAbort = function(){ attemptCtrl.abort(); };
-          ctrl.signal.addEventListener('abort', onAbort, { once: true });
-          var to = setTimeout(function(){ attemptCtrl.abort(); }, i === 0 ? 30000 : 15000);
-          try{
-            var resp = await fetch(OVERPASS_INSTANCES[i], {
+        function finish(fn, val){
+          if(settled) return;
+          settled = true;
+          cleanup();
+          fn(val);
+        }
+        if(ctrl.signal.aborted){ reject(new Error('Superseded')); return; }
+        ctrl.signal.addEventListener('abort', function(){ finish(reject, new Error('Superseded')); }, { once: true });
+        OVERPASS_INSTANCES.forEach(function(url, i){
+          var startTimer = setTimeout(function(){
+            if(settled || ctrl.signal.aborted) return;
+            var attemptCtrl = new AbortController();
+            attemptCtrls.push(attemptCtrl);
+            var to = setTimeout(function(){ attemptCtrl.abort(); }, OVERPASS_ATTEMPT_MS);
+            timers.push(to);
+            fetch(url, {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
               body: 'data=' + encodeURIComponent(ql),
               signal: attemptCtrl.signal
+            }).then(function(resp){
+              if(!resp.ok) throw new Error('Overpass ' + resp.status);
+              return resp.json();
+            }).then(function(data){
+              if(data && data.remark && /runtime error|timed out|out of memory|capacity|rate limit|too many requests/i.test(data.remark)){
+                throw new Error('Overpass remark: ' + data.remark);
+              }
+              finish(resolve, data);
+            }).catch(function(err){
+              clearTimeout(to);
+              if(settled) return;
+              lastErr = err;
+              pending--;
+              if(pending <= 0) finish(reject, lastErr || new Error('All Overpass instances failed'));
             });
-            if(!resp.ok) throw new Error('Overpass ' + resp.status);
-            var data = await resp.json();
-            if(data && data.remark && /runtime error|timed out|out of memory|capacity|rate limit|too many requests/i.test(data.remark)){
-              throw new Error('Overpass remark: ' + data.remark);
-            }
-            return data;
-          }catch(err){
-            lastErr = err;
-          }finally{
-            clearTimeout(to);
-            ctrl.signal.removeEventListener('abort', onAbort);
-          }
-        }
+          }, staggers[i]);
+          timers.push(startTimer);
+        });
+      });
+    }
+
+    async function fetchOverpass(ctrl, ql){
+      try{
+        return await raceOverpass(ctrl, ql, [0, 6000, 14000]);
+      }catch(err){
+        if(ctrl.signal.aborted) throw err;
+        await waitRetry(ctrl, 8000);
+        if(ctrl.signal.aborted) throw new Error('Superseded');
+        return raceOverpass(ctrl, ql, [0, 4000, 9000]);
       }
-      throw lastErr || new Error('All Overpass instances failed');
     }
 
     function querySubstations(){
@@ -4226,19 +4272,29 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
         return;
       }
       var bbox = b.getSouth() + ',' + b.getWest() + ',' + b.getNorth() + ',' + b.getEast();
-      var ql = '[out:json][timeout:25];\n(\n  node["power"="substation"](' + bbox + ');\n  way["power"="substation"](' + bbox + ');\n);\nout center tags 300;';
+      var ql = '[out:json][timeout:45];\n(\n  node["power"="substation"](' + bbox + ');\n  way["power"="substation"](' + bbox + ');\n);\nout center tags 300;';
       if(currentCtrl) currentCtrl.abort();
       var ctrl = new AbortController();
       currentCtrl = ctrl;
-      setStatus('Loading live substation data for this area...');
+      var saved = readSaved(key);
+      if(saved){
+        plotSubstations(saved.elements, saved.t);
+      }else{
+        setStatus('Loading live substation data for this area...');
+      }
       fetchOverpass(ctrl, ql).then(function(data){
         if(ctrl !== currentCtrl) return;
         var elements = (data && data.elements) ? data.elements : [];
         cache.set(key, elements);
+        writeSaved(key, elements);
         plotSubstations(elements);
       }).catch(function(err){
         if(ctrl !== currentCtrl) return;
-        setStatus('Live substation data is busy right now. Pan or zoom to retry.');
+        if(saved){
+          setStatus('Live update could not be reached: Overpass is overloaded right now. Showing substation data saved at ' + savedTimeText(saved.t) + '. Pan or zoom to retry.');
+        }else{
+          setStatus('Live substation data could not be reached: Overpass is overloaded right now. The map layer above still shows OpenInfraMap data. Pan or zoom to retry.');
+        }
       });
     }
     function scheduleQuery(){
