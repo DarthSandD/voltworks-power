@@ -4173,6 +4173,13 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
         if(tags.operator) html += '<br>Operator: ' + escapeHtml(tags.operator);
         if(tags.substation) html += '<br>Type: ' + escapeHtml(tags.substation);
         html += '<br><a href="#sec-power" data-goto="card-tr">Transformer sizing</a> · <a href="#sec-power" data-goto="card-sc">Fault level</a>';
+        /* The visible dot is only 6 px in radius, so a real click a few px off centre
+           missed it silently and no popup opened. An invisible hit disc (radius 13,
+           same popup) sits under each marker to make it forgiving to click; canvas
+           hit testing is geometric, so the transparent fill still receives the hit. */
+        L.circleMarker([lat, lon], { radius: 13, stroke: false, fill: true, fillColor: '#FFB224', fillOpacity: 0 })
+          .bindPopup(html)
+          .addTo(subGroup);
         L.circleMarker([lat, lon], { radius: 6, color: '#14161A', weight: 2, fillColor: '#FFB224', fillOpacity: 0.9 })
           .bindPopup(html)
           .addTo(subGroup);
@@ -4326,7 +4333,10 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
                 power_line: function(props, zoom){ return lineStyle(props, zoom); },
                 power_substation_point: function(props, zoom){
                   if(zoom < 13) return [];
-                  return { radius: 5, color: '#FFB224', weight: 2, fillColor: '#FFB224', fillOpacity: 0.75, fill: true };
+                  /* Reference dots only: drawn small and hollow so they are not mistaken
+                     for the solid dark-ringed live markers, which are the clickable ones
+                     (these tile features are not interactive). */
+                  return { radius: 3.5, color: '#8A6D2F', weight: 1.5, fillColor: '#FFB224', fillOpacity: 0.3, fill: true };
                 },
                 power_substation: { color: '#FFB224', weight: 2, fillColor: '#FFB224', fillOpacity: 0.25, fill: true },
                 power_plant: { color: '#E08A4C', weight: 2, fillColor: '#E08A4C', fillOpacity: 0.35, fill: true },
