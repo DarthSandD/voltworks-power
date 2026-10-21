@@ -4179,36 +4179,48 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
 
     var OVERPASS_INSTANCES = [
       'https://overpass-api.de/api/interpreter',
-      'https://overpass.kumi.systems/api/interpreter',
-      'https://overpass.nchc.org.tw/api/interpreter'
+      'https://overpass.kumi.systems/api/interpreter'
     ];
+
+    function waitRetry(ctrl, ms){
+      return new Promise(function(resolve){
+        var t = setTimeout(resolve, ms);
+        ctrl.signal.addEventListener('abort', function(){ clearTimeout(t); resolve(); }, { once: true });
+      });
+    }
 
     async function fetchOverpass(ctrl, ql){
       var lastErr = null;
-      for(var i = 0; i < OVERPASS_INSTANCES.length; i++){
-        if(ctrl.signal.aborted) throw new Error('Superseded');
-        var attemptCtrl = new AbortController();
-        var onAbort = function(){ attemptCtrl.abort(); };
-        ctrl.signal.addEventListener('abort', onAbort, { once: true });
-        var to = setTimeout(function(){ attemptCtrl.abort(); }, i === 0 ? 20000 : 15000);
-        try{
-          var resp = await fetch(OVERPASS_INSTANCES[i], {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-            body: 'data=' + encodeURIComponent(ql),
-            signal: attemptCtrl.signal
-          });
-          if(!resp.ok) throw new Error('Overpass ' + resp.status);
-          var data = await resp.json();
-          if(data && data.remark && /runtime error|timed out|out of memory|capacity|rate limit|too many requests/i.test(data.remark)){
-            throw new Error('Overpass remark: ' + data.remark);
+      for(var pass = 0; pass < 2; pass++){
+        if(pass > 0){
+          await waitRetry(ctrl, 5000);
+          if(ctrl.signal.aborted) throw new Error('Superseded');
+        }
+        for(var i = 0; i < OVERPASS_INSTANCES.length; i++){
+          if(ctrl.signal.aborted) throw new Error('Superseded');
+          var attemptCtrl = new AbortController();
+          var onAbort = function(){ attemptCtrl.abort(); };
+          ctrl.signal.addEventListener('abort', onAbort, { once: true });
+          var to = setTimeout(function(){ attemptCtrl.abort(); }, i === 0 ? 30000 : 15000);
+          try{
+            var resp = await fetch(OVERPASS_INSTANCES[i], {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+              body: 'data=' + encodeURIComponent(ql),
+              signal: attemptCtrl.signal
+            });
+            if(!resp.ok) throw new Error('Overpass ' + resp.status);
+            var data = await resp.json();
+            if(data && data.remark && /runtime error|timed out|out of memory|capacity|rate limit|too many requests/i.test(data.remark)){
+              throw new Error('Overpass remark: ' + data.remark);
+            }
+            return data;
+          }catch(err){
+            lastErr = err;
+          }finally{
+            clearTimeout(to);
+            ctrl.signal.removeEventListener('abort', onAbort);
           }
-          return data;
-        }catch(err){
-          lastErr = err;
-        }finally{
-          clearTimeout(to);
-          ctrl.signal.removeEventListener('abort', onAbort);
         }
       }
       throw lastErr || new Error('All Overpass instances failed');
@@ -4270,7 +4282,7 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
               vectorTileLayerStyles: {
                 power_line: function(props, zoom){ return lineStyle(props, zoom); },
                 power_substation_point: function(props, zoom){
-                  if(zoom < 11) return [];
+                  if(zoom < 13) return [];
                   return { radius: 5, color: '#FFB224', weight: 2, fillColor: '#FFB224', fillOpacity: 0.75, fill: true };
                 },
                 power_substation: { color: '#FFB224', weight: 2, fillColor: '#FFB224', fillOpacity: 0.25, fill: true },
