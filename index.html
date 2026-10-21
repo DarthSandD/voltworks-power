@@ -4177,6 +4177,43 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
       setStatus(count ? ('Showing ' + count + ' live substations in this area.') : 'No live substations found in this area. Pan or zoom to explore.');
     }
 
+    var OVERPASS_INSTANCES = [
+      'https://overpass-api.de/api/interpreter',
+      'https://overpass.kumi.systems/api/interpreter',
+      'https://overpass.nchc.org.tw/api/interpreter'
+    ];
+
+    async function fetchOverpass(ctrl, ql){
+      var lastErr = null;
+      for(var i = 0; i < OVERPASS_INSTANCES.length; i++){
+        if(ctrl.signal.aborted) throw new Error('Superseded');
+        var attemptCtrl = new AbortController();
+        var onAbort = function(){ attemptCtrl.abort(); };
+        ctrl.signal.addEventListener('abort', onAbort, { once: true });
+        var to = setTimeout(function(){ attemptCtrl.abort(); }, i === 0 ? 20000 : 15000);
+        try{
+          var resp = await fetch(OVERPASS_INSTANCES[i], {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+            body: 'data=' + encodeURIComponent(ql),
+            signal: attemptCtrl.signal
+          });
+          if(!resp.ok) throw new Error('Overpass ' + resp.status);
+          var data = await resp.json();
+          if(data && data.remark && /runtime error|timed out|out of memory|capacity|rate limit|too many requests/i.test(data.remark)){
+            throw new Error('Overpass remark: ' + data.remark);
+          }
+          return data;
+        }catch(err){
+          lastErr = err;
+        }finally{
+          clearTimeout(to);
+          ctrl.signal.removeEventListener('abort', onAbort);
+        }
+      }
+      throw lastErr || new Error('All Overpass instances failed');
+    }
+
     function querySubstations(){
       if(!map) return;
       if(map.getZoom() < 11){
@@ -4194,24 +4231,13 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
       if(currentCtrl) currentCtrl.abort();
       var ctrl = new AbortController();
       currentCtrl = ctrl;
-      var timedOut = setTimeout(function(){ ctrl.abort(); }, 30000);
       setStatus('Loading live substation data for this area...');
-      fetch('https://overpass-api.de/api/interpreter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
-        body: 'data=' + encodeURIComponent(ql),
-        signal: ctrl.signal
-      }).then(function(resp){
-        if(!resp.ok) throw new Error('Overpass ' + resp.status);
-        return resp.json();
-      }).then(function(data){
-        clearTimeout(timedOut);
+      fetchOverpass(ctrl, ql).then(function(data){
         if(ctrl !== currentCtrl) return;
         var elements = (data && data.elements) ? data.elements : [];
         cache.set(key, elements);
         plotSubstations(elements);
       }).catch(function(err){
-        clearTimeout(timedOut);
         if(ctrl !== currentCtrl) return;
         setStatus('Live substation data is busy right now. Pan or zoom to retry.');
       });
@@ -4243,14 +4269,21 @@ sldBuildPalette();drawSLD();vw3dInit();vwOnboardInit();vw3dMiniInit();
               rendererFactory: L.canvas.tile,
               vectorTileLayerStyles: {
                 power_line: function(props, zoom){ return lineStyle(props, zoom); },
-                power_substation_point: { radius: 5, color: '#FFB224', weight: 2, fillColor: '#FFB224', fillOpacity: 0.75, fill: true },
+                power_substation_point: function(props, zoom){
+                  if(zoom < 11) return [];
+                  return { radius: 5, color: '#FFB224', weight: 2, fillColor: '#FFB224', fillOpacity: 0.75, fill: true };
+                },
                 power_substation: { color: '#FFB224', weight: 2, fillColor: '#FFB224', fillOpacity: 0.25, fill: true },
                 power_plant: { color: '#E08A4C', weight: 2, fillColor: '#E08A4C', fillOpacity: 0.35, fill: true },
                 power_plant_point: { radius: 6, color: '#E08A4C', weight: 2, fillColor: '#E08A4C', fillOpacity: 0.85, fill: true },
                 power_generator: function(props, zoom){
                   if(zoom < 14) return [];
                   return { radius: 3, color: '#9AA3AB', weight: 1, fillColor: '#9AA3AB', fillOpacity: 0.8, fill: true };
-                }
+                },
+                power_tower: { radius: 3, color: '#9AA3AB', weight: 1, fillColor: '#9AA3AB', fillOpacity: 0.9, fill: true },
+                power_pole: { radius: 2.5, color: '#9AA3AB', weight: 1, fillColor: '#9AA3AB', fillOpacity: 0.9, fill: true },
+                power_transformer: { radius: 3, color: '#E08A4C', weight: 1, fillColor: '#E08A4C', fillOpacity: 0.85, fill: true },
+                power_portal_way: { color: '#9AA3AB', weight: 1, opacity: 0.7 }
               }
             });
             powerLayer.on('tileerror', function(){});
