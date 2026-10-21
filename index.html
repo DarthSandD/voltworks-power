@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VoltWorks Power</title>
-<meta property="og:title" content="VoltWorks Power — Design. Check. Energize.">
+<meta property="og:title" content="VoltWorks Power: Design. Check. Energize.">
 <meta property="og:description" content="Free browser-only toolkit for power engineers: voltage drop, transformer and cable sizing, fault levels, network analysis, single-line diagrams and one-click reports.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://darthsandd.github.io/voltworks-power/">
@@ -118,7 +118,7 @@ tr:last-child td{border-bottom:none}
 .p-fail{background:rgba(255,90,78,.12);color:var(--danger);border:1px solid rgba(255,90,78,.45)}
 .p-info{background:rgba(127,176,201,.12);color:var(--info);border:1px solid rgba(127,176,201,.45)}
 /* SLD */
-/* SLD — easy editor */
+/* SLD - easy editor */
 .sld-layout{display:grid;grid-template-columns:212px 1fr 250px;gap:14px;align-items:start}
 @media(max-width:1120px){.sld-layout{grid-template-columns:200px 1fr}.sld-props{grid-column:1/-1}}
 @media(max-width:820px){.sld-layout{grid-template-columns:1fr}}
@@ -512,18 +512,18 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
 </header>
 
 <div class="hero" id="heroTop">
-  <div class="hero-badge">⚡ POWER ENGINEERING — MADE OBVIOUS</div>
+  <div class="hero-badge">⚡ POWER ENGINEERING - MADE OBVIOUS</div>
   <h1>Design power systems with <span>confidence.</span></h1>
-  <p>VoltWorks turns a blank page into a checked, documented power design: size feeders, transformers and cables, check fault levels and arc-flash PPE, draw the single-line diagram, and walk the substation in 3D. Everything runs in your browser — no sign-up, no uploads, nothing to break.</p>
+  <p>VoltWorks turns a blank page into a checked, documented power design: size feeders, transformers and cables, check fault levels and arc-flash PPE, draw the single-line diagram, and walk the substation in 3D. Everything runs in your browser, no sign-up, no uploads, nothing to break.</p>
   <div class="hero-stats">
     <div class="hstat"><b>11</b><span>power modules</span></div>
     <div class="hstat"><b>11</b><span>guided tours</span></div>
     <div class="hstat"><b>100%</b><span>client-side</span></div>
   </div>
   <div class="hero-steps">
-    <div class="hstep"><b>1</b><span><strong>Enter your numbers</strong> — plain labels, worked examples, no jargon.</span></div>
-    <div class="hstep"><b>2</b><span><strong>Read the verdict</strong> — green means go, red tells you exactly what to fix.</span></div>
-    <div class="hstep"><b>3</b><span><strong>Export the report</strong> — one document, ready to print or file.</span></div>
+    <div class="hstep"><b>1</b><span><strong>Enter your numbers</strong>: plain labels, worked examples, no jargon.</span></div>
+    <div class="hstep"><b>2</b><span><strong>Read the verdict</strong>: green means go, red tells you exactly what to fix.</span></div>
+    <div class="hstep"><b>3</b><span><strong>Export the report</strong>: one document, ready to print or file.</span></div>
   </div>
   <div class="task-picker">
     <div class="tp-title">Not sure where to start? Pick your job:</div>
@@ -552,7 +552,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
 <!-- ============ POWER ============ -->
 <section class="tool-section" id="sec-power">
   <div class="sec-head"><span class="num">01</span><h2>Power Systems</h2></div>
-  <p class="sec-sub">Per-unit base, feeder voltage drop, transformer sizing, LV cable sizing and transformer-bus fault level — ported from PowerSys Pro + psextract.</p>
+  <p class="sec-sub">Per-unit base, feeder voltage drop, transformer sizing, LV cable sizing and transformer-bus fault level, ported from PowerSys Pro + psextract.</p>
   <div class="help-zone" data-help="power"></div>
   <div class="grid">
     <div class="card" id="card-system">
@@ -620,7 +620,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
       <h3><span class="ico i-violet">📏</span>Design Standards</h3>
       <p class="desc">Switches formulas, limits and references across the calculators.</p>
       <div class="frow single">
-        <div class="fg"><label>Fault study</label><select id="faultStd" onchange="stdChanged()"><option value="IEC60909">IEC 60909 — short-circuit currents</option><option value="ANSI">ANSI C37 / IEEE 141 — duty</option></select></div>
+        <div class="fg"><label>Fault study</label><select id="faultStd" onchange="stdChanged()"><option value="IEC60909">IEC 60909: short-circuit currents</option><option value="ANSI">ANSI C37 / IEEE 141: duty</option></select></div>
       </div>
       <div class="frow">
         <div class="fg"><label>Cable / VD</label><select id="cableStd" onchange="stdChanged()"><option value="IEC60364">IEC 60364-5-52</option><option value="IEEE141">IEEE 141 (Red Book)</option></select></div>
@@ -633,7 +633,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
     </div>
     <div class="card" id="card-live" style="grid-column:1/-1">
       <h3><span class="ico i-green">📈</span>Live Load Study <span class="pill p-info">0–150%</span></h3>
-      <p class="desc">Drag the slider — feeder VD, transformer loading and cable VD recalculate live from your inputs above. Same slider drives SLD loading colours.</p>
+      <p class="desc">Drag the slider: feeder VD, transformer loading and cable VD recalculate live from your inputs above. Same slider drives SLD loading colours.</p>
       <div class="slider-wrap" style="margin-bottom:12px"><input type="range" id="loadPct" min="0" max="150" value="100" step="1" oninput="liveStudy()" style="flex:1"><span class="slider-val" id="loadPctVal" style="min-width:56px">100%</span></div>
       <canvas id="liveCanvas" width="640" height="230"></canvas>
       <div class="rgrid" id="grid-live" style="margin-top:10px"></div>
@@ -644,7 +644,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
 <!-- ============ POWER FLOW ============ -->
 <section class="tool-section" id="sec-flow">
   <div class="sec-head"><span class="num">02</span><h2>Power Flow (Load Flow)</h2></div>
-  <p class="sec-sub">Newton–Raphson AC load flow on a user-editable network. Edit bus loads/generation and branch impedances, then solve — bus voltages, angles, branch flows and losses are computed, not mocked. Bus type: <b>slack</b> (1, reference), <b>PV</b> (generator, holds V), <b>PQ</b> (load).</p>
+  <p class="sec-sub">Newton–Raphson AC load flow on a user-editable network. Edit bus loads/generation and branch impedances, then solve: bus voltages, angles, branch flows and losses are computed, not mocked. Bus type: <b>slack</b> (1, reference), <b>PV</b> (generator, holds V), <b>PQ</b> (load).</p>
   <div class="help-zone" data-help="flow"></div>
   <div class="btn-row no-print" style="max-width:560px;margin-bottom:14px">
     <button class="btn" onclick="solveFlow()">⚡ Solve load flow</button>
@@ -652,16 +652,16 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
     <button class="btn ghost" onclick="flowAddBranch()">+ Branch</button>
     <button class="btn ghost" onclick="flowReset()">Reset demo</button>
   </div>
-  <div class="tbl-wrap"><h4>Buses <span style="color:var(--muted);font-weight:400">— edit V (kV), Type, P (kW), Q (kVar); Vm/angle are solved</span></h4>
+  <div class="tbl-wrap"><h4>Buses <span style="color:var(--muted);font-weight:400">- edit V (kV), Type, P (kW), Q (kVar); Vm/angle are solved</span></h4>
     <table id="flow-bus"><thead><tr><th>#</th><th>Name</th><th>V kV</th><th>Type</th><th>P kW</th><th>Q kVar</th><th>Vm p.u.</th><th>Va °</th><th></th></tr></thead><tbody></tbody></table></div>
-  <div class="tbl-wrap"><h4>Branches <span style="color:var(--muted);font-weight:400">— R, X in Ω, rating kVA</span></h4>
+  <div class="tbl-wrap"><h4>Branches <span style="color:var(--muted);font-weight:400">- R, X in Ω, rating kVA</span></h4>
     <table id="flow-branch"><thead><tr><th>From</th><th>To</th><th>R Ω</th><th>X Ω</th><th>Rate kVA</th><th>P→ kW</th><th>Q→ kVar</th><th>Load %</th><th>Loss kW</th><th></th></tr></thead><tbody></tbody></table></div>
-  <div id="flow-status" class="verdict v-ok" style="margin-top:6px">Ready — press Solve load flow.</div>
+  <div id="flow-status" class="verdict v-ok" style="margin-top:6px">Ready: press Solve load flow.</div>
 </section>
 
 <!-- ============ MOTOR START ============ -->
 <section class="tool-section" id="sec-motor">
-  <div class="sec-head"><span class="num">03</span><h2>Motor Starting — Voltage Dip</h2></div>
+  <div class="sec-head"><span class="num">03</span><h2>Motor Starting: Voltage Dip</h2></div>
   <p class="sec-sub">Locked-rotor inrush and the voltage dip it imposes at the point of common coupling (PCC). Impedance-divider method per IEC 60034-12 / AS-NZS 3000 §3.5. Checks against typical start-dip limits.</p>
   <div class="help-zone" data-help="motor"></div>
   <div class="grid">
@@ -687,7 +687,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
     </div>
     <div class="card">
       <h3><span class="ico i-green">📉</span>Start Method Comparison</h3>
-      <p class="desc">Same motor started four ways — effective inrush and resulting PCC dip.</p>
+      <p class="desc">Same motor started four ways: effective inrush and resulting PCC dip.</p>
       <div class="tbl-wrap" style="margin:0"><table id="tbl-mstart"><thead><tr><th>Method</th><th>I_start A</th><th>Dip %</th><th>Status</th></tr></thead><tbody></tbody></table></div>
     </div>
   </div>
@@ -753,7 +753,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
 <!-- ============ ARC FLASH ============ -->
 <section class="tool-section" id="sec-arcflash">
   <div class="sec-head"><span class="num">06</span><h2>Arc Flash Hazard <span class="pill p-info">IEEE 1584-2018</span></h2></div>
-  <p class="sec-sub">Incident energy and arc-flash boundary per the IEEE 1584-2018 empirical model (1,800+ tests): arcing current (with reduced-current case), enclosure size correction, and PPE category per NFPA 70E. <b>Safety-critical</b> — verify against your protection study before use.</p>
+  <p class="sec-sub">Incident energy and arc-flash boundary per the IEEE 1584-2018 empirical model (1,800+ tests): arcing current (with reduced-current case), enclosure size correction, and PPE category per NFPA 70E. <b>Safety-critical</b>: verify against your protection study before use.</p>
   <div class="help-zone" data-help="arcflash"></div>
   <div class="grid">
     <div class="card" id="card-arc">
@@ -769,11 +769,11 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
           <option value="LV MCC HCB">Cable J-Box (HCB)</option>
           <option value="custom">Custom…</option></select></div>
         <div class="fg"><label>Electrode config</label><select id="afEC" onchange="calcArc()">
-          <option value="VCB">VCB — vertical in box</option>
-          <option value="VCBB">VCBB — vertical + barrier</option>
-          <option value="HCB">HCB — horizontal in box</option>
-          <option value="VOA">VOA — vertical open air</option>
-          <option value="HOA">HOA — horizontal open air</option></select></div>
+          <option value="VCB">VCB: vertical in box</option>
+          <option value="VCBB">VCBB: vertical + barrier</option>
+          <option value="HCB">HCB: horizontal in box</option>
+          <option value="VOA">VOA: vertical open air</option>
+          <option value="HOA">HOA: horizontal open air</option></select></div>
         <div class="fg"><label>Voltage V</label><input type="number" id="afV" value="480" oninput="calcArc()"></div>
         <div class="fg"><label>Bolted fault kA</label><input type="number" id="afIbf" value="45" step="0.1" oninput="calcArc()"></div>
         <div class="fg"><label>Arc duration ms</label><input type="number" id="afT" value="100" step="1" oninput="calcArc()"></div>
@@ -802,13 +802,13 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
 <!-- ============ ANALYSIS ============ -->
 <section class="tool-section" id="sec-analysis">
   <div class="sec-head"><span class="num">07</span><h2>Network Analysis Report</h2></div>
-  <p class="sec-sub">psextract-style system report. Edit bus voltages live — compliance re-evaluates instantly. Sample 5-bus demo case preloaded.</p>
+  <p class="sec-sub">psextract-style system report. Edit bus voltages live: compliance re-evaluates instantly. Sample 5-bus demo case preloaded.</p>
   <div class="help-zone" data-help="analysis"></div>
   <div class="btn-row no-print" style="max-width:420px;margin-bottom:14px">
     <button class="btn ghost" onclick="recalcAnalysis()">↻ Re-evaluate</button>
     <button class="btn ghost" onclick="resetAnalysis()">Reset demo data</button>
   </div>
-  <div class="tbl-wrap"><h4>Bus Results <span style="color:var(--muted);font-weight:400">— click Vm / load cells to edit</span></h4>
+  <div class="tbl-wrap"><h4>Bus Results <span style="color:var(--muted);font-weight:400">- click Vm / load cells to edit</span></h4>
     <table id="tbl-bus"><thead><tr><th>Bus</th><th>Name</th><th>V (kV)</th><th>Vm (p.u.)</th><th>Va (°)</th><th>P (kW)</th><th>Q (kVar)</th><th>Status</th></tr></thead><tbody></tbody></table></div>
   <div class="tbl-wrap"><h4>Branch Power Flows</h4>
     <table id="tbl-branch"><thead><tr><th>From</th><th>To</th><th>Pf (kW)</th><th>Qf (kVar)</th><th>Loading %</th><th>Status</th></tr></thead><tbody></tbody></table></div>
@@ -823,7 +823,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
 <!-- ============ SLD ============ -->
 <section class="tool-section" id="sec-sld">
   <div class="sec-head"><span class="num">08</span><h2>Single-Line Diagram Builder</h2></div>
-  <p class="sec-sub">Click a component on the left to drop it on the canvas — <b>there are no modes to learn</b>. The new symbol is placed for you and, if something is already selected, <b>wired to it automatically</b>, so you can build a feeder by simply clicking Generator → Breaker → Busbar → Transformer → Motor. To connect two things by hand, <b>drag a ● dot onto another symbol</b> — it snaps for you, so you don't need to aim precisely. The canvas is <b>unlimited</b>: pan with Space-drag or middle-drag and zoom out freely, and the grid follows you. Drag a symbol to move it (it snaps to the grid and shows alignment guides against its neighbours), click a breaker to open or close it, double-click a load to change its loading.</p>
+  <p class="sec-sub">Click a component on the left to drop it on the canvas: <b>there are no modes to learn</b>. The new symbol is placed for you and, if something is already selected, <b>wired to it automatically</b>, so you can build a feeder by simply clicking Generator → Breaker → Busbar → Transformer → Motor. To connect two things by hand, <b>drag a ● dot onto another symbol</b>: it snaps for you, so you don't need to aim precisely. The canvas is <b>unlimited</b>: pan with Space-drag or middle-drag and zoom out freely, and the grid follows you. Drag a symbol to move it (it snaps to the grid and shows alignment guides against its neighbours), click a breaker to open or close it, double-click a load to change its loading.</p>
   <div class="help-zone" data-help="sld"></div>
   <div class="sld-layout">
     <div class="palette no-print">
@@ -840,7 +840,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
         <button class="tbtn" id="sldUndoBtn" onclick="sldUndo()" title="Undo (Ctrl+Z)">↶ Undo</button>
         <button class="tbtn" id="sldRedoBtn" onclick="sldRedo()" title="Redo (Ctrl+Y)">↷ Redo</button>
         <span class="tsep"></span>
-        <button class="tbtn" id="sldPanBtn" onclick="sldTogglePan()" title="Pan tool — drag to move the drawing plane (or hold Space, or middle/right-drag)">✋ Pan</button>
+        <button class="tbtn" id="sldPanBtn" onclick="sldTogglePan()" title="Pan tool: drag to move the drawing plane (or hold Space, or middle/right-drag)">✋ Pan</button>
         <button class="tbtn" onclick="sldZoom(1.2)" title="Zoom in">＋</button>
         <button class="tbtn" onclick="sldZoom(1/1.2)" title="Zoom out">－</button>
         <button class="tbtn" onclick="sldFit()" title="Fit everything in view">⤢ Fit</button>
@@ -852,8 +852,8 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
         <button class="tbtn" id="sldGridBtn" onclick="sldToggleGrid()" title="Show or hide the grid">▦ Grid</button>
         <button class="tbtn sel" id="sldSnapBtn" onclick="sldToggleSnap()" title="Snap symbols to the grid">🧲 Snap</button>
         <span class="tsep"></span>
-        <button class="tbtn" onclick="exportSLD()" title="Export as SVG (vector — for CAD)">⬇ SVG</button>
-        <button class="tbtn" onclick="exportPNG()" title="Export as PNG (image — for reports)">⬇ PNG</button>
+        <button class="tbtn" onclick="exportSLD()" title="Export as SVG (vector, for CAD)">⬇ SVG</button>
+        <button class="tbtn" onclick="exportPNG()" title="Export as PNG (image, for reports)">⬇ PNG</button>
         <span class="tsep"></span>
         <button class="tbtn" id="sld3dBtn" onclick="vw3dToggleSLD()" title="Show this diagram as a 3D substation, right here">🧊 3D view</button>
         <button class="tbtn" onclick="vw3dOpenSLD()" title="Open this diagram in the full 3D Substation viewer">⤢ Full 3D →</button>
@@ -864,7 +864,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
         <div class="sld-empty" id="sldEmpty">
           <div class="se-card">
             <h3>🗺 Draw your single-line diagram</h3>
-            <p>Click a component on the left to drop it here — or start from a ready-made template.</p>
+            <p>Click a component on the left to drop it here, or start from a ready-made template.</p>
             <div class="se-actions">
               <button onclick="sldAddComponent('gen')">⚡ Add a generator</button>
               <button class="ghost" onclick="sldAddComponent('bus')">▬ Add a busbar</button>
@@ -896,7 +896,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
       <button class="tbtn" id="sld3dDetailFastBtn" onclick="vw3dToggleDetail('sld')">Fast</button>
       <button class="tbtn" onclick="vw3dToggleSLD()">✕ Close 3D</button>
     </div>
-    <div class="vw3d-wrap small"><canvas id="sld3dCanvas"></canvas><div class="vw3d-fallback" id="sld3dFallback">3D could not load (Three.js CDN blocked). The 2D diagram above still works — check your connection and reopen this panel.</div><div class="vw3d-info" id="sld3dInfo"></div></div>
+    <div class="vw3d-wrap small"><canvas id="sld3dCanvas"></canvas><div class="vw3d-fallback" id="sld3dFallback">3D could not load (Three.js CDN blocked). The 2D diagram above still works: check your connection and reopen this panel.</div><div class="vw3d-info" id="sld3dInfo"></div></div>
     <p class="sec-sub" style="margin-top:8px">Live mirror of the diagram above: breakers you open de-energise everything downstream, and load colours follow each load's loading %. Drag to orbit · scroll to zoom · right-drag to pan · click equipment for details.</p>
   </div>
 </section>
@@ -904,7 +904,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
 <!-- ============ 3D SUBSTATION ============ -->
 <section class="tool-section" id="sec-3d">
   <div class="sec-head"><span class="num">09</span><h2>3D Substation Viewer</h2></div>
-  <p class="sec-sub">The whole substation in 3D — what every tool in this app is actually describing. Grid infeed → gantry → breaker → 11 kV bus → transformer → LV switchgear → capacitor bank → motor + loads, with live loading colours, power-flow particles and the arc-flash zone around the switchgear. Switch the source to <b>SLD diagram</b> and the same viewer rebuilds itself from whatever you drew in the SLD Builder.</p>
+  <p class="sec-sub">The whole substation in 3D: what every tool in this app is actually describing. Grid infeed → gantry → breaker → 11 kV bus → transformer → LV switchgear → capacitor bank → motor + loads, with live loading colours, power-flow particles and the arc-flash zone around the switchgear. Switch the source to <b>SLD diagram</b> and the same viewer rebuilds itself from whatever you drew in the SLD Builder.</p>
   <div class="help-zone" data-help="3d"></div>
   <div class="vw3d-bar no-print">
     <span class="lbl">Source</span>
@@ -933,10 +933,10 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
     <button class="tbtn" id="vw3dDetailFastBtn" onclick="vw3dToggleDetail('main')">Fast</button>
     <button class="tbtn" onclick="vw3dRefresh(true)">↻ Re-sync</button>
   </div>
-  <div class="vw3d-wrap"><canvas id="vw3dCanvas"></canvas><div class="vw3d-fallback" id="vw3dFallback">3D could not load (Three.js CDN blocked). All calculators and the 2D SLD still work — check your connection and press Re-sync.</div><div class="vw3d-info" id="vw3dInfo"></div></div>
+  <div class="vw3d-wrap"><canvas id="vw3dCanvas"></canvas><div class="vw3d-fallback" id="vw3dFallback">3D could not load (Three.js CDN blocked). All calculators and the 2D SLD still work: check your connection and press Re-sync.</div><div class="vw3d-info" id="vw3dInfo"></div></div>
   <div class="vw3d-stats" id="vw3dStats"></div>
   <div class="vw3d-legend"><span><i style="background:#22c55e"></i>≤ 80% loaded</span><span><i style="background:#f59e0b"></i>80–100%</span><span><i style="background:#f04a4a"></i>&gt; 100% / open / arc zone</span><span><i style="background:#9aa7bd"></i>De-energised</span><span>● Flow dots move from source → load; faster = heavier loading.</span></div>
-  <p class="sec-sub" style="margin-top:8px">True scale for design review — 1 unit = 1 metre, equipment heights match real dimensions (11 kV pylon 12 m · transformer ≈ 2.5 m · worker 1.8 m). Positions are illustrative, not construction drawings. Drag to orbit · scroll to zoom · right-drag to pan · click any equipment for its details.</p>
+  <p class="sec-sub" style="margin-top:8px">True scale for design review: 1 unit = 1 metre, equipment heights match real dimensions (11 kV pylon 12 m · transformer ≈ 2.5 m · worker 1.8 m). Positions are illustrative, not construction drawings. Drag to orbit · scroll to zoom · right-drag to pan · click any equipment for its details.</p>
 </section>
 
 <!-- ============ SUBSTATION MAP ============ -->
@@ -980,7 +980,7 @@ footer .site-credit{font-family:var(--body);text-transform:none;letter-spacing:0
   <div class="report-out" id="reportOut"></div>
 </section>
 </main>
-<footer>VoltWorks Power — power engineering, made obvious · from PowerSys Pro + psextract · all calculations run locally in your browser · <span id="footDate"></span><!-- sc-credit-marker -->
+<footer>VoltWorks Power: power engineering, made obvious · from PowerSys Pro + psextract · all calculations run locally in your browser · <span id="footDate"></span><!-- sc-credit-marker -->
 <div class="site-credit site-credit--inline">
   <p class="sc-made">Built by <strong>Darren Lieu</strong>
     <span class="sc-links sc-links--inline"><a href="https://github.com/DarthSandD" target="_blank" rel="noopener">GitHub</a><span>·</span><a href="https://darrenlin.pages.dev/" target="_blank" rel="noopener">Portfolio</a><span>·</span><a href="https://www.instagram.com/darren.lin_ai" target="_blank" rel="noopener">@darren.lin_ai</a></span>
@@ -1014,12 +1014,12 @@ const STD={fault:'IEC60909',cable:'IEC60364',tx:'IEC60076',ckt:'power'};
 function stdChanged(){
   STD.fault=$('faultStd').value;STD.cable=$('cableStd').value;STD.tx=$('txStd').value;STD.ckt=$('cktType').value;
   $('cktType').disabled=(STD.cable!=='IEC60364');
-  const refs={IEC60909:'Fault: IEC 60909-0 §4 — Ik″ with c=1.10, peak Ip≈2.55·Ik″ (κ=1.8, LV)',
-    ANSI:'Fault: ANSI C37.010 / IEEE 141 — symmetrical Ik″, momentary duty ×1.15',
-    IEC60364:'Cable: IEC 60364-5-52 §525 — VD '+(STD.ckt==='lighting'?'3% lighting':'5% power'),
-    IEEE141:'Cable: IEEE 141 (Red Book) Ch.3 — VD ≤5% recommended',
-    IEC60076:'TX: IEC 60076-5 — typical uk 4–6% for 1000 kVA class',
-    IEEEC57:'TX: IEEE C57.12.00 — typical uk 5.75% for 1000 kVA class'};
+  const refs={IEC60909:'Fault: IEC 60909-0 §4: Ik″ with c=1.10, peak Ip≈2.55·Ik″ (κ=1.8, LV)',
+    ANSI:'Fault: ANSI C37.010 / IEEE 141: symmetrical Ik″, momentary duty ×1.15',
+    IEC60364:'Cable: IEC 60364-5-52 §525: VD '+(STD.ckt==='lighting'?'3% lighting':'5% power'),
+    IEEE141:'Cable: IEEE 141 (Red Book) Ch.3: VD ≤5% recommended',
+    IEC60076:'TX: IEC 60076-5: typical uk 4–6% for 1000 kVA class',
+    IEEEC57:'TX: IEEE C57.12.00: typical uk 5.75% for 1000 kVA class'};
   $('stdRef').innerHTML='📏 '+refs[STD.fault]+'<br>'+refs[STD.cable]+'<br>'+refs[STD.tx];
   const rerun={'res-line':calcLine,'res-tr':calcTransformer,'res-cable':calcCable,'res-sc':calcSC};
   Object.keys(rerun).forEach(id=>{const el=$(id);if(el&&el.classList&&el.classList.contains&&el.classList.contains('show'))rerun[id]();});
@@ -1038,7 +1038,7 @@ function calcLine(){
     {v:vDpct.toFixed(2)+'%',l:'Volt drop',cls:vDpct<=5?'pass':'fail'},
     {v:vLoad.toFixed(3),l:'V at load kV',cls:vLoad>=vSec*0.9?'pass':'warn'},
     {v:iLoad.toFixed(1)+' A',l:'Load current'}],
-    ok?{cls:'v-ok',html:'✅ Within 5% limit'}:{cls:'v-fail',html:`❌ Drop ${vDpct.toFixed(2)}% exceeds 5% — upsize conductor or shorten run`});
+    ok?{cls:'v-ok',html:'✅ Within 5% limit'}:{cls:'v-fail',html:`❌ Drop ${vDpct.toFixed(2)}% exceeds 5%: upsize conductor or shorten run`});
   if(!ok||warn&&!ok){}flash('card-line');toast('✅ Feeder calculated');
 }
 
@@ -1085,7 +1085,7 @@ function calcCable(){
     {v:I.toFixed(1)+' A',l:'Load current'},
     {v:pick[0]+' mm²',l:'Copper XLPE',cls:'pass'},
     {v:vdPct.toFixed(2)+'%',l:'VD ≤'+vdLim+'%',cls:cok?'pass':'fail'}],
-    cok?{cls:'v-ok',html:`✅ ${pick[0]} mm² Cu — thermally + VD OK <span class="pill p-info">${vdRef}</span>`}:{cls:'v-fail',html:`❌ VD ${vdPct.toFixed(2)}% > ${vdLim}% <span class="pill p-info">${vdRef}</span> — go up a size`});
+    cok?{cls:'v-ok',html:`✅ ${pick[0]} mm² Cu: thermally + VD OK <span class="pill p-info">${vdRef}</span>`}:{cls:'v-fail',html:`❌ VD ${vdPct.toFixed(2)}% > ${vdLim}% <span class="pill p-info">${vdRef}</span>: go up a size`});
   flash('card-cable');toast('✅ Cable sized');
 }
 
@@ -1101,14 +1101,14 @@ function calcSC(){
       {v:Ikp.toFixed(2)+' kA',l:'Ik″ c=1.1',cls:Ikp<=50?'pass':'fail'},
       {v:Ip.toFixed(2)+' kA',l:'Ip peak κ=1.8'},
       {v:Zt.toFixed(4)+' Ω',l:'Z total'}],
-      Ikp<=50?{cls:'v-ok',html:'✅ Within 50 kA gear <span class="pill p-info">IEC 60909-0 §4</span>'}:{cls:'v-fail',html:'❌ Exceeds 50 kA <span class="pill p-info">IEC 60909-0 §4</span> — raise %Z or split bus'});
+      Ikp<=50?{cls:'v-ok',html:'✅ Within 50 kA gear <span class="pill p-info">IEC 60909-0 §4</span>'}:{cls:'v-fail',html:'❌ Exceeds 50 kA <span class="pill p-info">IEC 60909-0 §4</span>: raise %Z or split bus'});
   }else{
     const M=Ik*1.15;R.sc.M=M;
     show('res-sc','grid-sc','verdict-sc',[
       {v:Ik.toFixed(2)+' kA',l:'Ik sym',cls:Ik<=50?'pass':'fail'},
       {v:M.toFixed(2)+' kA',l:'Mom. duty'},
       {v:Zt.toFixed(4)+' Ω',l:'Z total'}],
-      Ik<=50?{cls:'v-ok',html:'✅ Within 50 kA duty <span class="pill p-info">ANSI C37.010</span>'}:{cls:'v-fail',html:'❌ Exceeds 50 kA duty <span class="pill p-info">ANSI C37.010</span> — raise %Z or split bus'});
+      Ik<=50?{cls:'v-ok',html:'✅ Within 50 kA duty <span class="pill p-info">ANSI C37.010</span>'}:{cls:'v-fail',html:'❌ Exceeds 50 kA duty <span class="pill p-info">ANSI C37.010</span>: raise %Z or split bus'});
   }
   flash('card-sc');toast('✅ Fault level calculated');
 }
@@ -1165,7 +1165,7 @@ function renderAnalysis(){
 function recalcAnalysis(toastIt=true){renderAnalysis();if(toastIt)toast('↻ Analysis re-evaluated');}
 function resetAnalysis(){location.reload();}
 
-/* ---- SLD — easy editor (no modes to learn) ---- */
+/* ---- SLD - easy editor (no modes to learn) ---- */
 let sldItems=[],sldWires=[],sldId=0,sldSelected=new Set(),sldView={x:0,y:0,k:1};
 let sldGrid=true,sldSnap=true,sldUndoStack=[],sldRedoStack=[];
 let sldDrag=null,sldPan=null,sldMarquee=null,sldSpace=false,sldWorld=null,sldSuppressClick=false,sldPanTool=false;
@@ -1256,7 +1256,7 @@ function sldAddComponent(type,at){
   if(prev&&prev.id!==it.id&&!sldConnected(prev.id,it.id)){sldWires.push({id:++sldId,a:prev.id,b:it.id});linked=true;}
   sldSelected=new Set([it.id]);
   drawSLD();sldSave();
-  toast('➕ '+COMP[type].label+' added'+(linked?' — wired to '+sldTag(prev):' — click another component to chain on'));
+  toast('➕ '+COMP[type].label+' added'+(linked?' - wired to '+sldTag(prev):' - click another component to chain on'));
   return it;
 }
 function sldDuplicate(id){
@@ -1344,7 +1344,7 @@ function sldTidy(){
 }
 function sldVisibleWorld(){
   // Deterministic: derive the visible world rect from the view transform and the
-  // SVG's on-screen size. Do NOT rely on getScreenCTM() — the group is not yet
+  // SVG's on-screen size. Do NOT rely on getScreenCTM() - the group is not yet
   // attached when the grid is generated, and a detached node returns null.
   const svg=$('sldCanvas');
   const r=svg?svg.getBoundingClientRect():{width:SLD_W,height:SLD_H};
@@ -1368,7 +1368,7 @@ function sldGridSVG(){
   return `<path d="${minor}" stroke="${T.border}" stroke-width="${sw}" opacity="0.30" fill="none"/>`
        + `<path d="${major}" stroke="${T.border}" stroke-width="${sw}" opacity="0.65" fill="none"/>`;
 }
-// bounding box of everything drawn — used for fit-to-view and export
+// bounding box of everything drawn - used for fit-to-view and export
 function sldContentBounds(){
   if(!sldItems.length)return{x0:0,y0:0,x1:SLD_W,y1:SLD_H};
   let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
@@ -1456,7 +1456,7 @@ function drawSLD(skipProps){
     inner=`<circle r="30" fill="transparent"/>`+inner;
     g.innerHTML=inner;
     vp.appendChild(g);
-    // connection ports — always visible on the hovered/selected item, or on everything while linking
+    // connection ports - always visible on the hovered/selected item, or on everything while linking
     const showPorts=sel||sldHover===it.id||!!sldLink;
     sldPorts(it).forEach(p=>{
       const isSnap=sldLink&&sldLink.snap&&sldLink.snap.id===it.id&&Math.abs(sldLink.snap.x-p.x)<0.5&&Math.abs(sldLink.snap.y-p.y)<0.5;
@@ -1549,10 +1549,10 @@ function sldTogglePan(){
   sldPanTool=!sldPanTool;
   $('sldPanBtn').classList.toggle('sel',sldPanTool);
   $('sldWrap').classList.toggle('pan',sldPanTool);
-  if(sldPanTool){$('sldCanvas').focus();toast('✋ Pan tool on — drag to move the plane');}
+  if(sldPanTool){$('sldCanvas').focus();toast('✋ Pan tool on: drag to move the plane');}
   else toast('Pan tool off');
 }
-// --- canvas events (no modes — everything is direct manipulation) ---
+// --- canvas events (no modes - everything is direct manipulation) ---
 // two-finger pinch zoom (mobile): track active pointers, zoom about the midpoint
 let sldPtrs = {}, sldPinch = null;
 function sldPinchDist(){ const ids = Object.keys(sldPtrs); if(ids.length < 2) return 0; const a = sldPtrs[ids[0]], b = sldPtrs[ids[1]]; return Math.hypot(a.x - b.x, a.y - b.y); }
@@ -1650,7 +1650,7 @@ window.addEventListener('pointermove',e=>{
     drawSLD(true);return;
   }
   if(sldMarquee){const s=sldClientToScreen(e);sldMarquee.x1=s.x;sldMarquee.y1=s.y;if(Math.abs(sldMarquee.x1-sldMarquee.x0)>4||Math.abs(sldMarquee.y1-sldMarquee.y0)>4)sldSuppressClick=true;drawSLD(true);return;}
-  // hover highlight (for showing connection dots) — skip while typing in a field
+  // hover highlight (for showing connection dots) - skip while typing in a field
   const typing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#sldPropsBody');
   if(typing){if(sldHover!=null){sldHover=null;drawSLD();}return;}
   if(e.target&&e.target.closest&&e.target.closest('#sldCanvas')){
@@ -1746,7 +1746,7 @@ function exportPNG(){
   const W=m?+m[1]:SLD_W, H=m?+m[2]:SLD_H;
   const url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
   img.onload=()=>{const cv=document.createElement('canvas');cv.width=W*2;cv.height=H*2;const g=cv.getContext('2d');g.scale(2,2);g.drawImage(img,0,0);cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='voltworks-sld.png';a.click();toast('⬇ SLD exported (PNG)');});};
-  img.onerror=()=>toast('⚠ PNG export failed — use SVG');
+  img.onerror=()=>toast('⚠ PNG export failed: use SVG');
   img.src=url;
 }
 
@@ -1755,7 +1755,7 @@ function buildReport(){
   const d=new Date().toLocaleString('en-GB',{timeZone:'Asia/Jakarta'});
   const L=[];
   L.push(`<h2>⚡ VoltWorks Engineering Report</h2><div class="meta">Generated ${d} WIB · VoltWorks Power · all values computed client-side · std: ${STD.fault} / ${STD.cable} / ${STD.tx}</div>`);
-  L.push(`<h4>1 · Executive summary</h4><p>${R.analysis?`Network: ${R.analysis.buses} buses, ${R.analysis.violations} voltage violation(s), ${R.analysis.marginal} marginal, ${R.analysis.overloads} branch overload(s).`: 'Network analysis not yet evaluated — see Analysis section.'} Module results included below reflect the latest “Calculate” run in each card.</p>`);
+  L.push(`<h4>1 · Executive summary</h4><p>${R.analysis?`Network: ${R.analysis.buses} buses, ${R.analysis.violations} voltage violation(s), ${R.analysis.marginal} marginal, ${R.analysis.overloads} branch overload(s).`: 'Network analysis not yet evaluated: see Analysis section.'} Module results included below reflect the latest “Calculate” run in each card.</p>`);
   const mod=(t,o)=>{if(!o)return `<li><b>${t}:</b> not run yet</li>`;return `<li><b>${t}:</b> ${o}</li>`;};
   L.push('<h4>2 · Calculation results</h4><ul>'
     +mod('Feeder VD',R.line?`${R.line.vDpct.toFixed(2)}% drop, ${R.line.vLoad.toFixed(3)} kV at load, ${R.line.iLoad.toFixed(1)} A`:'')
@@ -1769,7 +1769,7 @@ function buildReport(){
     +mod('Arc flash',R.arc?`${R.arc.V.toFixed(0)} V, I_bf ${R.arc.Ibf} kA / ${R.arc.T} ms: E ${R.arc.reduced.cal.toFixed(2)} cal/cm² (reduced), ${R.arc.full.cal.toFixed(2)} cal/cm² (full), AFB ${R.arc.reduced.AFB.toFixed(0)} mm, PPE Cat ${R.arc.ppe} [IEEE 1584-2018]`:'')
     +'</ul>');
   L.push(`<h4>3 · Method + assumptions</h4><p>VD: 3φ I(R·cosφ+X·sinφ). Fault: Z=V²/S with %Z + feeder Z, momentary ×1.15. Cable: Cu/XLPE CCC with install × ambient derates, VD=√3·I·R·L/V. Per-unit base ${BASE.mva} MVA / ${BASE.kv} kV.</p>`);
-  L.push(`<h4>4 · SLD</h4><p>${sldItems.length?sldItems.length+' component(s) and '+sldWires.length+' connection(s) on the canvas.'+(sldItems.some(i=>i.tag)?' Tags: '+sldItems.map(i=>sldTag(i)).join(', ')+'.':''):'No SLD composed yet — draw one in the Single-Line Diagram Builder.'}</p>`);
+  L.push(`<h4>4 · SLD</h4><p>${sldItems.length?sldItems.length+' component(s) and '+sldWires.length+' connection(s) on the canvas.'+(sldItems.some(i=>i.tag)?' Tags: '+sldItems.map(i=>sldTag(i)).join(', ')+'.':''):'No SLD composed yet: draw one in the Single-Line Diagram Builder.'}</p>`);
   L.push('<h4>5 · Sign-off</h4><p>Checked by: ____________ &nbsp;&nbsp; Date: ____________ &nbsp;&nbsp; Status: ☐ Approved ☐ Revise</p>');
   const out=$('reportOut');out.innerHTML=L.join('');out.classList.add('show');
   out.scrollIntoView({behavior:'smooth'});toast('📄 Report generated');
@@ -1803,7 +1803,7 @@ function drawLive(){
   [{fn:f=>studyVD(base*f/100),c:T.accent},{fn:f=>studyUtil(base*f/100),c:T.accent2},{fn:f=>studyCable(cbase*f/100),c:T.ok}].forEach(c=>{g.strokeStyle=c.c;g.lineWidth=2;g.beginPath();for(let f=0;f<=150;f+=3){const x=X(f),y=Y(c.fn(f));f===0?g.moveTo(x,y):g.lineTo(x,y);}g.stroke();});
   g.lineWidth=1;g.strokeStyle=cCUR;g.beginPath();g.moveTo(X(LOAD_PCT),pt);g.lineTo(X(LOAD_PCT),H-pb);g.stroke();
   g.font='11px "IBM Plex Mono",monospace';
-  g.fillStyle=T.accent;g.fillText('— VD%',pl+6,pt+12);g.fillStyle=T.accent2;g.fillText('— TX load%',pl+64,pt+12);g.fillStyle=T.ok;g.fillText('— cable VD%',pl+152,pt+12);
+  g.fillStyle=T.accent;g.fillText('- VD%',pl+6,pt+12);g.fillStyle=T.accent2;g.fillText('- TX load%',pl+64,pt+12);g.fillStyle=T.ok;g.fillText('- cable VD%',pl+152,pt+12);
 }
 
 /* ================= POWER FLOW (Newton–Raphson load flow) ================= */
@@ -1849,7 +1849,7 @@ function solveFlow(){
   const st=$('flow-status');
   const n=FLOW_BUS.length;
   if(n<2){st.className='verdict v-fail';st.textContent='❌ Need at least 2 buses.';return;}
-  if(!FLOW_BUS.some(b=>b.type==='slack')){st.className='verdict v-fail';st.textContent='❌ No slack bus — set one bus to type "slack".';return;}
+  if(!FLOW_BUS.some(b=>b.type==='slack')){st.className='verdict v-fail';st.textContent='❌ No slack bus: set one bus to type "slack".';return;}
   const {G,B}=flowYbus();
   const slack=FLOW_BUS.map(b=>b.type==='slack');
   const pq=[],nonslack=[];
@@ -1935,8 +1935,8 @@ function renderFlow(){
       <td><select class="fcell" data-i="${i}" data-k="type"><option value="slack"${b.type==='slack'?' selected':''}>slack</option><option value="pv"${b.type==='pv'?' selected':''}>PV</option><option value="pq"${b.type==='pq'?' selected':''}>PQ</option></select></td>
       <td><input class="fcell" type="number" data-i="${i}" data-k="P" value="${b.P}" style="width:76px"></td>
       <td><input class="fcell" type="number" data-i="${i}" data-k="Q" value="${b.Q}" style="width:76px"></td>
-      <td id="fb-vm-${i}">${b.vm!=null?b.vm.toFixed(3):'—'}</td>
-      <td id="fb-va-${i}">${b.va!=null?b.va.toFixed(2):'—'}</td>
+      <td id="fb-vm-${i}">${b.vm!=null?b.vm.toFixed(3):'-'}</td>
+      <td id="fb-va-${i}">${b.va!=null?b.va.toFixed(2):'-'}</td>
       <td><button class="pal-btn" style="padding:1px 7px" onclick="flowDelBus(${i})">✕</button></td>`;
     bt.appendChild(tr);
   });
@@ -1950,7 +1950,7 @@ function renderFlow(){
       <td><input class="fcell" type="number" data-i="${i}" data-k="R" value="${br.R}" step="0.01" style="width:72px"></td>
       <td><input class="fcell" type="number" data-i="${i}" data-k="X" value="${br.X}" step="0.01" style="width:72px"></td>
       <td><input class="fcell" type="number" data-i="${i}" data-k="rate" value="${br.rate}" style="width:84px"></td>
-      <td id="fbr-p-${i}">—</td><td id="fbr-q-${i}">—</td><td id="fbr-l-${i}">—</td><td id="fbr-loss-${i}">—</td>
+      <td id="fbr-p-${i}">-</td><td id="fbr-q-${i}">-</td><td id="fbr-l-${i}">-</td><td id="fbr-loss-${i}">-</td>
       <td><button class="pal-btn" style="padding:1px 7px" onclick="flowDelBranch(${i})">✕</button></td>`;
     rt.appendChild(tr);
   });
@@ -1995,7 +1995,7 @@ function calcMotor(){
     {v:sel.dip.toFixed(2)+'%',l:'PCC dip',cls:sel.dip<=lim?'pass':'fail'},
     {v:(Ssc/1e6).toFixed(1)+' MVA',l:'PCC fault'}],
     sel.dip<=lim?{cls:'v-ok',html:`✅ ${sel.dip.toFixed(2)}% dip ≤ ${lim}% limit <span class="pill p-info">${MSTART[m].label}</span>`}
-                :{cls:'v-fail',html:`❌ ${sel.dip.toFixed(2)}% dip exceeds ${lim}% <span class="pill p-info">${MSTART[m].label}</span> — use reduced-current starting or a stiffer supply`});
+                :{cls:'v-fail',html:`❌ ${sel.dip.toFixed(2)}% dip exceeds ${lim}% <span class="pill p-info">${MSTART[m].label}</span>: use reduced-current starting or a stiffer supply`});
   const tb=$('tbl-mstart').querySelector('tbody');
   tb.innerHTML=out.map(o=>`<tr><td style="text-align:left">${o.label}${o.k===m?' <span class="pill p-info">selected</span>':''}</td><td>${o.Istart.toFixed(0)}</td><td>${o.dip.toFixed(2)}</td><td>${o.dip<=lim?pill('OK','p-ok'):pill('FAIL','p-fail')}</td></tr>`).join('');
   flash('card-motor');toast('Ⓜ Motor start calculated');
@@ -2013,8 +2013,8 @@ function calcCableSC(){
     {v:S+' mm²',l:'Selected',cls:ok?'pass':'fail'},
     {v:tMax.toFixed(3)+' s',l:'Max clearing',cls:tMax>=t?'pass':'fail'},
     {v:(I*t/1000).toFixed(0)+' kA²s',l:'I²t'}],
-    ok?{cls:'v-ok',html:`✅ ${S} mm² ≥ ${sMin.toFixed(1)} mm² required — cable withstands ${I/1000} kA for ${t} s <span class="pill p-info">IEC 60364-4-43</span>`}
-      :{cls:'v-fail',html:`❌ ${S} mm² < ${sMin.toFixed(1)} mm² required — upsize, or clear the fault in ≤ ${tMax.toFixed(3)} s <span class="pill p-info">IEC 60364-4-43</span>`});
+    ok?{cls:'v-ok',html:`✅ ${S} mm² ≥ ${sMin.toFixed(1)} mm² required: cable withstands ${I/1000} kA for ${t} s <span class="pill p-info">IEC 60364-4-43</span>`}
+      :{cls:'v-fail',html:`❌ ${S} mm² < ${sMin.toFixed(1)} mm² required: upsize, or clear the fault in ≤ ${tMax.toFixed(3)} s <span class="pill p-info">IEC 60364-4-43</span>`});
   flash('card-cablesc');toast('🔥 Withstand checked');
 }
 
@@ -2045,7 +2045,7 @@ function calcPF(){
   flash('card-pf');toast('⚙ Capacitor bank sized');
 }
 
-/* ================= ARC FLASH — IEEE 1584-2018 ================= */
+/* ================= ARC FLASH - IEEE 1584-2018 ================= */
 // Tables ported from IEEE Std 1584-2018 (verified against the liaungyip/arcflash reference impl).
 const AF_T1={ // arcing current intermediate coeffs [EC][Voc_kV] -> k1..k10
  VCB:{"0.6":[-0.04287,1.035,-0.083,0,0,-4.783e-9,1.962e-6,-0.000229,0.003141,1.092],
@@ -2220,117 +2220,117 @@ function calcArc(){
 
 /* ================= INTERACTIVE HELP LAYER ================= */
 const HELP={
-power:{icon:'⚡',title:'Power Systems — the five core calculators',
+power:{icon:'⚡',title:'Power Systems: the five core calculators',
  what:'This is your everyday toolkit: it answers the five questions you ask on almost every LV/MV job. Everything shares one <b>system base</b>, so the numbers stay consistent between cards.',
  how:[
-  '<b>System Base</b> — set the per-unit reference (MVA + kV) once. Fault maths uses it.',
-  '<b>Feeder Voltage Drop</b> — how much voltage you lose along a cable: <code>Vd = I·(R·cosφ + X·sinφ)</code>.',
-  '<b>Transformer Sizing</b> — pick a standard kVA, see utilisation %, and the fault current it can deliver.',
-  '<b>LV Cable Sizing</b> — smallest copper XLPE cable that carries the load and stays under the volt-drop limit.',
-  '<b>Short-Circuit at Bus</b> — worst-case fault current for choosing breaker ratings.'
+  '<b>System Base</b>: set the per-unit reference (MVA + kV) once. Fault maths uses it.',
+  '<b>Feeder Voltage Drop</b>: how much voltage you lose along a cable: <code>Vd = I·(R·cosφ + X·sinφ)</code>.',
+  '<b>Transformer Sizing</b>: pick a standard kVA, see utilisation %, and the fault current it can deliver.',
+  '<b>LV Cable Sizing</b>: smallest copper XLPE cable that carries the load and stays under the volt-drop limit.',
+  '<b>Short-Circuit at Bus</b>: worst-case fault current for choosing breaker ratings.'
  ],
- inputs:[['Load kW / PF','Real power and power factor of the load. PF<1 means current is higher than kW alone suggests.'],['Length / R / X','Cable run in metres and its per-km resistance and reactance (from the cable data sheet).'],['TX kVA / %Z','Transformer rating and its impedance — %Z sets the fault current.'],['Derate factors','Install + ambient multipliers that reduce a cable\'s current-carrying capacity.']],
+ inputs:[['Load kW / PF','Real power and power factor of the load. PF<1 means current is higher than kW alone suggests.'],['Length / R / X','Cable run in metres and its per-km resistance and reactance (from the cable data sheet).'],['TX kVA / %Z','Transformer rating and its impedance: %Z sets the fault current.'],['Derate factors','Install + ambient multipliers that reduce a cable\'s current-carrying capacity.']],
  rules:'Volt drop ≤ 5% for power circuits, ≤ 3% for lighting (IEC 60364-5-52). Utilisation should stay ≤ 80% for headroom.',
  ex:'A 500 kW load at 0.85 PF on a 250 m feeder, fed by a 1000 kVA / 5% transformer.'},
-flow:{icon:'🔀',title:'Power Flow — solving a whole network at once',
- what:'Load flow finds the voltage at <b>every</b> bus and the current in <b>every</b> branch, all at the same time. It is the backbone of any network study. This tool runs the real Newton–Raphson method — the same algorithm as ETAP/PowerFactory — and the results match the industry library <code>pandapower</code> to 4 decimal places.',
+flow:{icon:'🔀',title:'Power Flow: solving a whole network at once',
+ what:'Load flow finds the voltage at <b>every</b> bus and the current in <b>every</b> branch, all at the same time. It is the backbone of any network study. This tool runs the real Newton–Raphson method, the same algorithm as ETAP/PowerFactory, and the results match the industry library <code>pandapower</code> to 4 decimal places.',
  how:[
   'Each row is a <b>bus</b>. Type <b>slack</b> = the reference (usually the grid/source, 1 only). <b>PV</b> = a generator holding voltage. <b>PQ</b> = a normal load.',
   'P is in <b>kW</b> and Q in <b>kVar</b>; <b>negative = consumption</b>, positive = generation.',
   'Branches connect two buses with R, X (Ω) and a rating.',
-  'Press <b>Solve load flow</b> — the grey columns (Vm, angle, flows, losses) fill in.'
+  'Press <b>Solve load flow</b>: the grey columns (Vm, angle, flows, losses) fill in.'
  ],
- inputs:[['V kV','Nominal voltage of that bus level.'],['Type','slack / PV / PQ — see above.'],['P, Q','Load or generation at the bus. Negative P = load.'],['R, X Ω','Branch impedance. Bigger = more drop and loss.']],
+ inputs:[['V kV','Nominal voltage of that bus level.'],['Type','slack / PV / PQ: see above.'],['P, Q','Load or generation at the bus. Negative P = load.'],['R, X Ω','Branch impedance. Bigger = more drop and loss.']],
  rules:'Healthy: every Vm between 0.95 and 1.05 p.u. and no branch over 100% loading.',
  ex:'The built-in 4-bus demo: source at 20 kV feeding three feeders.'},
-motor:{icon:'Ⓜ',title:'Motor Starting — will the lights flicker?',
+motor:{icon:'Ⓜ',title:'Motor Starting: will the lights flicker?',
  what:'When a big motor starts it draws a huge inrush current (often 6× running current) for a second or two. That current flows through the supply impedance and drags the voltage down for everyone on the bus. This checks whether that dip is acceptable.',
  how:[
   'Enter the motor nameplate and the fault level available at the bus.',
   'Inrush = <code>I_start = I_FLA × (I_LR / I_FLA)</code>.',
   'The dip is a simple impedance divider: <code>dip% ≈ I_start / I_fault × 100</code>.',
-  'The table compares DOL, star–delta, soft-starter and VFD — the softer the start, the smaller the dip.'
+  'The table compares DOL, star–delta, soft-starter and VFD: the softer the start, the smaller the dip.'
  ],
- inputs:[['kW / η / PF','Nameplate data. Full-load current I_FLA = P / (√3·V·η·PF).'],['I_LR / I_FLA','Locked-rotor (starting) current multiple — typically 6–8 for DOL.'],['PCC fault current','Fault level at the bus feeding the motor (kA). A stiffer supply = smaller dip.'],['Dip limit %','Your acceptable limit — commonly 10% for a running bus.']],
+ inputs:[['kW / η / PF','Nameplate data. Full-load current I_FLA = P / (√3·V·η·PF).'],['I_LR / I_FLA','Locked-rotor (starting) current multiple: typically 6–8 for DOL.'],['PCC fault current','Fault level at the bus feeding the motor (kA). A stiffer supply = smaller dip.'],['Dip limit %','Your acceptable limit: commonly 10% for a running bus.']],
  rules:'Typical limits: 10–15% dip on a bus with other running loads; motor terminals should stay above ~80% during start.',
- ex:'A 75 kW, 400 V motor on a 25 kA bus — see how the four start methods differ.'},
-cablesc:{icon:'🔥',title:'Cable Short-Circuit Withstand — will the cable survive?',
+ ex:'A 75 kW, 400 V motor on a 25 kA bus: see how the four start methods differ.'},
+cablesc:{icon:'🔥',title:'Cable Short-Circuit Withstand: will the cable survive?',
  what:'During a fault, a huge current flows through the cable until the breaker trips. The cable must absorb that energy without melting its insulation. This is the adiabatic check: assume no heat escapes during the brief fault.',
  how:[
   'The rule is <code>k²·S² ≥ I²·t</code>: S is conductor area, I is fault current, t is clearing time.',
   'The tool gives the <b>minimum area</b> the cable needs, and the <b>maximum time</b> your protection may take.',
   'k depends on conductor material + insulation: copper/XLPE = 143, aluminium/XLPE = 94, copper/PVC = 115.'
  ],
- inputs:[['Fault current kA','Prospective short-circuit current at the cable.'],['Clearing time s','How long until the protective device trips — from the time–current curve.'],['Conductor','Material + insulation, which sets k.'],['Selected area mm²','The cable size you intend to use — the tool checks it.']],
+ inputs:[['Fault current kA','Prospective short-circuit current at the cable.'],['Clearing time s','How long until the protective device trips, from the time–current curve.'],['Conductor','Material + insulation, which sets k.'],['Selected area mm²','The cable size you intend to use: the tool checks it.']],
  rules:'If selected area < minimum area, step up a cable size or speed up the protection.',
  ex:'25 kA cleared in 0.2 s with a 70 mm² copper/XLPE cable.'},
-pf:{icon:'⚙',title:'Power Factor Correction — cutting the current (and the bill)',
+pf:{icon:'⚙',title:'Power Factor Correction: cutting the current (and the bill)',
  what:'Poor power factor means you draw more current than the real power needs, wasting capacity and (usually) paying a penalty. A capacitor bank supplies the missing reactive power locally.',
  how:[
   'You need the reactive power that is missing to reach your target: <code>Q_c = P·(tanφ₁ − tanφ₂)</code>.',
   'The "what changes" table shows apparent power (kVA), reactive power (kVar) and current before vs after.',
   'Lower current = smaller losses, more spare transformer capacity, and no PF penalty.'
  ],
- inputs:[['Load kW','Real power of the load.'],['Present PF','What it is now (e.g. 0.75).'],['Target PF','What you want (e.g. 0.95) — most utilities ask for ≥0.9–0.95.'],['Voltage V','System voltage, used to convert to current.']],
- rules:'In harmonic-rich systems fit a detuned (reactor) bank instead of a plain capacitor — otherwise you risk resonance.',
+ inputs:[['Load kW','Real power of the load.'],['Present PF','What it is now (e.g. 0.75).'],['Target PF','What you want (e.g. 0.95): most utilities ask for ≥0.9–0.95.'],['Voltage V','System voltage, used to convert to current.']],
+ rules:'In harmonic-rich systems fit a detuned (reactor) bank instead of a plain capacitor, otherwise you risk resonance.',
  ex:'A 500 kW load improved from 0.75 to 0.95 PF.'},
-arcflash:{icon:'⚡',title:'Arc Flash — how much energy would hit a person?',
+arcflash:{icon:'⚡',title:'Arc Flash: how much energy would hit a person?',
  what:'An arc flash is an electrical explosion. This module estimates the <b>incident energy</b> (how much heat reaches someone at a working distance) and the <b>arc-flash boundary</b> (how close is too close), using the IEEE 1584-2018 empirical model. It is <b>safety-critical</b> and validated against the IEEE Annex D worked examples.',
  how:[
-  'Pick your <b>equipment type</b> — that fills in the typical bus gap, box size and working distance.',
+  'Pick your <b>equipment type</b>: that fills in the typical bus gap, box size and working distance.',
   'Enter the bolted fault current and how long the arc lasts (clearing time from your protection study).',
   'The tool computes the arcing current for both the <b>full</b> and the lower <b>reduced-current</b> case, and the enclosure correction factor CF.',
   'You get incident energy in <b>cal/cm²</b>, the arc-flash boundary in mm, and the required <b>PPE category</b> per NFPA 70E.'
  ],
- inputs:[['Electrode config','VCB/VCBB/HCB = in a box; VOA/HOA = open air. Sets which coefficients are used.'],['Voltage V','Nominal system voltage (208 V – 15 kV).'],['Bolted fault kA','Prospective short-circuit current (from the fault study).'],['Arc duration ms','Total clearing time of the upstream device.'],['Working distance mm','Where the person stands — typically 455–915 mm.'],['Bus gap G mm','Gap between conductors; filled from the equipment preset.']],
+ inputs:[['Electrode config','VCB/VCBB/HCB = in a box; VOA/HOA = open air. Sets which coefficients are used.'],['Voltage V','Nominal system voltage (208 V – 15 kV).'],['Bolted fault kA','Prospective short-circuit current (from the fault study).'],['Arc duration ms','Total clearing time of the upstream device.'],['Working distance mm','Where the person stands: typically 455–915 mm.'],['Bus gap G mm','Gap between conductors; filled from the equipment preset.']],
  rules:'<b>Never</b> work on energised equipment without a proper study and PPE. Energy > 1.2 cal/cm² needs arc-rated PPE; > 40 cal/cm² means the equipment cannot be worked live.',
  ex:'480 V LV switchgear with 45 kA bolted fault cleared in 100 ms (IEEE Annex D LV case).'},
-analysis:{icon:'📊',title:'Network Analysis — the whole system on one page',
+analysis:{icon:'📊',title:'Network Analysis: the whole system on one page',
  what:'A single screen that pulls a sample 5-bus network together: bus voltages, branch flows, short-circuit duties and compliance checks. Use it to see the "big picture" and to spot violations quickly.',
  how:[
-  'Edit any value and press <b>Re-evaluate</b> — compliance re-checks instantly.',
+  'Edit any value and press <b>Re-evaluate</b>: compliance re-checks instantly.',
   'The NERC table flags voltage and loading violations in plain language.',
   'The generator-dispatch table shows what each source is contributing.'
  ],
- rules:'Look for red rows first — they are the violations. Amber means marginal.',
- ex:'The preloaded demo case is already populated — just explore it.'},
-'3d':{icon:'🧊',title:'3D Substation — see what the numbers describe',
+ rules:'Look for red rows first: they are the violations. Amber means marginal.',
+ ex:'The preloaded demo case is already populated: just explore it.'},
+'3d':{icon:'🧊',title:'3D Substation: see what the numbers describe',
  what:'Every calculator in this app describes one physical thing in a substation yard. This viewer draws that yard in 3D so you can see the whole system at once: where the power comes in, where it is transformed, where it is switched, and where it is used.',
  how:[
-  '<b>Source: Calculators</b> — the yard is built from your actual inputs: transformer kVA, feeder length, cable size, motor kW, capacitor bank from the PF tool, and the arc-flash zone from the Arc Flash tool.',
-  '<b>Source: SLD diagram</b> — the viewer rebuilds itself from whatever you drew in the SLD Builder, in the same left-to-right layout. Open a breaker in the diagram and everything downstream goes dark in 3D too.',
-  '<b>Focus</b> — jump the camera to one piece of equipment. Every calculator card also has its own <b>🧊 3D</b> button that jumps here and focuses its equipment.',
-  '<b>Colours</b> — the lamp on top of each item shows its loading: green ≤ 80%, amber 80–100%, red &gt; 100%. De-energised items go grey and their flow dots stop.',
-  '<b>Flow</b> — the moving dots run source → load. They speed up as loading rises. Turn them off if they distract.',
-  '<b>X-ray</b> — makes enclosures see-through so you can check what sits behind what. <b>Auto-rotate</b> slowly orbits for presentations.'
+  '<b>Source: Calculators</b>: the yard is built from your actual inputs: transformer kVA, feeder length, cable size, motor kW, capacitor bank from the PF tool, and the arc-flash zone from the Arc Flash tool.',
+  '<b>Source: SLD diagram</b>: the viewer rebuilds itself from whatever you drew in the SLD Builder, in the same left-to-right layout. Open a breaker in the diagram and everything downstream goes dark in 3D too.',
+  '<b>Focus</b>: jump the camera to one piece of equipment. Every calculator card also has its own <b>🧊 3D</b> button that jumps here and focuses its equipment.',
+  '<b>Colours</b>: the lamp on top of each item shows its loading: green ≤ 80%, amber 80–100%, red &gt; 100%. De-energised items go grey and their flow dots stop.',
+  '<b>Flow</b>: the moving dots run source → load. They speed up as loading rises. Turn them off if they distract.',
+  '<b>X-ray</b>: makes enclosures see-through so you can check what sits behind what. <b>Auto-rotate</b> slowly orbits for presentations.'
  ],
  inputs:[['Transformer size','The transformer tank grows/shrinks with the kVA you entered.'],['Loading %','From the Live Load Study slider and each SLD load\'s own loading %.'],['Arc zone','Sphere around the LV switchgear, sized by the arc-flash boundary and coloured by PPE category.']],
- rules:'This is a schematic review model, not a construction drawing — use it to explain and to spot mistakes, then verify dimensions against the datasheets.',
- ex:'Run the Power example, then press the Transformer card\'s 🧊 3D button — the camera flies to the transformer and its lamp shows the live loading.'},
-sld:{icon:'🗺',title:'Single-Line Diagram — draw your system',
- what:'A single-line diagram is the schematic of your power system: sources, breakers, transformers, busbars and loads. There are <b>no modes to learn</b> — you just click to add, drag to move, and drag the ● dots to connect. Build a whole feeder in a few clicks.',
+ rules:'This is a schematic review model, not a construction drawing: use it to explain and to spot mistakes, then verify dimensions against the datasheets.',
+ ex:'Run the Power example, then press the Transformer card\'s 🧊 3D button: the camera flies to the transformer and its lamp shows the live loading.'},
+sld:{icon:'🗺',title:'Single-Line Diagram: draw your system',
+ what:'A single-line diagram is the schematic of your power system: sources, breakers, transformers, busbars and loads. There are <b>no modes to learn</b>: you just click to add, drag to move, and drag the ● dots to connect. Build a whole feeder in a few clicks.',
  how:[
   '<b>Add</b>: click any component on the left and it drops onto the canvas, already wired to whatever you had selected. So clicking Generator → Breaker → Busbar → Transformer → Motor builds a feeder step by step. You can also drag a component straight onto the canvas.',
-  '<b>Connect</b>: every symbol shows small ● dots. Drag from a dot onto another symbol to link them — the dot <b>snaps</b> to the nearest connection point, so you do not need to aim precisely, and a dashed line follows your pointer until you let go.',
+  '<b>Connect</b>: every symbol shows small ● dots. Drag from a dot onto another symbol to link them: the dot <b>snaps</b> to the nearest connection point, so you do not need to aim precisely, and a dashed line follows your pointer until you let go.',
   '<b>Move</b>: drag a symbol anywhere. It snaps to the grid and shows dashed <b>alignment guides</b> when it lines up with another element. Hold Shift and click to select several, or drag a box on empty space, then move or delete them together.',
-  '<b>Unlimited canvas</b>: the drawing area is not fixed. Move the plane with the <b>✋ Pan</b> button (drag anywhere), or hold <b>Space</b> and drag, or drag with the <b>middle / right</b> mouse button. You can also nudge with the <b>arrow keys</b> (hold Shift to go faster). Zoom out with the mouse wheel — the grid keeps extending so you never run out of room.',
+  '<b>Unlimited canvas</b>: the drawing area is not fixed. Move the plane with the <b>✋ Pan</b> button (drag anywhere), or hold <b>Space</b> and drag, or drag with the <b>middle / right</b> mouse button. You can also nudge with the <b>arrow keys</b> (hold Shift to go faster). Zoom out with the mouse wheel: the grid keeps extending so you never run out of room.',
   '<b>Breaker</b>: double-click it (or use the button above) to open or close. Anything downstream greys out when it opens.',
   '<b>Load / motor</b>: double-click to step the loading up (50 → 75 → 100 → 125 → 150 %), or use the − / ＋ buttons above the canvas.',
   '<b>Fix the layout</b>: the ✨ Tidy up button arranges everything left-to-right automatically. ⤢ Fit brings it all into view.',
   '<b>Edit details</b>: select one element and the right panel edits its tag, name, rating and transformer impedance.',
   '<b>Undo anything</b>: Ctrl+Z. <b>Delete</b>: the Del key.',
-  '<b>Export</b>: ⬇ SVG for CAD, ⬇ PNG for reports — both crop neatly to your drawing.'
+  '<b>Export</b>: ⬇ SVG for CAD, ⬇ PNG for reports: both crop neatly to your drawing.'
  ],
  rules:'Loading colours follow the Live Load Study slider: green ≤80%, amber 80–100%, red >100%. A red breaker is open, and everything it feeds goes dark.',
  ex:'Click a template in the left panel (or “⚡ Simple feeder” on the empty canvas) to see a finished diagram, then drag a ● dot onto another symbol and double-click the breaker.'},
-report:{icon:'📄',title:'Engineering Report — your results, one document',
+report:{icon:'📄',title:'Engineering Report: your results, one document',
  what:'Collects the latest result from every module into a single professional report you can print or save as PDF.',
  how:[
   'Run whichever calculators you need first.',
-  'Press <b>Generate report</b> — it gathers all of them, with the methods and assumptions stated.',
+  'Press <b>Generate report</b>: it gathers all of them, with the methods and assumptions stated.',
   'Use <b>Print / PDF</b> to produce a clean document (the interface is hidden when printing).'
  ],
- rules:'Always review the assumptions section before issuing — the report is only as good as the inputs.',
+ rules:'Always review the assumptions section before issuing: the report is only as good as the inputs.',
  ex:'Run the Power, Motor and Arc Flash examples, then generate the report.'}
 };
 function helpHTML(k){const h=HELP[k];if(!h)return '';
@@ -2370,7 +2370,7 @@ function tryExample(k){
  else if(k==='analysis'){resetAnalysis();}
  const anchor={power:'sec-power',flow:'sec-flow',motor:'sec-motor',cablesc:'sec-cablesc',pf:'sec-pf',arcflash:'sec-arcflash',analysis:'sec-analysis',sld:'sec-sld','3d':'sec-3d',report:'sec-report'}[k];
  if(anchor)document.getElementById(anchor).scrollIntoView({behavior:'smooth',block:'start'});
- runExample(k);toast('⚡ Example loaded — values filled and calculated');
+ runExample(k);toast('⚡ Example loaded: values filled and calculated');
 }
 function loadDemoSLD(){
  sldLoadSpec(SLD_TEMPLATES[1].spec());
@@ -2379,10 +2379,10 @@ function loadDemoSLD(){
 }
 const GLOSSARY=[
  ['Per-unit (p.u.)','A way of expressing voltage, power and impedance as fractions of a chosen base. 1.0 p.u. = nominal. Makes systems at different voltages comparable.'],
- ['Bolted fault current','The current if the fault were a perfect zero-resistance connection — the worst case.'],
+ ['Bolted fault current','The current if the fault were a perfect zero-resistance connection: the worst case.'],
  ['Arcing current (I_arc)','The actual current in an arc, which is lower than the bolted value because the arc itself has resistance.'],
  ['Incident energy (cal/cm²)','Heat energy per unit area reaching a point at a given distance from the arc. The number that sets your PPE.'],
- ['Arc-flash boundary','The distance at which incident energy falls to 1.2 cal/cm² — inside it you need arc-rated PPE.'],
+ ['Arc-flash boundary','The distance at which incident energy falls to 1.2 cal/cm²: inside it you need arc-rated PPE.'],
  ['PPE Category','NFPA 70E clothing class: Cat 1 ≤4 cal/cm², Cat 2 ≤8, Cat 3 ≤25, Cat 4 ≤40.'],
  ['Voltage drop','The reduction in voltage along a conductor due to its impedance. Usually limited to 3–5%.'],
  ['Power factor (PF)','Real power ÷ apparent power (kW ÷ kVA). Low PF means extra current and losses.'],
@@ -2390,9 +2390,9 @@ const GLOSSARY=[
  ['Adiabatic (k²S² ≥ I²t)','Short-circuit check assuming no heat escapes: the cable must absorb the fault energy without overheating.'],
  ['Slack bus','The reference bus in load flow that balances the system and sets the angle reference (0°).'],
  ['PV bus','A bus with a generator holding voltage constant (P and V known, Q solved).'],
- ['PQ bus','A normal load bus — P and Q are known, voltage is solved.'],
- ['Locked-rotor current (I_LR)','The current a motor draws at standstill — its starting (inrush) current.'],
- ['Clearing time','How long a fault persists before the protective device trips — critical for arc flash and cable withstand.']
+ ['PQ bus','A normal load bus: P and Q are known, voltage is solved.'],
+ ['Locked-rotor current (I_LR)','The current a motor draws at standstill: its starting (inrush) current.'],
+ ['Clearing time','How long a fault persists before the protective device trips: critical for arc flash and cable withstand.']
 ];
 function openGlossary(){openModal('📚 Power Engineering Glossary','Plain-English definitions of every term used in this app.',
  '<dl class="gloss">'+GLOSSARY.map(g=>`<dt>${g[0]}</dt><dd>${g[1]}</dd>`).join('')+'</dl>');}
@@ -2474,7 +2474,7 @@ function vw3dCalcModel(){
   const arc = R.arc || null;
   const afb = arc ? Math.max(arc.reduced.AFB, arc.full.AFB) : 0;
   const cal = arc ? Math.max(arc.reduced.cal, arc.full.cal) : 0;
-  /* TRUE SCALE (1 unit = 1 m): transformer dims grow with the cube root of kVA —
+  /* TRUE SCALE (1 unit = 1 m): transformer dims grow with the cube root of kVA -
      a 1000 kVA unit is ~2.5 m tall, 2.0 m long, 1.4 m deep (typical ONAN). */
   const txS = Math.cbrt(Math.max(txKva, 50) / 1000);
   const txH = Math.min(3.4, Math.max(1.9, 2.5 * txS));
@@ -2505,7 +2505,7 @@ function vw3dCalcModel(){
     {a:'tx', b:'lvsw'}, {a:'lvsw', b:'motor'}, {a:'lvsw', b:'load'}
   ];
   if(qc > 1) conns.push({a:'lvsw', b:'cap'});
-  return { source:'calc', equip:E, conns, stats:{ txKva, txLoad, isc, vd, qc, afb, cal, ppe: arc ? arc.ppe : '—', cableLen: cLen }, arcZone: afb > 0 ? { at:'lvsw', r: Math.min(4.5, Math.max(0.8, afb / 1000)), cal } : null };
+  return { source:'calc', equip:E, conns, stats:{ txKva, txLoad, isc, vd, qc, afb, cal, ppe: arc ? arc.ppe : '-', cableLen: cLen }, arcZone: afb > 0 ? { at:'lvsw', r: Math.min(4.5, Math.max(0.8, afb / 1000)), cal } : null };
 }
 /* ---- model: from the live SLD diagram ---- */
 function vw3dSldModel(){
@@ -2534,7 +2534,7 @@ function vw3dSldModel(){
   const byId = {}; E.forEach(e=>{ byId[e.sldId] = e.id; });
   const conns = sldWires.filter(w=>byId[w.a] && byId[w.b]).map(w=>({ a: byId[w.a], b: byId[w.b] }));
   return { source:'sld', equip:E, conns,
-    stats:{ txKva:null, txLoad:null, isc:null, vd:null, qc:null, afb:0, cal:0, ppe:'—', cableLen:null },
+    stats:{ txKva:null, txLoad:null, isc:null, vd:null, qc:null, afb:0, cal:0, ppe:'-', cableLen:null },
     arcZone:null };
 }
 function vw3dCollect(source){ return source === 'sld' ? vw3dSldModel() : vw3dCalcModel(); }
@@ -2567,13 +2567,13 @@ function vw3dBox(THREE, w, h, d, mat, x, y, z){
   m.position.set(x, y, z); m.userData.solid = true; return m;
 }
 /* ============================================================================
-   VoltWorks Power — 3D REALISM MODULE (BIM LOD 300-350, Inventor-style)
+   VoltWorks Power - 3D REALISM MODULE (BIM LOD 300-350, Inventor-style)
    ----------------------------------------------------------------------------
    Drop-in replacement for the simple-box 3D builders in index.html.
    MERGE: paste this ENTIRE file in place of the old vw3dBuildEquip function
    in index.html (see _3d_merge_notes.md for exact anchors), plus the small
    call-site / toolbar edits listed there. Do NOT paste it as a second
-   <script> block after the page script — it must live inside the same
+   <script> block after the page script - it must live inside the same
    <script> so it shares vw3dSprite / vw3dLoadColor / VW3D.
 
    API contract (unchanged from the original):
@@ -2834,7 +2834,7 @@ function vw3dStatusLamp(THREE, g, P, e, y){
 }
 
 /* ============================================================================
-   PER-KIND BUILDERS — each appends to group g, in LOCAL coords.
+   PER-KIND BUILDERS - each appends to group g, in LOCAL coords.
    Origin = equipment centre at pad level; y0 = 0.28 = top of foundation.
    All dims are fractions of the envelope (e.w / e.h / e.d) so SLD items
    (generic envelopes) get the same treatment as calculator items.
@@ -3078,7 +3078,7 @@ function vw3dBuildCap(THREE, g, e, P, y0){
 }
 
 function vw3dBuildMotor(THREE, g, e, P, y0){
-  /* TEFC motor — TRUE SCALE: S is chosen so the drawn top equals the envelope
+  /* TEFC motor - TRUE SCALE: S is chosen so the drawn top equals the envelope
      height e.h (75 kW / frame 280 ≈ 1.05 m tall). Old builder drew ~2.1 m. */
   var S = Math.min(0.95, Math.max(0.25, (e.h - 0.28) / 1.84));
   var y1 = y0 + 0.95 * S;
@@ -3244,7 +3244,7 @@ function vw3dBuildMast(THREE, g, e, P, y0){
 }
 
 /* ============================================================================
-   REPLACEMENT vw3dBuildEquip — same signature, same return contract.
+   REPLACEMENT vw3dBuildEquip - same signature, same return contract.
    ========================================================================== */
 function vw3dBuildEquip(THREE, e, mats, labels){
   var g = new THREE.Group();
@@ -3280,9 +3280,9 @@ function vw3dBuildEquip(THREE, e, mats, labels){
 }
 
 /* ============================================================================
-   VIEWER REALISM — call vw3dApplyRealism(viewer, model) at the END of the
+   VIEWER REALISM - call vw3dApplyRealism(viewer, model) at the END of the
    host viewer setModel() (after v.select(null)). Idempotent: safe to call
-   on every rebuild. It does NOT replace the host viewer — it only tunes
+   on every rebuild. It does NOT replace the host viewer - it only tunes
    the renderer / lights / shadows / fog, fixes X-ray for the locally
    created materials, applies the detail level, and (re)builds scene extras.
    ========================================================================== */
@@ -3346,7 +3346,7 @@ function vw3dApplyRealism(viewer, model){
     });
     /* detail visibility (level lives in viewer.opts.detail, default 'high') */
     vw3dApplyDetail(viewer);
-    /* scene extras (human figure + scale bar) — calc mode only */
+    /* scene extras (human figure + scale bar) - calc mode only */
     vw3dSceneExtras(viewer, model, THREE);
   }catch(err){ /* realism must never break the viewer */ }
 }
@@ -3389,7 +3389,7 @@ function vw3dSceneExtras(viewer, model, THREE){
     { concrete: vw3dCanvasTexture(THREE, 'concrete'), gravel: vw3dCanvasTexture(THREE, 'gravel'),
       galv: vw3dCanvasTexture(THREE, 'galv'), hazard: vw3dCanvasTexture(THREE, 'hazard'),
       brick: vw3dCanvasTexture(THREE, 'brick') });
-  /* fix: palette fallbacks above passed null shared mats — rebuild the two
+  /* fix: palette fallbacks above passed null shared mats - rebuild the two
      materials we actually need locally so extras never depend on host mats */
   var orange = new THREE.MeshStandardMaterial({ color: 0xff6a00, roughness: 0.6, emissive: 0x903800, emissiveIntensity: 0.25 });
   var navy = new THREE.MeshStandardMaterial({ color: 0x2c3a55, roughness: 0.85 });
@@ -3583,7 +3583,7 @@ function vw3dMakeViewer(canvasId, infoId, fallbackId, which){
         ring.rotation.x = Math.PI / 2; ring.position.set(at.x, 0.12, at.z); g.add(ring);
       }
     }
-    if(model.sldEmpty && v.info) v.info.innerHTML = 'SLD canvas is empty — showing the calculator substation instead. Draw a diagram in the SLD Builder to see it here.';
+    if(model.sldEmpty && v.info) v.info.innerHTML = 'SLD canvas is empty: showing the calculator substation instead. Draw a diagram in the SLD Builder to see it here.';
     else if(v.info && !v.selected) v.info.innerHTML = 'Click any equipment for its details.';
     v.group = g; v.scene.add(g);
     v.select(null);
@@ -3634,13 +3634,13 @@ function vw3dUpdateStats(model){
   const chip = (val, lab, cls)=>'<div class="rcard"><div class="rv ' + (cls || 'info') + '">' + val + '</div><div class="rl">' + lab + '</div></div>';
   const loadCls = st.txLoad == null ? 'info' : st.txLoad > 1 ? 'fail' : st.txLoad >= 0.8 ? 'warn' : 'pass';
   el.innerHTML =
-    chip(model.source === 'sld' ? model.equip.length + ' items' : (st.txKva != null ? st.txKva.toFixed(0) + ' kVA' : '—'), model.source === 'sld' ? 'SLD components' : 'Transformer') +
-    chip(st.txLoad != null ? (st.txLoad * 100).toFixed(0) + '%' : (model.source === 'sld' ? model.conns.length + ' links' : '—'), model.source === 'sld' ? 'Connections' : 'TX loading', loadCls) +
-    chip(st.isc != null ? st.isc.toFixed(1) + ' kA' : '—', 'Fault Isc') +
-    chip(st.vd != null ? st.vd.toFixed(2) + '%' : '—', 'Feeder VD', st.vd != null && st.vd > 5 ? 'fail' : 'pass') +
-    chip(st.qc != null ? st.qc.toFixed(0) + ' kVar' : '—', 'Capacitor bank') +
-    chip(st.afb ? (st.afb / 1000).toFixed(2) + ' m' : '—', 'Arc boundary') +
-    chip(st.ppe || '—', 'PPE category', st.ppe === 'DANGER >40' ? 'fail' : 'info');
+    chip(model.source === 'sld' ? model.equip.length + ' items' : (st.txKva != null ? st.txKva.toFixed(0) + ' kVA' : '-'), model.source === 'sld' ? 'SLD components' : 'Transformer') +
+    chip(st.txLoad != null ? (st.txLoad * 100).toFixed(0) + '%' : (model.source === 'sld' ? model.conns.length + ' links' : '-'), model.source === 'sld' ? 'Connections' : 'TX loading', loadCls) +
+    chip(st.isc != null ? st.isc.toFixed(1) + ' kA' : '-', 'Fault Isc') +
+    chip(st.vd != null ? st.vd.toFixed(2) + '%' : '-', 'Feeder VD', st.vd != null && st.vd > 5 ? 'fail' : 'pass') +
+    chip(st.qc != null ? st.qc.toFixed(0) + ' kVar' : '-', 'Capacitor bank') +
+    chip(st.afb ? (st.afb / 1000).toFixed(2) + ' m' : '-', 'Arc boundary') +
+    chip(st.ppe || '-', 'PPE category', st.ppe === 'DANGER >40' ? 'fail' : 'info');
 }
 function vw3dRefresh(silent){
   const m = vw3dCollect(VW3D.source);
@@ -3675,7 +3675,7 @@ function vw3dOpenFocus(focus){
   vw3dEnsureMain().then(()=>{
     vw3dRefresh(true);
     setTimeout(()=>{ if(VW3D.main){ VW3D.main.resize(); vw3dApplyView(VW3D.main, 'yard'); } }, 350);
-    toast('🧊 3D — focusing ' + (focus || 'yard'));
+    toast('🧊 3D: focusing ' + (focus || 'yard'));
   });
 }
 function vw3dOpenSLD(){
@@ -3803,16 +3803,16 @@ function vw3dMiniModel(cardId, load){
   return { source:'mini', equip: [], conns: [], arcZone: null };
 }
 const VW3D_MINI_CFG = {
-  'card-line':  { radius: 15, cap: 'This is the feeder your voltage-drop calculation sizes — 11 kV infeed, disconnector and breaker.' },
-  'card-tr':    { radius: 7,  cap: 'Your transformer, sized by this card — tank grows with the kVA you entered.' },
-  'card-cable': { radius: 6,  cap: 'The cable run this card sizes — XLPE copper in a trench, glands at both ends.' },
-  'card-sc':    { radius: 7,  cap: 'The breaker that must clear this fault — the number in the card is what it has to interrupt.' },
-  'card-live':  { radius: 11, cap: 'The live study as a yard — drag the slider and watch transformer, switchgear and load fill up.' },
-  'card-motor': { radius: 6,  cap: 'Your motor, by nameplate — frame size follows the kW you entered.' },
-  'card-cablesc':{ radius: 6, cap: 'The cable under fault — this is what has to survive I²t until the protection trips.' },
-  'card-pf':    { radius: 7,  cap: 'The capacitor bank this card sizes — cans, fuses and discharge resistor.' },
-  'card-arc':   { radius: 8,  cap: 'The switchboard where the arc flash happens — the coloured sphere is the arc-flash boundary from this card.' },
-  'sec-flow':   { radius: 11, cap: 'Your load-flow network as a 3D busbar yard — one busbar per bus, wired as your branches.' }
+  'card-line':  { radius: 15, cap: 'This is the feeder your voltage-drop calculation sizes: 11 kV infeed, disconnector and breaker.' },
+  'card-tr':    { radius: 7,  cap: 'Your transformer, sized by this card: tank grows with the kVA you entered.' },
+  'card-cable': { radius: 6,  cap: 'The cable run this card sizes: XLPE copper in a trench, glands at both ends.' },
+  'card-sc':    { radius: 7,  cap: 'The breaker that must clear this fault: the number in the card is what it has to interrupt.' },
+  'card-live':  { radius: 11, cap: 'The live study as a yard: drag the slider and watch transformer, switchgear and load fill up.' },
+  'card-motor': { radius: 6,  cap: 'Your motor, by nameplate: frame size follows the kW you entered.' },
+  'card-cablesc':{ radius: 6, cap: 'The cable under fault: this is what has to survive I²t until the protection trips.' },
+  'card-pf':    { radius: 7,  cap: 'The capacitor bank this card sizes: cans, fuses and discharge resistor.' },
+  'card-arc':   { radius: 8,  cap: 'The switchboard where the arc flash happens: the coloured sphere is the arc-flash boundary from this card.' },
+  'sec-flow':   { radius: 11, cap: 'Your load-flow network as a 3D busbar yard: one busbar per bus, wired as your branches.' }
 };
 function vw3dMiniToggle(cardId){
   const body = document.getElementById('mini3d-' + cardId + '-body');
@@ -3902,27 +3902,27 @@ function vw3dWrapCalc(fnName, miniId){
 
 /* ================= ONBOARDING: guided tour + per-feature coach ================= */
 const VW_TOUR_STEPS = [
-  { t:'#heroTop', title:'Welcome — what is VoltWorks?',
-    body:'VoltWorks is your power-system design desk. It sizes equipment, checks safety, draws the diagram and writes the report — all in your browser, nothing uploaded, nothing you can break. This tour takes about 2 minutes and visits every tool.', ex:null },
-  { t:'#sec-power', title:'1 · Power Systems — the everyday calculators',
+  { t:'#heroTop', title:'Welcome: what is VoltWorks?',
+    body:'VoltWorks is your power-system design desk. It sizes equipment, checks safety, draws the diagram and writes the report, all in your browser, nothing uploaded, nothing you can break. This tour takes about 2 minutes and visits every tool.', ex:null },
+  { t:'#sec-power', title:'1 · Power Systems: the everyday calculators',
     body:'Five tools you will use on almost every job: feeder voltage drop, transformer sizing, cable sizing, fault level, and the live load study. Type your numbers, press Calculate, and read the verdict: green means go, red tells you what to fix.', ex:'power' },
-  { t:'#sec-flow', title:'2 · Power Flow — the whole network at once',
+  { t:'#sec-flow', title:'2 · Power Flow: the whole network at once',
     body:'When one feeder is not enough: list your buses and branches, press Solve load flow, and see every bus voltage and branch loading. Negative P means a load is consuming power.', ex:'flow' },
-  { t:'#sec-motor', title:'3 · Motor Starting — will the lights flicker?',
-    body:'A big motor starting pulls a huge inrush and drags the voltage down. Enter the motor nameplate and the fault level at the bus, and see the dip — plus which starting method (DOL, star-delta, soft starter, VFD) fixes it.', ex:'motor' },
-  { t:'#sec-cablesc', title:'4 · Cable Withstand — will the cable survive a fault?',
+  { t:'#sec-motor', title:'3 · Motor Starting: will the lights flicker?',
+    body:'A big motor starting pulls a huge inrush and drags the voltage down. Enter the motor nameplate and the fault level at the bus, and see the dip, plus which starting method (DOL, star-delta, soft starter, VFD) fixes it.', ex:'motor' },
+  { t:'#sec-cablesc', title:'4 · Cable Withstand: will the cable survive a fault?',
     body:'During a fault the cable must absorb I²t without melting. Enter fault current and clearing time: the tool tells you the minimum cable size, or the fastest your protection must clear.', ex:'cablesc' },
-  { t:'#sec-pf', title:'5 · Power Factor — stop paying for wasted current',
+  { t:'#sec-pf', title:'5 · Power Factor: stop paying for wasted current',
     body:'Poor power factor means extra current and usually a utility penalty. Enter present and target PF: the tool sizes the capacitor bank and shows what changes before vs after.', ex:'pf' },
-  { t:'#sec-arcflash', title:'6 · Arc Flash — how much danger, what PPE?',
+  { t:'#sec-arcflash', title:'6 · Arc Flash: how much danger, what PPE?',
     body:'Safety-critical. Pick the equipment type, enter fault current and clearing time, and get incident energy, arc-flash boundary and the PPE category per NFPA 70E. Never work live without a proper study.', ex:'arcflash' },
-  { t:'#sec-analysis', title:'7 · Analysis — the whole system on one page',
-    body:'Bus voltages, branch flows, short-circuit duties and NERC compliance checks in one view. Red rows are violations — fix those first.', ex:'analysis' },
-  { t:'#sec-sld', title:'8 · SLD Builder — draw your system',
+  { t:'#sec-analysis', title:'7 · Analysis: the whole system on one page',
+    body:'Bus voltages, branch flows, short-circuit duties and NERC compliance checks in one view. Red rows are violations: fix those first.', ex:'analysis' },
+  { t:'#sec-sld', title:'8 · SLD Builder: draw your system',
     body:'Click components on the left and they drop onto the canvas, already wired to what you selected. Drag the dots to connect, double-click a breaker to open it, double-click a load to change its loading. Start from a template if you like.', ex:'sld' },
-  { t:'#sec-3d', title:'9 · 3D Substation — see what the numbers describe',
-    body:'The whole substation in 3D, built from your inputs or from your SLD diagram. Drag to orbit, click any equipment for its details. Open a breaker in the SLD and the 3D downstream goes dark — just like real life.', ex:'3d' },
-  { t:'#sec-report', title:'10 · Report — one document, ready to file',
+  { t:'#sec-3d', title:'9 · 3D Substation: see what the numbers describe',
+    body:'The whole substation in 3D, built from your inputs or from your SLD diagram. Drag to orbit, click any equipment for its details. Open a breaker in the SLD and the 3D downstream goes dark, just like real life.', ex:'3d' },
+  { t:'#sec-report', title:'10 · Report: one document, ready to file',
     body:'Run the calculators you need, then Generate report: every result, method and assumption in one printable document. That is the whole workflow: numbers → verdicts → diagram → 3D → report.', ex:'report' }
 ];
 let vwTourIdx = -1, vwTourTimer = null;
@@ -3968,7 +3968,7 @@ function vwTourTry(ex){
     if(ex === '3d') vw3dOpenFocus('yard');
     else runExample(ex);
   }catch(e){}
-  toast('⚡ Example loaded — try changing a number and pressing Calculate');
+  toast('⚡ Example loaded: try changing a number and pressing Calculate');
 }
 function vwTourEnd(skip){
   vwTourIdx = -1;
@@ -3976,56 +3976,56 @@ function vwTourEnd(skip){
   if(spot) spot.style.display = 'none';
   if(card) card.style.display = 'none';
   try{ localStorage.setItem('vw-tour-v1', skip ? 'skipped' : 'done'); }catch(e){}
-  if(!skip) toast('🎉 Tour complete — pick a job above, or just start typing numbers');
+  if(!skip) toast('🎉 Tour complete: pick a job above, or just start typing numbers');
 }
 function vwStartTour(){ vwTourIdx = 0; vwTourShow(); }
 window.addEventListener('resize', ()=>{ if(vwTourIdx >= 0) vwTourPlace(); });
 /* ---- per-feature coach: plain words for every section ---- */
 const VW_COACH = {
-  power:{ title:'Power Systems — what do I do here?',
+  power:{ title:'Power Systems: what do I do here?',
     what:'These five calculators answer the questions on almost every LV/MV job: how much voltage will I lose, what transformer do I need, what cable, and how big is the fault?',
     steps:['<b>Start</b> with the worked example: press “How this works” → “Load this example & run it”.','<b>Then</b> replace the example numbers with your own job’s numbers.','<b>Press Calculate</b> on each card and read the verdict: green = OK, amber = check it, red = fix it.','<b>Watch</b> the Live Load Study slider: drag it to see what happens at 125% load.'],
     try:'power' },
-  flow:{ title:'Power Flow — what do I do here?',
-    what:'You describe the network (buses + branches) and the tool solves every voltage and current at once — like ETAP or PowerFactory, in your browser.',
-    steps:['<b>Start</b> from the demo network (4 buses) — it already works.','<b>Edit</b> a bus: name, voltage, type (slack = grid, PQ = load), P/Q in kW/kVar. Negative P = consuming.','<b>Edit</b> a branch: R, X and rating.','<b>Press “Solve load flow”.</b> Red Vm or branch >100% means the network needs fixing.'],
+  flow:{ title:'Power Flow: what do I do here?',
+    what:'You describe the network (buses + branches) and the tool solves every voltage and current at once, like ETAP or PowerFactory, in your browser.',
+    steps:['<b>Start</b> from the demo network (4 buses): it already works.','<b>Edit</b> a bus: name, voltage, type (slack = grid, PQ = load), P/Q in kW/kVar. Negative P = consuming.','<b>Edit</b> a branch: R, X and rating.','<b>Press “Solve load flow”.</b> Red Vm or branch >100% means the network needs fixing.'],
     try:'flow' },
-  motor:{ title:'Motor Starting — what do I do here?',
+  motor:{ title:'Motor Starting: what do I do here?',
     what:'Big motors gulp current when they start and the voltage sags. This tells you how bad the sag is, and which starting method fixes it.',
-    steps:['<b>Enter</b> the motor nameplate: kW, voltage, efficiency, PF, and the starting-current multiple (usually 6–8).','<b>Enter</b> the fault level at the bus feeding it (kA) — stiffer supply = smaller dip.','<b>Press Calculate.</b> Compare the four start methods in the table; pick one whose dip is under your limit.'],
+    steps:['<b>Enter</b> the motor nameplate: kW, voltage, efficiency, PF, and the starting-current multiple (usually 6–8).','<b>Enter</b> the fault level at the bus feeding it (kA): stiffer supply = smaller dip.','<b>Press Calculate.</b> Compare the four start methods in the table; pick one whose dip is under your limit.'],
     try:'motor' },
-  cablesc:{ title:'Cable Withstand — what do I do here?',
+  cablesc:{ title:'Cable Withstand: what do I do here?',
     what:'A fault dumps huge energy into the cable. This checks the cable survives until the breaker trips.',
-    steps:['<b>Enter</b> fault current (kA) and how fast your protection clears it (seconds).','<b>Pick</b> conductor material + insulation — that sets k.','<b>Enter</b> the cable size you plan to use. The tool says OK or FAIL, and what size or clearing time you need instead.'],
+    steps:['<b>Enter</b> fault current (kA) and how fast your protection clears it (seconds).','<b>Pick</b> conductor material + insulation: that sets k.','<b>Enter</b> the cable size you plan to use. The tool says OK or FAIL, and what size or clearing time you need instead.'],
     try:'cablesc' },
-  pf:{ title:'Power Factor — what do I do here?',
+  pf:{ title:'Power Factor: what do I do here?',
     what:'Low power factor = extra current = wasted capacity and often a penalty bill. A capacitor bank fixes it.',
     steps:['<b>Enter</b> load kW, present PF (e.g. 0.75) and target PF (e.g. 0.95).','<b>Press Calculate.</b> You get the bank size in kVar plus the before/after table.','<b>Note:</b> in harmonic-rich systems use a detuned (reactor) bank, not a plain capacitor.'],
     try:'pf' },
-  arcflash:{ title:'Arc Flash — what do I do here?',
-    what:'Estimates how much heat an arc flash would throw at a person, and what PPE they must wear. Safety-critical — get this right.',
-    steps:['<b>Pick</b> the equipment type — it fills in gap, box size and working distance.','<b>Enter</b> bolted fault current (kA) and arc duration (clearing time, ms).','<b>Press Calculate.</b> Read incident energy (cal/cm²), boundary (mm) and PPE category. Energy over 40 cal/cm² = do not work live.'],
+  arcflash:{ title:'Arc Flash: what do I do here?',
+    what:'Estimates how much heat an arc flash would throw at a person, and what PPE they must wear. Safety-critical: get this right.',
+    steps:['<b>Pick</b> the equipment type: it fills in gap, box size and working distance.','<b>Enter</b> bolted fault current (kA) and arc duration (clearing time, ms).','<b>Press Calculate.</b> Read incident energy (cal/cm²), boundary (mm) and PPE category. Energy over 40 cal/cm² = do not work live.'],
     try:'arcflash' },
-  analysis:{ title:'Analysis — what do I do here?',
+  analysis:{ title:'Analysis: what do I do here?',
     what:'One page that shows a whole network: voltages, flows, fault duties and compliance checks.',
-    steps:['<b>Explore</b> the preloaded demo — it is already populated.','<b>Click</b> any Vm / load cell to edit a value, then Re-evaluate.','<b>Read red rows first</b> — they are violations. Amber = marginal.'],
+    steps:['<b>Explore</b> the preloaded demo: it is already populated.','<b>Click</b> any Vm / load cell to edit a value, then Re-evaluate.','<b>Read red rows first</b>: they are violations. Amber = marginal.'],
     try:'analysis' },
-  sld:{ title:'SLD Builder — what do I do here?',
+  sld:{ title:'SLD Builder: what do I do here?',
     what:'Draw the single-line diagram of your system: source → breaker → busbar → transformer → loads.',
-    steps:['<b>Fastest start:</b> click a template on the left (“11kV substation”).','<b>Add:</b> click any component — it drops in and wires itself to what you selected.','<b>Connect:</b> drag a ● dot onto another symbol. <b>Move:</b> drag a symbol. <b>Breaker:</b> double-click to open/close. <b>Load:</b> double-click to change loading.','<b>Export</b> SVG for CAD or PNG for reports. <b>3D:</b> press “🧊 3D view” to see your diagram as a substation.'],
+    steps:['<b>Fastest start:</b> click a template on the left (“11kV substation”).','<b>Add:</b> click any component: it drops in and wires itself to what you selected.','<b>Connect:</b> drag a ● dot onto another symbol. <b>Move:</b> drag a symbol. <b>Breaker:</b> double-click to open/close. <b>Load:</b> double-click to change loading.','<b>Export</b> SVG for CAD or PNG for reports. <b>3D:</b> press “🧊 3D view” to see your diagram as a substation.'],
     try:'sld' },
-  '3d':{ title:'3D Substation — what do I do here?',
-    what:'See the substation your numbers describe — or your SLD diagram rebuilt in 3D. Everything is true scale (1 unit = 1 metre): the pylon is 12 m, the transformer about 2.5 m, the worker 1.8 m. Use it to explain the design and spot mistakes.',
+  '3d':{ title:'3D Substation: what do I do here?',
+    what:'See the substation your numbers describe, or your SLD diagram rebuilt in 3D. Everything is true scale (1 unit = 1 metre): the pylon is 12 m, the transformer about 2.5 m, the worker 1.8 m. Use it to explain the design and spot mistakes.',
     steps:['<b>Pick a source:</b> Calculators (from your inputs) or SLD diagram (from your drawing).','<b>Pick a focus</b> (e.g. Transformer) or click any equipment for its details.','<b>Drag</b> to orbit, <b>scroll</b> to zoom, <b>right-drag</b> to pan. <b>X-ray</b> sees through enclosures.'],
     try:'3d' },
-  report:{ title:'Report — what do I do here?',
+  report:{ title:'Report: what do I do here?',
     what:'Turns all your results into one professional, printable document.',
     steps:['<b>First</b> run the calculators you need (Power, Motor, Arc Flash…).','<b>Press “Generate report”.</b> Check the methods + assumptions section before issuing.','<b>Press “Print / PDF”</b> to save it.'],
     try:'report' }
 };
 function vwCoach(key){
   const c = VW_COACH[key]; if(!c) return;
-  openModal('❔ ' + c.title, 'Plain words — no jargon. You cannot break anything; everything runs in your browser.',
+  openModal('❔ ' + c.title, 'Plain words: no jargon. You cannot break anything; everything runs in your browser.',
     '<p style="font-size:13px;line-height:1.6">' + c.what + '</p><ol style="font-size:13px;line-height:1.65;padding-left:20px">' + c.steps.map(x=>'<li>' + x + '</li>').join('') + '</ol>'
     + '<button class="try-btn" onclick="closeModal();vwTourTry(\'' + c.try + '\')">⚡ Load the example & try it</button>'
     + '<button class="try-btn alt" onclick="closeModal();vwStartTour()">🧭 Take the full tour</button>');
@@ -4033,10 +4033,10 @@ function vwCoach(key){
 function vwTask(job){
   if(job === 'tour'){ vwStartTour(); return; }
   const map = {
-    tx:{ sec:'sec-power', ex:'power', flash:'card-tr', msg:'🏭 Transformer sizing — check the rating, utilisation and fault current' },
-    vd:{ sec:'sec-power', ex:'power', flash:'card-line', msg:'📏 Feeder voltage drop — watch the % drop and the verdict' },
-    arc:{ sec:'sec-arcflash', ex:'arcflash', flash:'card-arc', msg:'🦺 Arc flash — read incident energy, boundary and PPE category' },
-    sld:{ sec:'sec-sld', ex:'sld', flash:null, msg:'🗺 SLD Builder — demo diagram loaded; click a component to add your own' }
+    tx:{ sec:'sec-power', ex:'power', flash:'card-tr', msg:'🏭 Transformer sizing: check the rating, utilisation and fault current' },
+    vd:{ sec:'sec-power', ex:'power', flash:'card-line', msg:'📏 Feeder voltage drop: watch the % drop and the verdict' },
+    arc:{ sec:'sec-arcflash', ex:'arcflash', flash:'card-arc', msg:'🦺 Arc flash: read incident energy, boundary and PPE category' },
+    sld:{ sec:'sec-sld', ex:'sld', flash:null, msg:'🗺 SLD Builder: demo diagram loaded; click a component to add your own' }
   };
   const m = map[job]; if(!m) return;
   const el = document.getElementById(m.sec); if(el) el.scrollIntoView({ behavior:'smooth' });
@@ -4057,8 +4057,8 @@ function vwOnboardInit(){
   try{ seen = localStorage.getItem('vw-tour-v1'); }catch(e){}
   if(!seen){
     setTimeout(()=>{
-      openModal('👋 Welcome to VoltWorks Power', 'You are in the right place — even if this is your first power-system design.',
-        '<p style="font-size:13px;line-height:1.65">VoltWorks sizes your feeders, transformers and cables, checks fault levels and arc-flash PPE, draws your single-line diagram, shows it in 3D, and writes the report. <b>Nothing is uploaded and nothing can break</b> — every number stays in your browser.</p>'
+      openModal('👋 Welcome to VoltWorks Power', 'You are in the right place, even if this is your first power-system design.',
+        '<p style="font-size:13px;line-height:1.65">VoltWorks sizes your feeders, transformers and cables, checks fault levels and arc-flash PPE, draws your single-line diagram, shows it in 3D, and writes the report. <b>Nothing is uploaded and nothing can break</b>: every number stays in your browser.</p>'
         + '<p style="font-size:13px;line-height:1.65">New here? The 2-minute tour visits every tool and loads a working example in each one.</p>'
         + '<button class="try-btn" onclick="closeModal();try{localStorage.setItem(\'vw-tour-v1\',\'started\')}catch(e){}vwStartTour()">🧭 Take the 2-minute tour</button>'
         + '<button class="try-btn alt" onclick="closeModal();try{localStorage.setItem(\'vw-tour-v1\',\'skipped\')}catch(e){}">I’ll explore myself</button>');
