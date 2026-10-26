@@ -4,7 +4,7 @@
   <img src="docs/assets/voltworks-power-banner.png" alt="VoltWorks Power banner">
 </p>
 
-Live site: https://darthsandd.github.io/voltworks-power/ (GitHub Pages, serves `index.html`).
+Live site: https://voltworks-power.pages.dev/ (GitHub Pages, serves `index.html`).
 
 Single-file electrical calculator suite for power-systems engineers: system base
 (per-unit), feeder voltage drop, transformer sizing + fault level, LV cable sizing,
@@ -148,7 +148,7 @@ The load-flow network (buses + branches) autosaves to `localStorage`
 
 Local `main` pushes to remote `main` (`git push origin main`).
 Pages rebuilds in ~1–2 min. Verify live with:
-`curl -s https://darthsandd.github.io/voltworks-power/ | grep -c vwRestore` (expect 2).
+`curl -s https://voltworks-power.pages.dev/ | grep -c vwRestore` (expect 2).
 
 ## Changelog
 
